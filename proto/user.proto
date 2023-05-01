@@ -1,0 +1,119 @@
+syntax = "proto3";
+package users;
+// import "base.proto";
+
+service UsersService{
+    //User
+    rpc RegisterUser(RegisterUserRequest) returns (RegisterUserResponse) {}
+    rpc GetUserByPhoneNumber(GetUserByPhoneNumberRequest) returns (ReadUserResponse){}
+    rpc VerifyPhone(VerifyPhoneRequest) returns (VerifyPhoneResponse){}
+    rpc ReadUser(ReadUserRequest) returns (ReadUserResponse) {}
+    rpc LoginOrCreateAccount(LoginOrCreateAccountRequest) returns (LoginOrCreateAccountResponse){}
+    rpc GetListUserByIds(GetListUserByIdsRequest) returns (GetListUserByIdsResponse){}
+   
+    //Admin
+    rpc CreateAdmin (CreateAdminRequest) returns (CreateAdminResponse) {}
+}
+
+//User
+message RegisterUserRequest{
+    string fullName = 1;
+    string phoneNumber = 3;
+    string password = 4;
+}
+
+message RegisterUserResponse{
+    string _id = 1;
+    string fullName = 2;
+    string phoneNumber = 3;
+}
+
+message GetUserByPhoneNumberRequest{
+    string phoneNumber = 1;
+}
+
+message ReadUserResponse{
+    User user = 1;
+}
+
+message VerifyPhoneRequest{
+    string phoneNumber = 1;
+}
+
+message VerifyPhoneResponse{
+    bool verified = 1;
+}
+
+message ReadUserRequest{
+    string _id = 1;
+}
+
+message LoginOrCreateAccountRequest{
+    Provider provider = 1;
+    string accessToken = 2;
+} 
+
+message LoginOrCreateAccountResponse{
+    User user = 1;
+}
+//Admin
+message CreateAdminRequest {
+    string fullName = 1;
+    string password = 2;
+    string userName = 3;
+}
+
+message CreateAdminResponse {
+    bool success = 1;
+}
+
+
+
+//ENTITY
+message User {
+    string fullName = 1;
+    string email = 2;
+    string password = 3;
+    string phoneNumber = 4;
+    Provider provider = 5;
+    string providerId = 6;
+    bool verifyEmail = 7;
+    bool verifyPhone = 8;
+    bool verified= 9;
+    bool twoFactorAuthenticationSecret = 10;
+    Gender gender = 11;
+    double birthday = 12;
+    string address = 13;
+    string avatarId = 14;
+    string _id = 15;
+    bool active = 16;
+    
+    //base
+    double createdAt = 20;
+    string  createdBy = 21;
+    double updatedAt = 22;
+    string  updatedBy = 23;
+    string deletedBy = 24;
+    double  deletedAt = 25;
+}
+
+message GetListUserByIdsRequest{
+    repeated string ids = 1;
+}
+
+message GetListUserByIdsResponse{
+    repeated User user =1;
+}
+
+//ENUM
+enum Provider {
+    Facebook =0;
+    Google =1;
+    Apple =2;
+}
+
+enum Gender {
+    UNKNOWN = 0;
+    MALE = 1;
+    FEMALE = 2;
+}

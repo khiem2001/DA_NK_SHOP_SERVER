@@ -1,0 +1,15 @@
+syntax = "proto3";
+package mailer;
+
+service MailerService{
+    rpc SendEmailVerify (SendEmailVerifyRequest) returns (SendEmailVerifyResponse){}
+}
+
+message SendEmailVerifyRequest{
+    string email = 1;
+    string pinCode = 2;
+}
+
+message SendEmailVerifyResponse{
+    bool success = 1;
+}

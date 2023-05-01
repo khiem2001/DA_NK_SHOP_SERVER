@@ -1,0 +1,184 @@
+syntax = "proto3";
+package product;
+import "base.proto";
+
+service ProductService{
+    //product
+    rpc CreateProduct(CreateProductRequest) returns (CreateProductResponse){}
+    rpc GetProduct(GetProductRequest) returns (GetProductResponse);
+    rpc GetListProduct(GetListProductRequest) returns (GetListProductResponse);
+    rpc UpdateProduct(UpdateProductRequest) returns (UpdateProductResponse);
+    rpc DeleteProduct(DeleteProductRequest) returns (DeleteProductResponse);
+
+    //payment
+    rpc CreatePayment(CreatePaymentRequest) returns (CreatePaymentResponse);
+
+    //Comment
+    rpc createComment(CreateCommentRequest) returns (CreateCommentResponse) {}
+}
+
+message CreateProductRequest{
+    string name = 1;
+    string description = 2;
+    float price = 3;
+    int32 countInStock = 4;
+    string image = 5;
+    string video = 6;
+    string manufacturer = 7;
+    string modelNumber = 8;
+    string dimensions = 9;
+    string weight = 10;
+    string connectivity = 11;
+    string powerSource = 12;
+    string compatibility = 13;
+    string warranty = 14;
+}
+
+message CreateProductResponse{
+    bool success = 1;
+}
+
+message GetProductRequest{
+    string productId = 1;
+}
+
+message GetProductResponse{
+    Product product = 1;
+}
+
+message GetListProductRequest{
+    message Filter{
+        float price_eq = 1;
+        string manufacturer_eq = 2;
+        string weight_eq = 3;
+        string connectivity_eq = 4;
+        string powerSource_eq = 5;
+        string warranty_eq = 6;
+    }
+    Filter filter = 1;
+    base.PaginationInput pagination =2;
+}
+message GetListProductResponse{
+    repeated Product products = 1;
+    base.PaginationResponse pagination = 2;
+    int32 totalItem =3;
+
+}
+
+message UpdateProductRequest{
+    ProductRequest updateInput = 1;
+    string productId = 2;
+}
+
+message UpdateProductResponse{
+    bool success = 1;
+}
+
+message DeleteProductRequest{
+    string productId = 1;
+
+}
+
+message DeleteProductResponse{
+    bool success = 1;
+
+}
+
+message ProductRequest{
+    string name = 1;
+    string description = 2;
+    float price = 3;
+    int32 countInStock = 4;
+    string image = 5;
+    string video = 6;
+    string manufacturer = 7;
+    string modelNumber = 8;
+    string dimensions = 9;
+    string weight = 10;
+    string connectivity = 11;
+    string powerSource = 12;
+    string compatibility = 13;
+    string warranty = 14;
+}
+
+message Product{
+    string name = 1;
+    string description = 2;
+    float price = 3;
+    int32 countInStock = 4;
+    string image = 5;
+    string video = 6;
+    string manufacturer = 7;
+    string modelNumber = 8;
+    string dimensions = 9;
+    string weight = 10;
+    string connectivity = 11;
+    string powerSource = 12;
+    string compatibility = 13;
+    string warranty = 14;
+    int32 total_like = 15;
+    int32 total_comment = 16;
+    string _id = 17;
+
+   //base
+   double createdAt = 20;
+   double  createdBy = 21;
+   double updatedAt = 22;
+   double  updatedBy = 23;
+   string deletedBy = 24;
+   double  deletedAt = 25;
+}
+//Payment
+message OrderItem {
+    string id = 1;
+    string name = 2;
+    string image = 3;
+    int32 quantity = 4;
+    int32 price = 55;
+}
+
+message CreatePaymentRequest{
+    string code = 1;
+    string description = 2;
+    string couponCode = 3;
+    repeated OrderItem items = 4;
+    PaymentMethod paymentMethod = 5;
+    PaymentType  paymentType = 6;
+    PaymentProvider paymentProvider =7;
+    string shippingAddress = 8;
+}
+
+message CreatePaymentResponse {
+    optional string redirectUrl = 1;
+    optional bool success = 2;
+}
+
+message CreateCommentRequest {
+    string message = 1;
+    string productId = 2;
+    string parentId = 3;
+}
+
+message CreateCommentResponse {
+    string message = 1;
+    string productId = 2;
+    string parentId = 3;
+    string _id = 4;
+    string userId = 5;
+}
+
+
+enum PaymentMethod{
+    ONLINE = 0;
+    OFFLINE = 1;
+}
+
+enum PaymentType{
+    ATM = 0;
+    CC = 1;
+}
+
+enum PaymentProvider {
+    ZALOPAY=0;
+    VNPAY=1;
+}
