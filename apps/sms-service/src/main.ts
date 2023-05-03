@@ -11,7 +11,7 @@ async function bootstrap() {
     smsClientOptions,
   );
   app.listen().then(() => {
-    logger.log('Microservice sms is listening port 50052 ...');
+    logger.log('Microservice sms is listening port 50052 ....');
   });
 }
 bootstrap();
