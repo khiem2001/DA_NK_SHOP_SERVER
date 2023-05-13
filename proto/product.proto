@@ -17,7 +17,7 @@ service ProductService{
     rpc createComment(CreateCommentRequest) returns (CreateCommentResponse) {}
 
     //Type
-    rpc createType(ProductType) returns (CreateProductResponse) {}
+    rpc CreateType(ProductType) returns (CreateProductResponse) {}
     rpc ListType(ListTypeRequest) returns (ListTypeResponse) {}
 }
 

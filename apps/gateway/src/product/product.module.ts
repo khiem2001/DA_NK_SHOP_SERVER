@@ -6,6 +6,7 @@ import { ProductService } from './product.service';
 import { PubSubModule } from '@app/core';
 import { CommentResolver } from './comment.resolver';
 import { CommentService } from './comment.service';
+import { TypeResolver } from './type.resolver';
 
 @Module({
   imports: [PubSubModule],
@@ -15,6 +16,7 @@ import { CommentService } from './comment.service';
     CommentResolver,
     CommentService,
     ListProductResolver,
+    TypeResolver,
   ],
 })
 export class ProductModule {}

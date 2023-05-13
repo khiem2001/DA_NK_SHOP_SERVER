@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProductModule } from './product/product.module';
 import { PaymentModule } from './payment/payment.module';
 import { CommentModule } from './comment/comment.module';
+import { TypeModule } from './type/type.module';
 
 @Global()
 @Module({
@@ -17,6 +18,7 @@ import { CommentModule } from './comment/comment.module';
     ProductModule,
     PaymentModule,
     CommentModule,
+    TypeModule,
   ],
   providers: [AppMetadata],
 })

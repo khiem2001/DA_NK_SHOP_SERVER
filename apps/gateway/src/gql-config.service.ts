@@ -8,20 +8,11 @@ import { JWT_COMMON } from './auth/constants';
 
 @Injectable()
 export class GqlConfigService implements GqlOptionsFactory {
-  // private accountService: AccountServiceClient;
-  // private fanService: FanServiceClient;
   constructor(
     private readonly config: ConfigService,
     private readonly jwtService: JwtService,
     private readonly dataLoaderService: DataloaderService,
   ) {}
-
-  // onModuleInit() {
-  //   this.accountService =
-  //     this.client.getService<AccountServiceClient>(ACCOUNT_SERVICE_NAME);
-  //   this.fanService =
-  //     this.fanClient.getService<FanServiceClient>(FAN_SERVICE_NAME);
-  // }
 
   createGqlOptions(): GqlModuleOptions {
     return {

@@ -9,6 +9,7 @@ import {
   MessageEntity,
   OtpEntity,
   ProductEntity,
+  TypeEntity,
   UserEntity,
 } from '../entities';
 import { Injectable } from '@nestjs/common';
@@ -33,6 +34,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         ProductEntity,
         OrderEntity,
         CommentEntity,
+        TypeEntity,
       ],
       useNewUrlParser: true,
       useUnifiedTopology: true,
