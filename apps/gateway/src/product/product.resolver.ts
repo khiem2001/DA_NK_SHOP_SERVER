@@ -1,10 +1,20 @@
 import { Inject, UseGuards } from '@nestjs/common';
 import { ProductService } from './product.service';
-import { Args, Mutation, Resolver, Query, Context } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Resolver,
+  Query,
+  Context,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import {
   CreatePaymentResponse,
   GetListProductResponse,
   GetProductResponse,
+  Media,
+  ProductPayload,
 } from './type';
 import {
   CreatePaymentInputDto,
@@ -15,6 +25,7 @@ import {
 } from './input';
 import { BooleanPayload } from '@app/core';
 import { AuthenticationGuard } from '../auth/guards';
+import { IGraphQLContext } from '@app/core/interfaces';
 
 export class ProductResolver {
   constructor(
@@ -55,5 +66,19 @@ export class ProductResolver {
     const { _id } = context.req.user;
 
     return await this._productService.createPayment(input, _id);
+  }
+}
+
+@Resolver(() => ProductPayload)
+export class ListProductResolver {
+  @ResolveField('image', () => Media, { nullable: true })
+  async media(
+    @Parent() product: ProductPayload,
+    @Context() { loaders }: IGraphQLContext,
+  ) {
+    if (product?.image) {
+      return loaders.mediaLoader.load(product.image);
+    }
+    return null;
   }
 }

@@ -2,8 +2,8 @@
 import { GrpcMethod, GrpcStreamMethod } from '@nestjs/microservices';
 import Long from 'long';
 import * as _m0 from 'protobufjs/minimal';
+import { SortDirection, PaginationInput, PaginationResponse } from './base.pb';
 import { Observable } from 'rxjs';
-import { PaginationInput, PaginationResponse } from './base.pb';
 import { Metadata } from '@grpc/grpc-js';
 
 export const protobufPackage = 'product';
@@ -38,6 +38,7 @@ export interface CreateProductRequest {
   powerSource: string;
   compatibility: string;
   warranty: string;
+  type: string;
 }
 
 export interface CreateProductResponse {
@@ -52,18 +53,20 @@ export interface GetProductResponse {
   product: Product | undefined;
 }
 
-export interface GetListProductRequest {
-  filter: GetListProductRequest_Filter | undefined;
-  pagination: PaginationInput | undefined;
+export interface FilterList {
+  price_lte: number;
+  price_gte: number;
+  type_eq: string;
 }
 
-export interface GetListProductRequest_Filter {
-  price_eq: number;
-  manufacturer_eq: string;
-  weight_eq: string;
-  connectivity_eq: string;
-  powerSource_eq: string;
-  warranty_eq: string;
+export interface SortList {
+  createdAt: SortDirection;
+}
+
+export interface GetListProductRequest {
+  filter: FilterList | undefined;
+  pagination: PaginationInput | undefined;
+  sort: SortList | undefined;
 }
 
 export interface GetListProductResponse {
@@ -104,6 +107,7 @@ export interface ProductRequest {
   powerSource: string;
   compatibility: string;
   warranty: string;
+  type: string;
 }
 
 export interface Product {
@@ -124,6 +128,7 @@ export interface Product {
   total_like: number;
   total_comment: number;
   _id: string;
+  type: string;
   /** base */
   createdAt: number;
   createdBy: number;
@@ -172,6 +177,16 @@ export interface CreateCommentResponse {
   userId: string;
 }
 
+export interface ProductType {
+  name: string;
+}
+
+export interface ListTypeResponse {
+  data: ProductType[];
+}
+
+export interface ListTypeRequest {}
+
 export const PRODUCT_PACKAGE_NAME = 'product';
 
 export interface ProductServiceClient {
@@ -215,6 +230,18 @@ export interface ProductServiceClient {
     request: CreateCommentRequest,
     metadata?: Metadata,
   ): Observable<CreateCommentResponse>;
+
+  /** Type */
+
+  createType(
+    request: ProductType,
+    metadata?: Metadata,
+  ): Observable<CreateProductResponse>;
+
+  listType(
+    request: ListTypeRequest,
+    metadata?: Metadata,
+  ): Observable<ListTypeResponse>;
 }
 
 export interface ProductServiceController {
@@ -279,6 +306,24 @@ export interface ProductServiceController {
     | Promise<CreateCommentResponse>
     | Observable<CreateCommentResponse>
     | CreateCommentResponse;
+
+  /** Type */
+
+  createType(
+    request: ProductType,
+    metadata?: Metadata,
+  ):
+    | Promise<CreateProductResponse>
+    | Observable<CreateProductResponse>
+    | CreateProductResponse;
+
+  listType(
+    request: ListTypeRequest,
+    metadata?: Metadata,
+  ):
+    | Promise<ListTypeResponse>
+    | Observable<ListTypeResponse>
+    | ListTypeResponse;
 }
 
 export function ProductServiceControllerMethods() {
@@ -291,6 +336,8 @@ export function ProductServiceControllerMethods() {
       'deleteProduct',
       'createPayment',
       'createComment',
+      'createType',
+      'listType',
     ];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(

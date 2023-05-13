@@ -86,6 +86,10 @@ export class ProductEntity extends BaseNoSQLEntity {
   @Field()
   totalComment: number;
 
+  @Column()
+  @Expose()
+  @Field()
+  type: string;
   constructor(product: Partial<ProductEntity>) {
     super();
     Object.assign(

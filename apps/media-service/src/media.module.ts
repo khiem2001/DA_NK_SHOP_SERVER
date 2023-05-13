@@ -46,6 +46,5 @@ import { usersClientOptions } from '@app/proto-schema';
   ],
   controllers: [MediaController],
   providers: [MediaService, JwtStrategy],
-  exports: [MediaService],
 })
 export class MediaModule {}

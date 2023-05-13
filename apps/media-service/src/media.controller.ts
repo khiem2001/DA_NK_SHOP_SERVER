@@ -29,7 +29,6 @@ import {
 
 @ApiTags('MEDIA<3')
 @Controller('media')
-@UseGuards(AuthenticationHttpGuard)
 @ApiBearerAuth()
 export class MediaController {
   constructor(private readonly mediaService: MediaService) {}

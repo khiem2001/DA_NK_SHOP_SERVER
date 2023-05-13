@@ -7,7 +7,7 @@ export const notificationClientOptions: ClientOptions = {
   options: {
     package: NOTIFICATION_PACKAGE_NAME,
     protoPath: join(`${process.cwd()}/proto/notification.proto`),
-    url: 'localhost:50057',
+    url: 'localhost:60067',
     loader: {
       keepCase: true,
       longs: String,

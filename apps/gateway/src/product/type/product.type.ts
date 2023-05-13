@@ -1,4 +1,4 @@
-import { PaginationResponse } from '@app/core';
+import { MediaStatus, PaginationResponse } from '@app/core';
 import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
@@ -18,7 +18,7 @@ export class ProductPayload {
   @Field({ nullable: true })
   countInStock: number;
 
-  @Field({ nullable: true })
+  @Field(() => Media, { nullable: true })
   image: string;
 
   @Field({ nullable: true })
@@ -49,10 +49,13 @@ export class ProductPayload {
   warranty: string;
 
   @Field({ nullable: true })
-  total_like: string;
+  total_like: number;
 
   @Field({ nullable: true })
   total_comment: string;
+
+  @Field({ nullable: true })
+  type: string;
 }
 
 @ObjectType()
@@ -64,10 +67,10 @@ export class GetProductResponse {
 @ObjectType()
 export class GetListProductResponse {
   @Field(() => [ProductPayload], { nullable: true })
-  product: ProductPayload[];
+  products: ProductPayload[];
 
   @Field(() => Number, { nullable: true })
-  totalNumber: number;
+  totalItem: number;
 
   @Field(() => PaginationResponse, { nullable: true })
   pagination: PaginationResponse;
@@ -80,4 +83,33 @@ export class CreatePaymentResponse {
 
   @Field(() => Boolean, { nullable: true })
   success?: boolean;
+}
+@ObjectType()
+export class Media {
+  @Field(() => String, { nullable: true })
+  userId: string;
+
+  @Field(() => String, { nullable: true })
+  name: string;
+
+  @Field(() => String, { nullable: true })
+  fileName: string;
+
+  @Field(() => String, { nullable: true })
+  mimeType: string;
+
+  @Field(() => Number, { nullable: true })
+  size: number;
+
+  @Field(() => String, { nullable: true })
+  url: string;
+
+  @Field(() => Number, { nullable: true })
+  duration: number;
+
+  @Field(() => MediaStatus, { nullable: true })
+  status: MediaStatus;
+
+  @Field(() => String, { nullable: true })
+  _id: string;
 }

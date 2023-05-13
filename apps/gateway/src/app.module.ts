@@ -9,6 +9,7 @@ import { ClientsModule } from '@nestjs/microservices';
 import { USERS_SERVICE_NAME } from '@app/proto-schema/proto/user.pb';
 import {
   mailerClientOptions,
+  mediaClientOptions,
   messageClientOptions,
   productClientOptions,
   smsClientOptions,
@@ -27,6 +28,7 @@ import { MESSAGE_SERVICE_NAME } from '@app/proto-schema/proto/message.pb';
 import { UserModule } from './user/user.module';
 import { DataloaderModule } from './dataloaders/dataloader.module';
 import { DataloaderService } from './dataloaders/dataloader.service';
+import { MEDIA_SERVICE_NAME } from '@app/proto-schema/proto/media.pb';
 
 @Global()
 @Module({
@@ -67,6 +69,10 @@ import { DataloaderService } from './dataloaders/dataloader.service';
       {
         name: MESSAGE_SERVICE_NAME,
         ...messageClientOptions,
+      },
+      {
+        name: MEDIA_SERVICE_NAME,
+        ...mediaClientOptions,
       },
     ]),
     AuthModule,

@@ -7,7 +7,7 @@ export const messageClientOptions: ClientOptions = {
   options: {
     package: MESSAGE_PACKAGE_NAME,
     protoPath: join(`${process.cwd()}/proto/message.proto`),
-    url: 'localhost:50056',
+    url: 'localhost:60066',
     loader: {
       keepCase: true,
       longs: String,

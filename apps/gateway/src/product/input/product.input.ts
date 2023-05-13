@@ -208,7 +208,7 @@ export class GetListProductInput {
   @Field(() => PaginationBaseInput)
   pagination: PaginationBaseInput;
 
-  @Field(() => FilterProductInput)
+  @Field(() => FilterProductInput, { nullable: true })
   filter: FilterProductInput;
 }
 

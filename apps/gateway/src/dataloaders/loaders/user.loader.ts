@@ -63,7 +63,9 @@ export class UsersLoader {
           } as unknown as GetListUserByIdsRequest)
           .pipe(timeout(5000), catchError(PipeThrowError)),
       );
-
+      if (!user) {
+        return keys.map(() => null);
+      }
       return sortDataByIds(user, keys);
     });
   }

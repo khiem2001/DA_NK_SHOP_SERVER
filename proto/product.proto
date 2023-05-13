@@ -4,17 +4,21 @@ import "base.proto";
 
 service ProductService{
     //product
-    rpc CreateProduct(CreateProductRequest) returns (CreateProductResponse){}
-    rpc GetProduct(GetProductRequest) returns (GetProductResponse);
-    rpc GetListProduct(GetListProductRequest) returns (GetListProductResponse);
-    rpc UpdateProduct(UpdateProductRequest) returns (UpdateProductResponse);
-    rpc DeleteProduct(DeleteProductRequest) returns (DeleteProductResponse);
+    rpc CreateProduct(CreateProductRequest) returns (CreateProductResponse) {}
+    rpc GetProduct(GetProductRequest) returns (GetProductResponse) {}
+    rpc GetListProduct(GetListProductRequest) returns (GetListProductResponse) {}
+    rpc UpdateProduct(UpdateProductRequest) returns (UpdateProductResponse) {}
+    rpc DeleteProduct(DeleteProductRequest) returns (DeleteProductResponse) {}
 
     //payment
-    rpc CreatePayment(CreatePaymentRequest) returns (CreatePaymentResponse);
+    rpc CreatePayment(CreatePaymentRequest) returns (CreatePaymentResponse) {}
 
     //Comment
     rpc createComment(CreateCommentRequest) returns (CreateCommentResponse) {}
+
+    //Type
+    rpc createType(ProductType) returns (CreateProductResponse) {}
+    rpc ListType(ListTypeRequest) returns (ListTypeResponse) {}
 }
 
 message CreateProductRequest{
@@ -32,6 +36,7 @@ message CreateProductRequest{
     string powerSource = 12;
     string compatibility = 13;
     string warranty = 14;
+    string type = 15;
 }
 
 message CreateProductResponse{
@@ -46,17 +51,22 @@ message GetProductResponse{
     Product product = 1;
 }
 
+message FilterList{
+    double price_lte = 12;
+    double price_gte = 13;
+    string type_eq = 2;
+   
+}
+
+message SortList {
+    base.SortDirection createdAt = 2;
+}
+
 message GetListProductRequest{
-    message Filter{
-        float price_eq = 1;
-        string manufacturer_eq = 2;
-        string weight_eq = 3;
-        string connectivity_eq = 4;
-        string powerSource_eq = 5;
-        string warranty_eq = 6;
-    }
-    Filter filter = 1;
-    base.PaginationInput pagination =2;
+    FilterList filter = 1;
+    base.PaginationInput pagination = 2;
+    SortList sort = 3;
+
 }
 message GetListProductResponse{
     repeated Product products = 1;
@@ -99,6 +109,9 @@ message ProductRequest{
     string powerSource = 12;
     string compatibility = 13;
     string warranty = 14;
+    string type = 15;
+
+    
 }
 
 message Product{
@@ -119,6 +132,8 @@ message Product{
     int32 total_like = 15;
     int32 total_comment = 16;
     string _id = 17;
+    string type = 18;
+
 
    //base
    double createdAt = 20;
@@ -167,6 +182,16 @@ message CreateCommentResponse {
     string userId = 5;
 }
 
+message ProductType {
+    string name = 1;
+}
+
+message ListTypeResponse {
+    repeated ProductType data = 1;
+}
+
+message  ListTypeRequest {
+}
 
 enum PaymentMethod{
     ONLINE = 0;
