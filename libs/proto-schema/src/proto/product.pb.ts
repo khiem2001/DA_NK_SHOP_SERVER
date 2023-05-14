@@ -179,6 +179,7 @@ export interface CreateCommentResponse {
 
 export interface ProductType {
   name: string;
+  _id: string;
 }
 
 export interface ListTypeResponse {

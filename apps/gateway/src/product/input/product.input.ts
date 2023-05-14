@@ -173,22 +173,13 @@ export class ProductInputDto {
 @InputType()
 export class FilterProductInput {
   @Field(() => Number, { nullable: true })
-  price: number;
+  price_lte: number;
+
+  @Field(() => Number, { nullable: true })
+  price_gte: number;
 
   @Field(() => String, { nullable: true })
-  manufacturer: string;
-
-  @Field(() => String, { nullable: true })
-  weight: string;
-
-  @Field(() => String, { nullable: true })
-  connectivity: string;
-
-  @Field(() => String, { nullable: true })
-  powerSource: string;
-
-  @Field(() => String, { nullable: true })
-  warranty: string;
+  type_eq: string;
 }
 
 @InputType()
