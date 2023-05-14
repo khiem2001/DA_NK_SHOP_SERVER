@@ -129,10 +129,11 @@ message Product{
     string powerSource = 12;
     string compatibility = 13;
     string warranty = 14;
-    int32 total_like = 15;
-    int32 total_comment = 16;
+    int32 totalLike = 15;
+    int32 totalComment = 16;
     string _id = 17;
     string type = 18;
+    int32 totalSold = 19;
 
 
    //base

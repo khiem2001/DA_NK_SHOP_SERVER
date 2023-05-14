@@ -125,10 +125,11 @@ export interface Product {
   powerSource: string;
   compatibility: string;
   warranty: string;
-  total_like: number;
-  total_comment: number;
+  totalLike: number;
+  totalComment: number;
   _id: string;
   type: string;
+  totalSold: number;
   /** base */
   createdAt: number;
   createdBy: number;

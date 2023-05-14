@@ -24,6 +24,12 @@ export class CreateProductInputDto {
 
   @Field(() => String)
   @IsNotEmpty({
+    message: 'Vui lòng nhập tên sản phẩm',
+  })
+  type: string;
+
+  @Field(() => String)
+  @IsNotEmpty({
     message: 'Vui lòng nhập mô tả sản phẩm',
   })
   description: string;

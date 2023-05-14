@@ -49,13 +49,16 @@ export class ProductPayload {
   warranty: string;
 
   @Field({ nullable: true })
-  total_like: number;
+  totalLike: number;
 
   @Field({ nullable: true })
-  total_comment: string;
+  totalComment: number;
 
   @Field({ nullable: true })
   type: string;
+
+  @Field({ nullable: true })
+  totalSold: number;
 }
 
 @ObjectType()

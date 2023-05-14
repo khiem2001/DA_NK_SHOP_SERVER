@@ -21,10 +21,10 @@ export class ProductEntity extends BaseNoSQLEntity {
   @Field()
   price: number;
 
-  @Column()
+  @Column({ default: 0 })
   @Expose()
   @Field()
-  countInStock: number;
+  countInStock: number = 0;
 
   @Column()
   @Expose()
@@ -76,20 +76,25 @@ export class ProductEntity extends BaseNoSQLEntity {
   @Field()
   warranty?: string;
 
-  @Column()
+  @Column({ default: 0 })
   @Expose()
   @Field()
-  totalLike: number;
+  totalLike?: number = 0;
 
-  @Column()
+  @Column({ default: 0 })
   @Expose()
   @Field()
-  totalComment: number;
+  totalComment?: number = 0;
 
   @Column()
   @Expose()
   @Field()
   type: string;
+
+  @Column({ default: 0 })
+  @Expose()
+  @Field()
+  totalSold?: number = 0;
   constructor(product: Partial<ProductEntity>) {
     super();
     Object.assign(
