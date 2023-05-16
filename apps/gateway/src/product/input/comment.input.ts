@@ -22,3 +22,12 @@ export class CreateCommentInput {
   @Field(() => String, { nullable: true })
   parentId: string;
 }
+
+@InputType()
+export class ListCommentInput {
+  @Field(() => String)
+  @IsObjectId({
+    message: 'ID không đúng định dạng',
+  })
+  id: string;
+}

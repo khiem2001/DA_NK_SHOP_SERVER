@@ -15,6 +15,8 @@ service ProductService{
 
     //Comment
     rpc createComment(CreateCommentRequest) returns (CreateCommentResponse) {}
+    rpc ListComment(ListCommentRequest) returns (ListCommentResponse) {}
+
 
     //Type
     rpc CreateType(ProductType) returns (CreateProductResponse) {}
@@ -181,6 +183,15 @@ message CreateCommentResponse {
     string parentId = 3;
     string _id = 4;
     string userId = 5;
+    
+    //base
+   double createdAt = 20;
+   double  createdBy = 21;
+   double updatedAt = 22;
+   double  updatedBy = 23;
+   string deletedBy = 24;
+   double  deletedAt = 25;
+
 }
 
 message ProductType {
@@ -193,6 +204,14 @@ message ListTypeResponse {
 }
 
 message  ListTypeRequest {
+}
+
+message ListCommentRequest{
+    string id = 1;
+}
+
+message ListCommentResponse{
+    repeated CreateCommentResponse data = 1;
 }
 
 enum PaymentMethod{

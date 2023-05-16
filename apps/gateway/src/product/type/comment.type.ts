@@ -1,4 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
+import { UserDtoType } from '../../user/type';
 
 @ObjectType()
 export class CommentResponse {
@@ -8,7 +9,7 @@ export class CommentResponse {
   @Field(() => String)
   message: string;
 
-  @Field(() => String, { nullable: true, name: 'user' })
+  @Field(() => UserDtoType, { nullable: true, name: 'user' })
   userId: string;
 
   @Field(() => String, { nullable: true })
@@ -16,4 +17,16 @@ export class CommentResponse {
 
   @Field(() => String, { nullable: true })
   productId?: string;
+
+  @Field(() => Number, { nullable: true })
+  createdAt: number;
+
+  @Field(() => Number, { nullable: true })
+  updatedAt: number;
+}
+
+@ObjectType()
+export class ListCommentResponse {
+  @Field(() => [CommentResponse], { nullable: true })
+  data: CommentResponse[];
 }

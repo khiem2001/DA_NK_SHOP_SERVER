@@ -8,8 +8,11 @@ import { CreateCommentCommand } from './cqrs/commands';
 import {
   CreateCommentRequest,
   CreateCommentResponse,
+  ListCommentRequest,
+  ListCommentResponse,
   PRODUCT_SERVICE_NAME,
 } from '@app/proto-schema/proto/product.pb';
+import { ListCommentQuery } from './cqrs/query';
 
 @Controller()
 export class CommentController {
@@ -36,5 +39,10 @@ export class CommentController {
     });
 
     return comment;
+  }
+
+  @GrpcMethod(PRODUCT_SERVICE_NAME, 'ListComment')
+  async listComment(request: ListCommentRequest): Promise<ListCommentResponse> {
+    return await this.queryBus.execute(new ListCommentQuery(request));
   }
 }

@@ -6,6 +6,7 @@ import {
   Mutation,
   Parent,
   ResolveField,
+  Query,
   Resolver,
   Subscription,
 } from '@nestjs/graphql';
@@ -13,8 +14,8 @@ import { RpcException } from '@nestjs/microservices';
 import { RedisPubSub } from 'graphql-redis-subscriptions';
 import { AuthenticationGuard } from '../auth/guards';
 import { CommentService } from './comment.service';
-import { CreateCommentInput } from './input';
-import { CommentResponse } from './type';
+import { CreateCommentInput, ListCommentInput } from './input';
+import { CommentResponse, ListCommentResponse } from './type';
 import { ProductService } from './product.service';
 import { UserDtoType } from '../user/type';
 import { IGraphQLContext } from '@app/core/interfaces';
@@ -43,7 +44,7 @@ export class CommentResolver {
 
   @Mutation(() => CommentResponse)
   @UseGuards(AuthenticationGuard)
-  async sendMessage(
+  async createComment(
     @Args('input') { productId, message, parentId }: CreateCommentInput,
     @Context() context: any,
   ) {
@@ -55,6 +56,11 @@ export class CommentResolver {
       { productId: product.product._id, message, parentId },
       userId,
     );
+  }
+
+  @Query(() => ListCommentResponse)
+  async listComment(@Args('input') input: ListCommentInput) {
+    return await this._commentService.listComment(input);
   }
 
   @ResolveField('user', () => UserDtoType, { nullable: true })

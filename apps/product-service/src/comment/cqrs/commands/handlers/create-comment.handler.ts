@@ -15,14 +15,13 @@ export class CreateCommentHandler
     userId: inputUserId,
   }: CreateCommentCommand): Promise<CreateCommentResponse> {
     const { ...input } = cmd;
-    const { _id, message, productId, parentId, userId } =
-      await this._commentRepository.save(
-        new CommentEntity({
-          ...input,
-          userId: inputUserId,
-        }),
-      );
+    const data = await this._commentRepository.save(
+      new CommentEntity({
+        ...input,
+        userId: inputUserId,
+      }),
+    );
 
-    return { _id, message, productId, parentId, userId };
+    return data as unknown as CreateCommentResponse;
   }
 }

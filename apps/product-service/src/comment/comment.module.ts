@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CommentController } from './comment.controller';
 import { CommentRepository } from './comment.repository';
 import { CommentCommandHandlers } from './cqrs/commands';
+import { CommentQueryHandlers } from './cqrs/query';
 
 @Module({
   imports: [
@@ -11,6 +12,6 @@ import { CommentCommandHandlers } from './cqrs/commands';
     TypeOrmModule.forFeature([CommentEntity, CommentRepository]),
   ],
   controllers: [CommentController],
-  providers: [AppMetadata, ...CommentCommandHandlers],
+  providers: [AppMetadata, ...CommentCommandHandlers, ...CommentQueryHandlers],
 })
 export class CommentModule {}

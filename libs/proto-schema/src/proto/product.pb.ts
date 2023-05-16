@@ -176,6 +176,13 @@ export interface CreateCommentResponse {
   parentId: string;
   _id: string;
   userId: string;
+  /** base */
+  createdAt: number;
+  createdBy: number;
+  updatedAt: number;
+  updatedBy: number;
+  deletedBy: string;
+  deletedAt: number;
 }
 
 export interface ProductType {
@@ -188,6 +195,14 @@ export interface ListTypeResponse {
 }
 
 export interface ListTypeRequest {}
+
+export interface ListCommentRequest {
+  id: string;
+}
+
+export interface ListCommentResponse {
+  data: CreateCommentResponse[];
+}
 
 export const PRODUCT_PACKAGE_NAME = 'product';
 
@@ -232,6 +247,11 @@ export interface ProductServiceClient {
     request: CreateCommentRequest,
     metadata?: Metadata,
   ): Observable<CreateCommentResponse>;
+
+  listComment(
+    request: ListCommentRequest,
+    metadata?: Metadata,
+  ): Observable<ListCommentResponse>;
 
   /** Type */
 
@@ -309,6 +329,14 @@ export interface ProductServiceController {
     | Observable<CreateCommentResponse>
     | CreateCommentResponse;
 
+  listComment(
+    request: ListCommentRequest,
+    metadata?: Metadata,
+  ):
+    | Promise<ListCommentResponse>
+    | Observable<ListCommentResponse>
+    | ListCommentResponse;
+
   /** Type */
 
   createType(
@@ -338,6 +366,7 @@ export function ProductServiceControllerMethods() {
       'deleteProduct',
       'createPayment',
       'createComment',
+      'listComment',
       'createType',
       'listType',
     ];

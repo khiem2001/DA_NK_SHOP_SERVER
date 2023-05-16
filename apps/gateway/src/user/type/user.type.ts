@@ -1,5 +1,6 @@
 import { BaseNoSQL, Gender, Provider } from '@app/core';
 import { Field, ObjectType } from '@nestjs/graphql';
+import { Media } from '../../product/type';
 
 @ObjectType()
 export class UserDtoType extends BaseNoSQL {
@@ -39,7 +40,7 @@ export class UserDtoType extends BaseNoSQL {
   @Field(() => String, { nullable: true })
   address: string;
 
-  @Field(() => String, { nullable: true })
+  @Field(() => Media, { nullable: true })
   avatarId: string;
 
   @Field(() => Boolean, { nullable: true })
