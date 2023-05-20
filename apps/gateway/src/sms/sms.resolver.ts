@@ -18,4 +18,9 @@ export class SmsResolver {
   async confirmOtp(@Args('input') input: ConfirmOtpRequestInput) {
     return await this._smsService.confirmOtp(input);
   }
+
+  @Mutation(() => ConfirmOtpResponse)
+  async inValidOtp(@Args('input') input: ConfirmOtpRequestInput) {
+    return await this._smsService.inValidOtp(input);
+  }
 }

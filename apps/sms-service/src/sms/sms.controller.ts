@@ -8,7 +8,11 @@ import {
 import { Controller } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { GrpcMethod } from '@nestjs/microservices';
-import { ConfirmOtpCommand, SendOtpCommand } from './cqrs/command';
+import {
+  ConfirmOtpCommand,
+  InvalidOtpCommand,
+  SendOtpCommand,
+} from './cqrs/command';
 import { GetPhoneNumberQuery } from './cqrs/query';
 
 @Controller()
@@ -31,5 +35,9 @@ export class SmsController {
   @GrpcMethod(SMS_SERVICE_NAME, 'GetPhoneNumber')
   async getPhoneNumber(input: GetPhoneNumberRequest) {
     return await this.queryBus.execute(new GetPhoneNumberQuery(input));
+  }
+  @GrpcMethod(SMS_SERVICE_NAME, 'inValidOtp')
+  async inValidOtp(input: ConfirmOtpRequest) {
+    return await this.commandBus.execute(new InvalidOtpCommand(input));
   }
 }

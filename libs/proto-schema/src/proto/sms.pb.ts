@@ -51,6 +51,11 @@ export interface SmsServiceClient {
     request: GetPhoneNumberRequest,
     metadata?: Metadata,
   ): Observable<GetPhoneNumberResponse>;
+
+  inValidOtp(
+    request: ConfirmOtpRequest,
+    metadata?: Metadata,
+  ): Observable<ConfirmOtpResponse>;
 }
 
 export interface SmsServiceController {
@@ -74,11 +79,24 @@ export interface SmsServiceController {
     | Promise<GetPhoneNumberResponse>
     | Observable<GetPhoneNumberResponse>
     | GetPhoneNumberResponse;
+
+  inValidOtp(
+    request: ConfirmOtpRequest,
+    metadata?: Metadata,
+  ):
+    | Promise<ConfirmOtpResponse>
+    | Observable<ConfirmOtpResponse>
+    | ConfirmOtpResponse;
 }
 
 export function SmsServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ['sendOtp', 'confirmOtp', 'getPhoneNumber'];
+    const grpcMethods: string[] = [
+      'sendOtp',
+      'confirmOtp',
+      'getPhoneNumber',
+      'inValidOtp',
+    ];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(
         constructor.prototype,

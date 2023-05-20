@@ -5,6 +5,8 @@ service SmsService {
     rpc SendOtp(SendOtpRequest) returns (SendOtpResponse){}
     rpc ConfirmOtp(ConfirmOtpRequest) returns (ConfirmOtpResponse){}
     rpc GetPhoneNumber(GetPhoneNumberRequest) returns (GetPhoneNumberResponse){}
+    rpc inValidOtp(ConfirmOtpRequest) returns (ConfirmOtpResponse) {}
+
 }
 
 message SendOtpRequest{

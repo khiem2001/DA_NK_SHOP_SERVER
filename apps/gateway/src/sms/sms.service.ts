@@ -33,4 +33,13 @@ export class SmsService {
   async getPhoneNumber({ sessionId }: GetPhoneNumberRequestInput) {
     return await firstValueFrom(this.smsService.getPhoneNumber({ sessionId }));
   }
+
+  /**
+   *
+   * @param param0
+   * @returns
+   */
+  async inValidOtp({ otp, sessionId }: ConfirmOtpRequestInput) {
+    return await firstValueFrom(this.smsService.inValidOtp({ otp, sessionId }));
+  }
 }

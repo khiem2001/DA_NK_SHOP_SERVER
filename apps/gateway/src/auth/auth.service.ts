@@ -98,6 +98,16 @@ export class AuthService {
   }
 
   /**
+   *
+   * @param param0
+   */
+  async changePassword({ phoneNumber, password }) {
+    return await firstValueFrom(
+      this.userService.changePassword({ phoneNumber, password }),
+    );
+  }
+
+  /**
    * Check user can login
    * @param user
    * @returns

@@ -8,11 +8,13 @@ import {
   ReadUserRequest,
   LoginOrCreateAccountRequest,
   GetListUserByIdsRequest,
+  ChangePasswordRequest,
 } from '@app/proto-schema/proto/user.pb';
 import { Controller } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { GrpcMethod } from '@nestjs/microservices';
 import {
+  ChangePasswordCommand,
   CreateAdminCommand,
   LoginOrCreateCommand,
   RegisterUserCommand,
@@ -64,5 +66,10 @@ export class UsersController {
   @GrpcMethod(USERS_SERVICE_NAME, 'GetListUserByIds')
   async getListUserByIds(input: GetListUserByIdsRequest) {
     return await this.queryBus.execute(new GetListUserByIdsQuery(input));
+  }
+
+  @GrpcMethod(USERS_SERVICE_NAME, 'changePassword')
+  async changePassword(input: ChangePasswordRequest) {
+    return await this.commandBus.execute(new ChangePasswordCommand(input));
   }
 }

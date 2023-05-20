@@ -108,6 +108,15 @@ export interface GetListUserByIdsResponse {
   user: User[];
 }
 
+export interface ChangePasswordRequest {
+  phoneNumber: string;
+  password: string;
+}
+
+export interface ChangePasswordResponse {
+  updated: boolean;
+}
+
 export const USERS_PACKAGE_NAME = 'users';
 
 export interface UsersServiceClient {
@@ -142,6 +151,11 @@ export interface UsersServiceClient {
     request: GetListUserByIdsRequest,
     metadata?: Metadata,
   ): Observable<GetListUserByIdsResponse>;
+
+  changePassword(
+    request: ChangePasswordRequest,
+    metadata?: Metadata,
+  ): Observable<ChangePasswordResponse>;
 
   /** Admin */
 
@@ -202,6 +216,14 @@ export interface UsersServiceController {
     | Observable<GetListUserByIdsResponse>
     | GetListUserByIdsResponse;
 
+  changePassword(
+    request: ChangePasswordRequest,
+    metadata?: Metadata,
+  ):
+    | Promise<ChangePasswordResponse>
+    | Observable<ChangePasswordResponse>
+    | ChangePasswordResponse;
+
   /** Admin */
 
   createAdmin(
@@ -222,6 +244,7 @@ export function UsersServiceControllerMethods() {
       'readUser',
       'loginOrCreateAccount',
       'getListUserByIds',
+      'changePassword',
       'createAdmin',
     ];
     for (const method of grpcMethods) {

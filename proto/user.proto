@@ -10,6 +10,7 @@ service UsersService{
     rpc ReadUser(ReadUserRequest) returns (ReadUserResponse) {}
     rpc LoginOrCreateAccount(LoginOrCreateAccountRequest) returns (LoginOrCreateAccountResponse){}
     rpc GetListUserByIds(GetListUserByIdsRequest) returns (GetListUserByIdsResponse){}
+    rpc ChangePassword(ChangePasswordRequest) returns (ChangePasswordResponse) {}
    
     //Admin
     rpc CreateAdmin (CreateAdminRequest) returns (CreateAdminResponse) {}
@@ -116,4 +117,12 @@ enum Gender {
     UNKNOWN = 0;
     MALE = 1;
     FEMALE = 2;
+}
+message ChangePasswordRequest {
+  string phoneNumber = 1;
+  string password = 2;
+}
+
+message ChangePasswordResponse {
+  bool updated = 1;
 }

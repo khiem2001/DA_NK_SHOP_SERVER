@@ -3,6 +3,7 @@ import { Args, Mutation, Resolver, Query } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
 import {
   AdminInputDto,
+  ChangePasswordInputDto,
   GetPhoneInputDto,
   LoginSocialInputDto,
   LoginUserInputDto,
@@ -11,6 +12,7 @@ import {
 } from './input';
 import { BooleanPayload } from '@app/core';
 import {
+  ChangePasswordResponse,
   LoginResponse,
   RegisterUserResponse,
   VerifyPhoneResponse,
@@ -63,5 +65,20 @@ export class AuthResolver {
   @Mutation(() => LoginResponse)
   async loginSocial(@Args('input') input: LoginSocialInputDto) {
     return await this._authService.loginSocial(input);
+  }
+
+  @Mutation(() => ChangePasswordResponse)
+  async changePassword(@Args('input') input: ChangePasswordInputDto) {
+    const { sessionId, password, otp } = input;
+    const { confirmed } = await this._smsService.confirmOtp({
+      sessionId,
+      otp,
+    });
+    if (confirmed) {
+      const { phoneNumber } = await this._smsService.getPhoneNumber({
+        sessionId,
+      });
+      return await this._authService.changePassword({ phoneNumber, password });
+    }
   }
 }

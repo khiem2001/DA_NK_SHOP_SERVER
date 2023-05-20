@@ -96,3 +96,9 @@ export class LoginResponse {
   @Field(() => UserPayload || AdminPayload, { nullable: true })
   payload: UserPayload | AdminPayload;
 }
+
+@ObjectType()
+export class ChangePasswordResponse {
+  @Field(() => Boolean)
+  updated: boolean;
+}
