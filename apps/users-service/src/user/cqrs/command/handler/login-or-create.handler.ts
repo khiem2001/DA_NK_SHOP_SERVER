@@ -29,7 +29,7 @@ export class LoginOrCreateHandler
   ): Promise<LoginOrCreateAccountResponse> {
     const { cmd } = command;
     const { provider, accessToken } = cmd;
-    const { email, id, name } =
+    const { email, id, name, ...usser } =
       provider === Provider.Facebook
         ? await this._facebookService.getUserInfo(accessToken)
         : provider === Provider.Google
@@ -41,7 +41,6 @@ export class LoginOrCreateHandler
     let user = await this._userRepository.findOne({
       where: { email },
     });
-
     if (user) {
       await this._userRepository.update(
         {

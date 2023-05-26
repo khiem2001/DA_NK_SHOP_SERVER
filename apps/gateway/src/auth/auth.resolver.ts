@@ -1,5 +1,13 @@
 import { Inject } from '@nestjs/common';
-import { Args, Mutation, Resolver, Query } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Resolver,
+  Query,
+  ResolveField,
+  Parent,
+  Context,
+} from '@nestjs/graphql';
 import { AuthService } from './auth.service';
 import {
   AdminInputDto,
@@ -15,9 +23,12 @@ import {
   ChangePasswordResponse,
   LoginResponse,
   RegisterUserResponse,
+  UserPayload,
   VerifyPhoneResponse,
 } from './type';
 import { SmsService } from '../sms/sms.service';
+import { Media } from '../product/type';
+import { IGraphQLContext } from '@app/core/interfaces';
 
 @Resolver()
 export class AuthResolver {
@@ -80,5 +91,18 @@ export class AuthResolver {
       });
       return await this._authService.changePassword({ phoneNumber, password });
     }
+  }
+}
+@Resolver(() => UserPayload)
+export class UserLoaderResolver {
+  @ResolveField('avatarId', () => Media, { nullable: true })
+  async avatar(
+    @Parent() user: UserPayload,
+    @Context() { loaders }: IGraphQLContext,
+  ) {
+    if (user?.avatarId) {
+      return loaders.mediaLoader.load(user?.avatarId);
+    }
+    return null;
   }
 }

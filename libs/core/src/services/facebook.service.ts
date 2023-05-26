@@ -10,7 +10,6 @@ export class FacebookService {
         `https://graph.facebook.com/v7.0/me?fields=email,name&access_token=${accessToken}`,
       );
       const { email, id, name } = response.data;
-      console.log(response);
       return {
         email: email || `${id}@facebook.com`,
         id,

@@ -148,7 +148,6 @@ export class AuthService {
   async generateToken({ email, fullName, _id }: User, type: string) {
     const payload =
       type !== 'refreshToken' ? { email, fullName, uid: _id } : { uid: _id };
-    console.log();
     return await this.jwtService.sign(payload, {
       secret: `${JWT_COMMON[type].privateKey}`,
       algorithm: 'HS256',

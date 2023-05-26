@@ -68,6 +68,7 @@ export class CreatePaymentHandler
       couponCode,
       paymentMethod,
       shippingStatus: ShippingStatus.NOT_SHIPPED,
+      shippingAddress,
     };
     //Thanh toán online
     if (paymentMethod === PaymentMethod.ONLINE) {
@@ -99,15 +100,15 @@ export class CreatePaymentHandler
         code: code,
       },
     });
+    // console.log(orderExist);
 
-    if (orderExist?.status !== OrderStatus.PENDING) {
+    if (orderExist) {
       throw new RpcException('Đơn hàng đã được xử lý trước đó !');
     }
 
     await this._orderRepository.save(
       new OrderEntity({
         ...order,
-        shippingAddress,
       }),
     );
 

@@ -1,5 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { IsNotEmpty } from 'class-validator';
+import { Media } from '../../product/type';
 
 @ObjectType()
 export class RegisterUserResponse {
@@ -63,7 +64,7 @@ export class UserPayload {
   @Field({ nullable: true })
   address: string;
 
-  @Field({ nullable: true })
+  @Field(() => Media, { nullable: true })
   avatarId: string;
 
   @Field({ nullable: true })

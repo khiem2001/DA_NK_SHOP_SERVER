@@ -243,7 +243,7 @@ export class CreatePaymentInputDto {
   @IsOptional()
   paymentProvider: PaymentProvider;
 
-  @Field(() => String, { nullable: true })
+  @Field(() => String)
   @IsOptional()
   shippingAddress: string;
 }
