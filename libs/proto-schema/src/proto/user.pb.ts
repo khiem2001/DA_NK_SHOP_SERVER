@@ -117,6 +117,65 @@ export interface ChangePasswordResponse {
   updated: boolean;
 }
 
+export interface UpdateProfileRequest {
+  userId: string;
+  fullName: string;
+  email: string;
+  gender: Gender;
+  birthday: string;
+  address: string;
+  bio: string;
+  avatarId: string;
+  country: string;
+}
+
+export interface UpdateProfileResponse {
+  updated: boolean;
+}
+
+export interface UpdateAvatarUserRequest {
+  avatarId: string;
+}
+
+export interface UpdateAvatarUserResponse {
+  success: boolean;
+}
+
+export interface ChangePasswordWhenLoginRequest {
+  currentPassword: string;
+  newPassword: string;
+}
+
+export interface ChangePasswordWhenLoginResponse {
+  changed: boolean;
+}
+
+export interface Admin {
+  fullName: string;
+  password: string;
+  userName: string;
+  /** base */
+  createdAt: number;
+  createdBy: number;
+  updatedAt: number;
+  updatedBy: number;
+  deletedBy: string;
+  deletedAt: number;
+  _id: string;
+}
+
+export interface GetAdminByUserNameRequest {
+  userName: string;
+}
+
+export interface GetAdminByUserNameResponse {
+  admin: Admin | undefined;
+}
+
+export interface GetUserByEmailRequest {
+  email: string;
+}
+
 export const USERS_PACKAGE_NAME = 'users';
 
 export interface UsersServiceClient {
@@ -157,12 +216,37 @@ export interface UsersServiceClient {
     metadata?: Metadata,
   ): Observable<ChangePasswordResponse>;
 
+  updateProfile(
+    request: UpdateProfileRequest,
+    metadata?: Metadata,
+  ): Observable<UpdateProfileResponse>;
+
+  updateAvatarUser(
+    request: UpdateAvatarUserRequest,
+    metadata?: Metadata,
+  ): Observable<UpdateAvatarUserResponse>;
+
+  changePasswordWhenLogin(
+    request: ChangePasswordWhenLoginRequest,
+    metadata?: Metadata,
+  ): Observable<ChangePasswordWhenLoginResponse>;
+
+  getUserByEmail(
+    request: GetUserByEmailRequest,
+    metadata?: Metadata,
+  ): Observable<ReadUserResponse>;
+
   /** Admin */
 
   createAdmin(
     request: CreateAdminRequest,
     metadata?: Metadata,
   ): Observable<CreateAdminResponse>;
+
+  getAdminByUserName(
+    request: GetAdminByUserNameRequest,
+    metadata?: Metadata,
+  ): Observable<GetAdminByUserNameResponse>;
 }
 
 export interface UsersServiceController {
@@ -224,6 +308,38 @@ export interface UsersServiceController {
     | Observable<ChangePasswordResponse>
     | ChangePasswordResponse;
 
+  updateProfile(
+    request: UpdateProfileRequest,
+    metadata?: Metadata,
+  ):
+    | Promise<UpdateProfileResponse>
+    | Observable<UpdateProfileResponse>
+    | UpdateProfileResponse;
+
+  updateAvatarUser(
+    request: UpdateAvatarUserRequest,
+    metadata?: Metadata,
+  ):
+    | Promise<UpdateAvatarUserResponse>
+    | Observable<UpdateAvatarUserResponse>
+    | UpdateAvatarUserResponse;
+
+  changePasswordWhenLogin(
+    request: ChangePasswordWhenLoginRequest,
+    metadata?: Metadata,
+  ):
+    | Promise<ChangePasswordWhenLoginResponse>
+    | Observable<ChangePasswordWhenLoginResponse>
+    | ChangePasswordWhenLoginResponse;
+
+  getUserByEmail(
+    request: GetUserByEmailRequest,
+    metadata?: Metadata,
+  ):
+    | Promise<ReadUserResponse>
+    | Observable<ReadUserResponse>
+    | ReadUserResponse;
+
   /** Admin */
 
   createAdmin(
@@ -233,6 +349,14 @@ export interface UsersServiceController {
     | Promise<CreateAdminResponse>
     | Observable<CreateAdminResponse>
     | CreateAdminResponse;
+
+  getAdminByUserName(
+    request: GetAdminByUserNameRequest,
+    metadata?: Metadata,
+  ):
+    | Promise<GetAdminByUserNameResponse>
+    | Observable<GetAdminByUserNameResponse>
+    | GetAdminByUserNameResponse;
 }
 
 export function UsersServiceControllerMethods() {
@@ -245,7 +369,12 @@ export function UsersServiceControllerMethods() {
       'loginOrCreateAccount',
       'getListUserByIds',
       'changePassword',
+      'updateProfile',
+      'updateAvatarUser',
+      'changePasswordWhenLogin',
+      'getUserByEmail',
       'createAdmin',
+      'getAdminByUserName',
     ];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(

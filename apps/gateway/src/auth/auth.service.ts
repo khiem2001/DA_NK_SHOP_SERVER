@@ -1,4 +1,5 @@
 import {
+  Admin,
   CreateAdminRequest,
   LoginOrCreateAccountRequest,
   USERS_SERVICE_NAME,
@@ -7,7 +8,7 @@ import {
   VerifyPhoneRequest,
 } from '@app/proto-schema/proto/user.pb';
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { ClientGrpc } from '@nestjs/microservices';
+import { ClientGrpc, RpcException } from '@nestjs/microservices';
 import {
   AdminInputDto,
   GetPhoneInputDto,
@@ -180,5 +181,85 @@ export class AuthService {
       refreshTokenExpiresAt,
       payload: user as any,
     };
+  }
+
+  /**
+   * Login function
+   * @param input
+   * @returns
+   */
+  async adminLogin({
+    password,
+    userName,
+  }: AdminInputDto): Promise<LoginResponse> {
+    const { admin } = await firstValueFrom(
+      this.userService.getAdminByUserName({
+        userName,
+      }),
+    );
+    // user can login
+    if (await comparePassword(password, admin.password)) {
+      const { token, refreshToken, expiresAt, refreshTokenExpiresAt } =
+        await this.tradeTokenAdminProcess(admin);
+
+      return {
+        token,
+        refreshToken,
+        expiresAt,
+        refreshTokenExpiresAt,
+        payload: admin,
+      };
+    }
+    throw new RpcException('Mật khẩu không chính xác !');
+  }
+  /**
+   * Trade token
+   * @param user
+   * @returns
+   */
+  async tradeTokenAdminProcess(admin: Admin) {
+    // generate token
+    const token = await this.generateTokenAdmin(admin, 'adminAccessToken');
+    // generate refresh token
+    const refreshToken = await this.generateTokenAdmin(
+      admin,
+      'adminRefreshToken',
+    );
+
+    return {
+      token,
+      refreshToken,
+      expiresAt: moment()
+        .add(
+          ms(JWT_COMMON['adminAccessToken'].signOptions.expiresIn) / 1000,
+          's',
+        )
+        .toDate(),
+      refreshTokenExpiresAt: moment()
+        .add(
+          ms(JWT_COMMON['adminRefreshToken'].signOptions.expiresIn) / 1000,
+          's',
+        )
+        .toDate(),
+    };
+  }
+
+  /**
+   * This function to generate token admin
+   * @param user
+   * @param type
+   * @returns
+   */
+  async generateTokenAdmin({ userName, fullName, _id }: Admin, type: string) {
+    const payload =
+      type !== 'adminRefreshToken'
+        ? { userName, fullName, uid: _id }
+        : { uid: _id };
+
+    return await this.jwtService.sign(payload, {
+      secret: JWT_COMMON[type].privateKey,
+      algorithm: 'HS256',
+      expiresIn: JWT_COMMON[type].signOptions.expiresIn,
+    });
   }
 }

@@ -18,13 +18,17 @@ export class GetListProductHandler
   async execute({
     query,
   }: GetListProductQuery): Promise<GetListProductResponse> {
-    const { filter, pagination, sort } = query;
+    const { query: queryProduct, filter, pagination, sort } = query;
     const { limit, page } = pagination;
     const offset = (page - 1) * limit;
     const where: any = {
       ...filter,
       deletedAt: null,
     };
+
+    if (queryProduct) {
+      where.name_contains = queryProduct;
+    }
 
     let orderBy;
     if (sort) {

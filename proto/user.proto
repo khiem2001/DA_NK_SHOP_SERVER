@@ -11,9 +11,16 @@ service UsersService{
     rpc LoginOrCreateAccount(LoginOrCreateAccountRequest) returns (LoginOrCreateAccountResponse){}
     rpc GetListUserByIds(GetListUserByIdsRequest) returns (GetListUserByIdsResponse){}
     rpc ChangePassword(ChangePasswordRequest) returns (ChangePasswordResponse) {}
+    rpc UpdateProfile(UpdateProfileRequest) returns (UpdateProfileResponse) {}
+    rpc UpdateAvatarUser (UpdateAvatarUserRequest) returns (UpdateAvatarUserResponse) {}
+    rpc ChangePasswordWhenLogin(ChangePasswordWhenLoginRequest) returns (ChangePasswordWhenLoginResponse) {}
+    rpc GetUserByEmail(GetUserByEmailRequest) returns (ReadUserResponse) {}
+    
    
     //Admin
     rpc CreateAdmin (CreateAdminRequest) returns (CreateAdminResponse) {}
+    rpc GetAdminByUserName (GetAdminByUserNameRequest) returns (GetAdminByUserNameResponse) {}
+
 }
 
 //User
@@ -125,4 +132,64 @@ message ChangePasswordRequest {
 
 message ChangePasswordResponse {
   bool updated = 1;
+}
+
+message UpdateProfileRequest {
+  string userId = 1;
+  string fullName = 2;
+  string email = 3;
+  Gender gender = 4;
+  string birthday = 5;
+  string address = 6;
+  string bio = 7;
+  string avatarId = 8;
+  string country = 9;
+}
+
+message UpdateProfileResponse {
+  bool updated = 1;
+}
+
+message UpdateAvatarUserRequest {
+  string avatarId = 1;
+}
+
+message UpdateAvatarUserResponse {
+  bool success = 1;
+}
+
+message ChangePasswordWhenLoginRequest {
+  string currentPassword = 1;
+  string newPassword = 2;
+}
+
+message ChangePasswordWhenLoginResponse {
+  bool changed = 1;
+}
+
+message Admin {
+  string fullName = 1;
+  string password = 2;
+  string userName = 3;
+
+  //base
+  double createdAt = 30;
+  double  createdBy = 31;
+  double updatedAt = 32;
+  double  updatedBy = 33;
+  string deletedBy = 34;
+  double  deletedAt = 35;
+  string _id = 36;
+}
+
+message GetAdminByUserNameRequest {
+  string userName = 1;
+}
+
+message GetAdminByUserNameResponse {
+  Admin admin = 1;
+}
+
+message GetUserByEmailRequest {
+  string email = 1;
 }

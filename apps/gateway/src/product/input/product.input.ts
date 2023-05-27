@@ -207,6 +207,9 @@ export class GetListProductInput {
 
   @Field(() => FilterProductInput, { nullable: true })
   filter: FilterProductInput;
+
+  @Field(() => String, { nullable: true })
+  query: string;
 }
 
 @InputType()

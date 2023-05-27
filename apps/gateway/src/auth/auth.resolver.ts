@@ -20,6 +20,7 @@ import {
 } from './input';
 import { BooleanPayload } from '@app/core';
 import {
+  AdminLoginResponse,
   ChangePasswordResponse,
   LoginResponse,
   RegisterUserResponse,
@@ -91,6 +92,10 @@ export class AuthResolver {
       });
       return await this._authService.changePassword({ phoneNumber, password });
     }
+  }
+  @Mutation(() => AdminLoginResponse)
+  async adminLogin(@Args('input') input: AdminInputDto) {
+    return await this._authService.adminLogin(input);
   }
 }
 @Resolver(() => UserPayload)

@@ -103,3 +103,21 @@ export class ChangePasswordResponse {
   @Field(() => Boolean)
   updated: boolean;
 }
+
+@ObjectType()
+export class AdminLoginResponse {
+  @Field({ nullable: false })
+  token: string;
+
+  @Field({ nullable: false })
+  refreshToken: string;
+
+  @Field(() => String)
+  expiresAt: Date;
+
+  @Field(() => String)
+  refreshTokenExpiresAt: Date;
+
+  // @Field(() => AdminPayLoad)
+  // payload: AdminPayLoad;
+}

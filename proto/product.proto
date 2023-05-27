@@ -57,14 +57,14 @@ message FilterList{
     double price_lte = 1;
     double price_gte = 2;
     string type_eq = 3;
-   
-}
+ }
 
 message SortList {
     base.SortDirection createdAt = 2;
 }
 
 message GetListProductRequest{
+    string query = 4;
     FilterList filter = 1;
     base.PaginationInput pagination = 2;
     SortList sort = 3;

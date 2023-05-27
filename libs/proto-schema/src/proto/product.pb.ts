@@ -64,6 +64,7 @@ export interface SortList {
 }
 
 export interface GetListProductRequest {
+  query: string;
   filter: FilterList | undefined;
   pagination: PaginationInput | undefined;
   sort: SortList | undefined;

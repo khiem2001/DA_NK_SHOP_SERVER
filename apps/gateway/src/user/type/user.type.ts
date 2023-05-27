@@ -46,3 +46,15 @@ export class UserDtoType extends BaseNoSQL {
   @Field(() => Boolean, { nullable: true })
   active: boolean;
 }
+
+@ObjectType()
+export class UpdateProfileResponse {
+  @Field(() => Boolean)
+  updated: boolean;
+}
+
+@ObjectType()
+export class ChangePassWhenLoginType {
+  @Field(() => Boolean)
+  changed: boolean;
+}

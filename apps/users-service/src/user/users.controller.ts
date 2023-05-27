@@ -9,22 +9,33 @@ import {
   LoginOrCreateAccountRequest,
   GetListUserByIdsRequest,
   ChangePasswordRequest,
+  GetUserByEmailRequest,
+  UpdateProfileRequest,
+  UpdateAvatarUserRequest,
+  ChangePasswordWhenLoginRequest,
+  GetAdminByUserNameRequest,
 } from '@app/proto-schema/proto/user.pb';
 import { Controller } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { GrpcMethod } from '@nestjs/microservices';
 import {
   ChangePasswordCommand,
+  ChangePasswordWhenLoginCommand,
   CreateAdminCommand,
   LoginOrCreateCommand,
   RegisterUserCommand,
+  UpdateAvatarUserCommand,
+  UpdateProfileCommand,
   VerifyPhoneCommand,
 } from './cqrs/command';
 import {
+  GetAdminByUserNameQuery,
   GetListUserByIdsQuery,
+  GetUserByEmailQuery,
   ReadUserQuery,
   UserByPhoneQuery,
 } from './cqrs/query';
+import { Metadata } from '@grpc/grpc-js';
 
 @Controller()
 export class UsersController {
@@ -71,5 +82,38 @@ export class UsersController {
   @GrpcMethod(USERS_SERVICE_NAME, 'changePassword')
   async changePassword(input: ChangePasswordRequest) {
     return await this.commandBus.execute(new ChangePasswordCommand(input));
+  }
+  @GrpcMethod(USERS_SERVICE_NAME, 'getUserByEmail')
+  async getUserByEmail(query: GetUserByEmailRequest) {
+    return await this.queryBus.execute(new GetUserByEmailQuery(query));
+  }
+
+  @GrpcMethod(USERS_SERVICE_NAME, 'updateProfile')
+  async updateProfile(input: UpdateProfileRequest) {
+    return await this.commandBus.execute(new UpdateProfileCommand(input));
+  }
+
+  @GrpcMethod(USERS_SERVICE_NAME, 'updateAvatarUser')
+  async updateAvatar(input: UpdateAvatarUserRequest, metadata: Metadata) {
+    return await this.commandBus.execute(
+      new UpdateAvatarUserCommand(input, this.appMetadata.getUserId(metadata)),
+    );
+  }
+  @GrpcMethod(USERS_SERVICE_NAME, 'changePasswordWhenLogin')
+  async changePasswordWhenLogin(
+    input: ChangePasswordWhenLoginRequest,
+    metadata: Metadata,
+  ) {
+    return await this.commandBus.execute(
+      new ChangePasswordWhenLoginCommand(
+        input,
+        this.appMetadata.getUserId(metadata),
+      ),
+    );
+  }
+
+  @GrpcMethod(USERS_SERVICE_NAME, 'getAdminByUserName')
+  async getAdminByUserName(input: GetAdminByUserNameRequest) {
+    return await this.queryBus.execute(new GetAdminByUserNameQuery(input));
   }
 }
