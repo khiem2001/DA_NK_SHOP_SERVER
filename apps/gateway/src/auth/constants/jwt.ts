@@ -14,4 +14,16 @@ export const JWT_COMMON = {
       expiresIn: config.get('REFRESH_TOKEN_EXPIRES_IN'),
     },
   },
+  adminAccessToken: {
+    privateKey: config.get('JWT_SECRET_ADMIN'),
+    signOptions: {
+      expiresIn: config.get('ACCESS_TOKEN_EXPIRES_IN'), // 30d
+    },
+  },
+  adminRefreshToken: {
+    privateKey: config.get('REFRESH_TOKEN_SECRET_ADMIN'),
+    signOptions: {
+      expiresIn: config.get('REFRESH_TOKEN_EXPIRES_IN'), // 365d
+    },
+  },
 };

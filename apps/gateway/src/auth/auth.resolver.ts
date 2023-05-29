@@ -1,4 +1,4 @@
-import { Inject } from '@nestjs/common';
+import { Inject, UseGuards } from '@nestjs/common';
 import {
   Args,
   Mutation,
@@ -21,6 +21,7 @@ import {
 import { BooleanPayload } from '@app/core';
 import {
   AdminLoginResponse,
+  AdminPayload,
   ChangePasswordResponse,
   LoginResponse,
   RegisterUserResponse,
@@ -30,6 +31,9 @@ import {
 import { SmsService } from '../sms/sms.service';
 import { Media } from '../product/type';
 import { IGraphQLContext } from '@app/core/interfaces';
+import { AuthenticationGuard } from './guards';
+import { UserDtoType } from '../user/type';
+import { AdminGuard } from './guards/admin.guard';
 
 @Resolver()
 export class AuthResolver {
@@ -37,10 +41,18 @@ export class AuthResolver {
     @Inject(AuthService) private readonly _authService: AuthService,
     @Inject(SmsService) private readonly _smsService: SmsService,
   ) {}
-  @Query(() => String)
-  sayHello(): string {
-    return 'Hello World!';
+
+  @UseGuards(AuthenticationGuard)
+  @Query(() => UserDtoType)
+  async getMe(@Context() context: any) {
+    return context.req.user;
   }
+  @UseGuards(AdminGuard)
+  @Query(() => AdminPayload)
+  async getAdmin(@Context() context: any) {
+    return context.req.user;
+  }
+
   @Mutation(() => BooleanPayload)
   async createAdmin(@Args('input') input: AdminInputDto) {
     return this._authService.createAdmin(input);

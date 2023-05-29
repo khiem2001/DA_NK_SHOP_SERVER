@@ -105,6 +105,15 @@ export class ChangePasswordResponse {
 }
 
 @ObjectType()
+export class AdminPayLoad {
+  @Field({ nullable: true })
+  fullName: string;
+
+  @Field({ nullable: false })
+  userName: string;
+}
+
+@ObjectType()
 export class AdminLoginResponse {
   @Field({ nullable: false })
   token: string;
@@ -118,6 +127,6 @@ export class AdminLoginResponse {
   @Field(() => String)
   refreshTokenExpiresAt: Date;
 
-  // @Field(() => AdminPayLoad)
-  // payload: AdminPayLoad;
+  @Field(() => AdminPayLoad)
+  payload: AdminPayLoad;
 }

@@ -15,10 +15,10 @@ export class AdminInputDto {
   @IsNotEmpty({
     message: 'Vui lòng nhập mật khẩu',
   })
-  @Matches(regexPassword, {
-    message:
-      'Tối thiểu 8 và tối đa 15 ký tự, ít nhất một chữ cái viết hoa, một số và một ký tự đặc biệt',
-  })
+  // @Matches(regexPassword, {
+  //   message:
+  //     'Tối thiểu 8 và tối đa 15 ký tự, ít nhất một chữ cái viết hoa, một số và một ký tự đặc biệt',
+  // })
   password: string;
 }
 
