@@ -1,12 +1,13 @@
 import { AppMetadata } from '@app/core';
 import {
   CreateConversationResponse,
+  ListConversationResponse,
   MESSAGE_SERVICE_NAME,
   MessageServiceClient,
 } from '@app/proto-schema/proto/message.pb';
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
-import { CreateConversationInput } from './input';
+import { CreateConversationInput, ListConversationInput } from './input';
 import { firstValueFrom } from 'rxjs';
 
 @Injectable()
@@ -34,6 +35,15 @@ export class MessageService {
       ),
     );
     return { conversation };
+  }
+
+  async listConversation(
+    input: ListConversationInput,
+  ): Promise<ListConversationResponse> {
+    const { data } = await firstValueFrom(
+      this._messageService.listConversation(input),
+    );
+    return { data };
   }
 
   // findAll() {}

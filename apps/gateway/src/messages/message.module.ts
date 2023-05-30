@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MessageGateway } from './message.gateway';
 import { MessageService } from './message.service';
-import { MessageResolver } from './message.resolver';
+import { MessageResolver, UserLoaderResolver } from './message.resolver';
 import { BullModule } from '@nestjs/bull';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MessageProcessor } from './message.processor';
@@ -27,6 +27,7 @@ import { Server } from 'socket.io';
     MessageGateway,
     MessageProcessor,
     Server,
+    UserLoaderResolver,
   ],
 })
 export class MessageModule {}

@@ -35,7 +35,7 @@ export class ApproveJoinGroupHandler
     } else if (confirmConversation.status === ConfirmationStatus.REJECTED) {
       throw new RpcException('Yêu cầu tham gia đã nhóm chat đã bị từ chối');
     } else {
-        
     }
+    return { success: false };
   }
 }

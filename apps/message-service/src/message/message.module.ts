@@ -13,6 +13,7 @@ import {
   ConversationRepository,
   MessageRepository,
 } from './message.repository';
+import { MessageQueryHandlers } from './cqrs/query/handler';
 
 @Module({
   imports: [
@@ -26,6 +27,6 @@ import {
     ]),
   ],
   controllers: [MessageController],
-  providers: [...MessageCommandHandlers, AppMetadata],
+  providers: [...MessageCommandHandlers, ...MessageQueryHandlers, AppMetadata],
 })
 export class MessageModule {}

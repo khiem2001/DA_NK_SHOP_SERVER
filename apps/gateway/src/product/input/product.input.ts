@@ -61,31 +61,28 @@ export class CreateProductInputDto {
   @Field(() => String)
   image: string;
 
-  @Field(() => String)
-  video: string;
-
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   manufacturer: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   modelNumber: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   dimensions: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   weight: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   connectivity: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   powerSource: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   compatibility: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   warranty: string;
 }
 
@@ -148,31 +145,31 @@ export class ProductInputDto {
   @Field(() => String)
   image: string;
 
-  @Field(() => String)
-  video: string;
+  // @Field(() => String)
+  // video: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   manufacturer: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   modelNumber: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   dimensions: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   weight: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   connectivity: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   powerSource: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   compatibility: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   warranty: string;
 }
 

@@ -19,3 +19,9 @@ export class CreateConversationInput {
   @Field(() => ConversationType)
   type: ConversationType;
 }
+
+@InputType()
+export class ListConversationInput {
+  @Field(() => String)
+  userId: string;
+}

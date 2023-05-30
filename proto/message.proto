@@ -17,7 +17,7 @@ service MessageService{
 
     rpc LeaveGroup(LeaveGroupRequest) returns (LeaveGroupResponse) {}
     // rpc DeleteMessage(DeleteMessageRequest) returns (DeleteMessageResponse) {}
-
+    rpc ListConversation(ListConversationRequest) returns (ListConversationResponse) {}
 }
 
 
@@ -115,6 +115,12 @@ message Conversation{
     double  deletedAt = 25;
 }
 
+message ListConversationRequest {
+    string userId = 1;
+}
+message ListConversationResponse {
+    repeated Conversation data = 1;
+}
 //Enum
 enum ConversationType{
     PERSONAL = 0;

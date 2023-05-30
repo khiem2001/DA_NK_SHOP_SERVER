@@ -103,6 +103,14 @@ export interface Conversation {
   deletedAt: number;
 }
 
+export interface ListConversationRequest {
+  userId: string;
+}
+
+export interface ListConversationResponse {
+  data: Conversation[];
+}
+
 export const MESSAGE_PACKAGE_NAME = 'message';
 
 export interface MessageServiceClient {
@@ -140,6 +148,13 @@ export interface MessageServiceClient {
     request: LeaveGroupRequest,
     metadata?: Metadata,
   ): Observable<LeaveGroupResponse>;
+
+  /** rpc DeleteMessage(DeleteMessageRequest) returns (DeleteMessageResponse) {} */
+
+  listConversation(
+    request: ListConversationRequest,
+    metadata?: Metadata,
+  ): Observable<ListConversationResponse>;
 }
 
 export interface MessageServiceController {
@@ -198,6 +213,16 @@ export interface MessageServiceController {
     | Promise<LeaveGroupResponse>
     | Observable<LeaveGroupResponse>
     | LeaveGroupResponse;
+
+  /** rpc DeleteMessage(DeleteMessageRequest) returns (DeleteMessageResponse) {} */
+
+  listConversation(
+    request: ListConversationRequest,
+    metadata?: Metadata,
+  ):
+    | Promise<ListConversationResponse>
+    | Observable<ListConversationResponse>
+    | ListConversationResponse;
 }
 
 export function MessageServiceControllerMethods() {
@@ -210,6 +235,7 @@ export function MessageServiceControllerMethods() {
       'approveJoinGroup',
       'rejectJoinGroup',
       'leaveGroup',
+      'listConversation',
     ];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(
