@@ -59,6 +59,12 @@ export class ProductPayload {
 
   @Field({ nullable: true })
   totalSold: number;
+
+  @Field(() => Number, { nullable: true })
+  createdAt: number;
+
+  @Field(() => Number, { nullable: true })
+  updatedAt: number;
 }
 
 @ObjectType()

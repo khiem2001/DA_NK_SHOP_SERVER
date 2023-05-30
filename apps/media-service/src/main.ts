@@ -21,7 +21,11 @@ async function bootstrap() {
 
   setupSwagger(app);
 
-  app.enableCors();
+  app.enableCors({
+    origin: true,
+    methods: 'POST',
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  });
 
   await app.startAllMicroservices();
   app.init();
