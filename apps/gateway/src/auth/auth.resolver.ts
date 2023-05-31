@@ -50,7 +50,8 @@ export class AuthResolver {
   @UseGuards(AdminGuard)
   @Query(() => AdminPayload)
   async getAdmin(@Context() context: any) {
-    return context.req.user;
+    const { fullName, userName, uid } = context.req.user;
+    return { fullName, userName, _id: uid };
   }
 
   @Mutation(() => BooleanPayload)
