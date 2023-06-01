@@ -16,6 +16,7 @@ export enum ConversationType {
 export interface SendMessageRequest {
   content: string;
   conversationId: string;
+  senderId: string;
 }
 
 export interface SendMessageResponse {

@@ -10,12 +10,9 @@ import { MessageService } from './message.service';
 import { Queue } from 'bull';
 import { InjectQueue } from '@nestjs/bull';
 
-@WebSocketGateway({ cors: true, port: 8080 })
+@WebSocketGateway({ cors: true, port: 8000 })
 export class MessageGateway {
-  constructor(
-    private readonly messageService: MessageService,
-    @InjectQueue('message') private readonly messagesQueue: Queue,
-  ) {}
+  constructor(@InjectQueue('message') private readonly messagesQueue: Queue) {}
 
   @WebSocketServer() server: Server;
 
@@ -30,7 +27,7 @@ export class MessageGateway {
   @SubscribeMessage('sendMessage')
   async handleMessage(client: Socket, payload: any): Promise<void> {
     const { to, from, message } = payload;
-    await this.messagesQueue.add('sendMessage', { to, from, message });
+    this.messagesQueue.add('sendMessage', { to, from, message });
   }
 
   @SubscribeMessage('joinRoom')

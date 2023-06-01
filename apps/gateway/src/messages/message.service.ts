@@ -4,10 +4,15 @@ import {
   ListConversationResponse,
   MESSAGE_SERVICE_NAME,
   MessageServiceClient,
+  SendMessageResponse,
 } from '@app/proto-schema/proto/message.pb';
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
-import { CreateConversationInput, ListConversationInput } from './input';
+import {
+  CreateConversationInput,
+  ListConversationInput,
+  SendMessageInput,
+} from './input';
 import { firstValueFrom } from 'rxjs';
 
 @Injectable()
@@ -46,16 +51,10 @@ export class MessageService {
     return { data };
   }
 
-  // findAll() {}
-
-  // findOne(id: string) {}
-
-  // remove(id: string) {}
-
-  // identify(name: string, clientId: string) {
-  //   return;
-  // }
-  // getClientName(clientId) {
-  //   return;
-  // }
+  async sendMessage(input: SendMessageInput): Promise<SendMessageResponse> {
+    const { success } = await firstValueFrom(
+      this._messageService.sendMessage(input),
+    );
+    return { success };
+  }
 }

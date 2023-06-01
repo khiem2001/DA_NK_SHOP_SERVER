@@ -25,6 +25,7 @@ service MessageService{
 message SendMessageRequest{
     string content = 1;
     string conversationId = 3;
+    string senderId = 2;
 }
 
 message SendMessageResponse{

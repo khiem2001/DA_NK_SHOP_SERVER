@@ -7,19 +7,28 @@ import {
 } from '@nestjs/bull';
 import { Job } from 'bull';
 import { Server } from 'socket.io';
-import { Logger } from '@nestjs/common';
+import { Inject, Logger } from '@nestjs/common';
+import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
+import { MessageService } from './message.service';
 
 @Processor('message')
+@WebSocketGateway({ cors: true, port: 8000 })
 export class MessageProcessor {
-  constructor(private readonly server: Server) {}
+  constructor(
+    @Inject(MessageService) private readonly messageService: MessageService,
+  ) {}
 
-  private readonly logger = new Logger(MessageProcessor.name);
-
+  @WebSocketServer() server: Server;
   @Process('sendMessage')
   async sendMessageJob(
     job: Job<{ to: string; from: string; message: string }>,
   ) {
     const { to, from, message } = job.data;
-    this.server.to(to).emit('message', { from: from, message: message });
+    this.messageService.sendMessage({
+      content: message,
+      conversationId: to,
+      senderId: from,
+    });
+    this.server.to(to).emit('message', { from, message });
   }
 }

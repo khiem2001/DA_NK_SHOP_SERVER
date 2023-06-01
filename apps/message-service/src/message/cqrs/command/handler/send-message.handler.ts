@@ -9,10 +9,8 @@ export class SendMessageHandler implements ICommandHandler<SendMessageCommand> {
   constructor(private readonly _messageRepository: MessageRepository) {}
 
   async execute(command: SendMessageCommand): Promise<SendMessageResponse> {
-    const { cmd, userId } = command;
-    await this._messageRepository.save(
-      new MessageEntity({ ...cmd, senderId: userId }),
-    );
+    const { cmd } = command;
+    await this._messageRepository.save(new MessageEntity(cmd));
 
     return { success: true } as SendMessageResponse;
   }

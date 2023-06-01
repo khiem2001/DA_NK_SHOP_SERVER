@@ -39,10 +39,8 @@ export class MessageController {
   }
 
   @GrpcMethod(MESSAGE_SERVICE_NAME, 'SendMessage')
-  async sendMessage(input: SendMessageRequest, metadata: Metadata) {
-    return await this.commandBus.execute(
-      new SendMessageCommand(input, this.appMetadata.getUserId(metadata)),
-    );
+  async sendMessage(input: SendMessageRequest) {
+    return await this.commandBus.execute(new SendMessageCommand(input));
   }
 
   @GrpcMethod(MESSAGE_SERVICE_NAME, 'SendJoinGroup')

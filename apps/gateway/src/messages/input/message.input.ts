@@ -5,10 +5,13 @@ import { IsNotEmpty } from 'class-validator';
 @InputType()
 export class SendMessageInput {
   @Field(() => String)
-  to: string;
+  content: string;
 
   @Field(() => String)
-  message: string;
+  conversationId: string;
+
+  @Field(() => String)
+  senderId: string;
 }
 
 @InputType()
