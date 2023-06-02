@@ -6,6 +6,7 @@ import {
   AppMetadata,
   ConfirmConversationEntity,
   ConversationEntity,
+  FindNoSQL,
   MessageEntity,
 } from '@app/core';
 import {
@@ -27,6 +28,11 @@ import { MessageQueryHandlers } from './cqrs/query/handler';
     ]),
   ],
   controllers: [MessageController],
-  providers: [...MessageCommandHandlers, ...MessageQueryHandlers, AppMetadata],
+  providers: [
+    ...MessageCommandHandlers,
+    ...MessageQueryHandlers,
+    AppMetadata,
+    FindNoSQL,
+  ],
 })
 export class MessageModule {}

@@ -1,10 +1,10 @@
 syntax = "proto3";
-package message;
-// import "base.proto";
+package message; 
+import "base.proto";
 
 service MessageService{
     rpc SendMessage(SendMessageRequest) returns (SendMessageResponse) {}
-    // rpc GetMessages(GetMessagesRequest) returns (GetMessagesResponse) {} 
+    rpc ListMessage(ListMessageRequest) returns (ListMessageResponse) {} 
     
     rpc CreateConversation(CreateConversationRequest) returns (CreateConversationResponse) {}
     rpc DeleteConversation(DeleteConversationRequest) returns (DeleteConversationResponse) {}
@@ -122,6 +122,16 @@ message ListConversationRequest {
 message ListConversationResponse {
     repeated Conversation data = 1;
 }
+
+message  ListMessageRequest {
+    string conversationId = 1;
+    base.PaginationInput pagination = 2;
+};
+
+message ListMessageResponse{
+    repeated message data = 1;
+};
+
 //Enum
 enum ConversationType{
     PERSONAL = 0;

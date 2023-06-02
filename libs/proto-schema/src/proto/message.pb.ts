@@ -3,6 +3,7 @@ import { GrpcMethod, GrpcStreamMethod } from '@nestjs/microservices';
 import Long from 'long';
 import * as _m0 from 'protobufjs/minimal';
 import { Observable } from 'rxjs';
+import { PaginationInput } from './base.pb';
 import { Metadata } from '@grpc/grpc-js';
 
 export const protobufPackage = 'message';
@@ -112,6 +113,15 @@ export interface ListConversationResponse {
   data: Conversation[];
 }
 
+export interface ListMessageRequest {
+  conversationId: string;
+  pagination: PaginationInput | undefined;
+}
+
+export interface ListMessageResponse {
+  data: message[];
+}
+
 export const MESSAGE_PACKAGE_NAME = 'message';
 
 export interface MessageServiceClient {
@@ -119,6 +129,11 @@ export interface MessageServiceClient {
     request: SendMessageRequest,
     metadata?: Metadata,
   ): Observable<SendMessageResponse>;
+
+  listMessage(
+    request: ListMessageRequest,
+    metadata?: Metadata,
+  ): Observable<ListMessageResponse>;
 
   createConversation(
     request: CreateConversationRequest,
@@ -166,6 +181,14 @@ export interface MessageServiceController {
     | Promise<SendMessageResponse>
     | Observable<SendMessageResponse>
     | SendMessageResponse;
+
+  listMessage(
+    request: ListMessageRequest,
+    metadata?: Metadata,
+  ):
+    | Promise<ListMessageResponse>
+    | Observable<ListMessageResponse>
+    | ListMessageResponse;
 
   createConversation(
     request: CreateConversationRequest,
@@ -230,6 +253,7 @@ export function MessageServiceControllerMethods() {
   return function (constructor: Function) {
     const grpcMethods: string[] = [
       'sendMessage',
+      'listMessage',
       'createConversation',
       'deleteConversation',
       'sendJoinGroup',

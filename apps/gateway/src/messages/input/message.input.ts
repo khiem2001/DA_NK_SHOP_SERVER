@@ -1,4 +1,4 @@
-import { ConversationType } from '@app/core';
+import { ConversationType, PaginationBaseInput } from '@app/core';
 import { Field, InputType } from '@nestjs/graphql';
 import { IsNotEmpty } from 'class-validator';
 
@@ -27,4 +27,13 @@ export class CreateConversationInput {
 export class ListConversationInput {
   @Field(() => String)
   userId: string;
+}
+
+@InputType()
+export class ListMessageInput {
+  @Field(() => String)
+  conversationId: string;
+
+  @Field(() => PaginationBaseInput)
+  pagination: PaginationBaseInput;
 }

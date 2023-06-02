@@ -2,6 +2,7 @@ import { AppMetadata } from '@app/core';
 import {
   CreateConversationRequest,
   ListConversationRequest,
+  ListMessageRequest,
   MESSAGE_SERVICE_NAME,
   SendJoinGroupRequest,
   SendMessageRequest,
@@ -15,7 +16,7 @@ import {
   SendMessageCommand,
 } from './cqrs/command';
 import { Metadata } from '@grpc/grpc-js';
-import { ListConversationQuery } from './cqrs/query/iml';
+import { ListConversationQuery, ListMessageQuery } from './cqrs/query/iml';
 
 @Controller()
 export class MessageController {
@@ -52,5 +53,10 @@ export class MessageController {
   @GrpcMethod(MESSAGE_SERVICE_NAME, 'ListConversation')
   async listConversation(input: ListConversationRequest) {
     return await this.queryBus.execute(new ListConversationQuery(input));
+  }
+
+  @GrpcMethod(MESSAGE_SERVICE_NAME, 'ListMessage')
+  async listMessage(input: ListMessageRequest) {
+    return await this.queryBus.execute(new ListMessageQuery(input));
   }
 }

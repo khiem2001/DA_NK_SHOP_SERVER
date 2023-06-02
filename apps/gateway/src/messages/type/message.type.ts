@@ -1,6 +1,7 @@
 import { ConversationType } from '@app/core';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { IsNotEmpty } from 'class-validator';
+import { UserDtoType } from '../../user/type';
 
 @ObjectType()
 export class ConversationDtoType {
@@ -48,4 +49,43 @@ export class CreateConversationType {
 export class ListConversationResponse {
   @Field(() => [ConversationDtoType])
   data: ConversationDtoType[];
+}
+
+@ObjectType()
+export class MessageDtoType {
+  @Field(() => String)
+  _id: string;
+
+  @Field(() => String)
+  content: string;
+
+  @Field(() => UserDtoType)
+  senderId: string;
+
+  @Field(() => String)
+  conversationId: string;
+
+  @Field(() => Number, { nullable: true })
+  createdAt: number;
+
+  @Field(() => String, { nullable: true })
+  createdBy: string;
+
+  @Field(() => Number, { nullable: true })
+  updatedAt: number;
+
+  @Field(() => String, { nullable: true })
+  updatedBy: string;
+
+  @Field(() => String, { nullable: true })
+  deletedBy: string;
+
+  @Field(() => Number, { nullable: true })
+  deletedAt: number;
+}
+
+@ObjectType()
+export class ListMessageResponse {
+  @Field(() => [MessageDtoType])
+  data: MessageDtoType[];
 }

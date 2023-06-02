@@ -12,12 +12,15 @@ import {
 import {
   CreateConversationInput,
   ListConversationInput,
+  ListMessageInput,
   SendMessageInput,
 } from './input';
 import {
   ConversationDtoType,
   CreateConversationType,
   ListConversationResponse,
+  ListMessageResponse,
+  MessageDtoType,
 } from './type/message.type';
 import { AuthenticationGuard } from '../auth/guards';
 import { UserDtoType } from '../user/type';
@@ -52,7 +55,13 @@ export class MessageResolver {
   async listConversation(@Args('input') input: ListConversationInput) {
     return await this._messageService.listConversation(input);
   }
+
+  @Query(() => ListMessageResponse)
+  async listMessage(@Args('input') input: ListMessageInput) {
+    return await this._messageService.listMessage(input);
+  }
 }
+
 @Resolver(() => ConversationDtoType)
 export class UserLoaderResolver {
   @ResolveField('members', () => [UserDtoType], { nullable: 'itemsAndList' })
@@ -62,6 +71,20 @@ export class UserLoaderResolver {
   ) {
     if (conversation?.members) {
       return loaders.usersLoader.loadMany(conversation?.members);
+    }
+    return null;
+  }
+}
+
+@Resolver(() => MessageDtoType)
+export class MessageLoaderResolver {
+  @ResolveField('senderId', () => UserDtoType, { nullable: true })
+  async user(
+    @Parent() message: MessageDtoType,
+    @Context() { loaders }: IGraphQLContext,
+  ) {
+    if (message?.senderId) {
+      return loaders.userLoader.load(message?.senderId);
     }
     return null;
   }

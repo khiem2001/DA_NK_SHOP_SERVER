@@ -2,6 +2,8 @@ import { AppMetadata } from '@app/core';
 import {
   CreateConversationResponse,
   ListConversationResponse,
+  ListMessageRequest,
+  ListMessageResponse,
   MESSAGE_SERVICE_NAME,
   MessageServiceClient,
   SendMessageResponse,
@@ -11,6 +13,7 @@ import { ClientGrpc } from '@nestjs/microservices';
 import {
   CreateConversationInput,
   ListConversationInput,
+  ListMessageInput,
   SendMessageInput,
 } from './input';
 import { firstValueFrom } from 'rxjs';
@@ -56,5 +59,12 @@ export class MessageService {
       this._messageService.sendMessage(input),
     );
     return { success };
+  }
+
+  async listMessage(input: ListMessageInput): Promise<ListMessageResponse> {
+    const { data } = await firstValueFrom(
+      this._messageService.listMessage(input as ListMessageRequest),
+    );
+    return { data };
   }
 }
