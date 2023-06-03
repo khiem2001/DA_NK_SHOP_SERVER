@@ -20,14 +20,12 @@ export class MessageProcessor {
 
   @WebSocketServer() server: Server;
   @Process('sendMessage')
-  async sendMessageJob(
-    job: Job<{ to: string; from: string; message: string }>,
-  ) {
+  async sendMessageJob(job: Job<{ to: string; from: any; message: string }>) {
     const { to, from, message } = job.data;
     this.messageService.sendMessage({
       content: message,
       conversationId: to,
-      senderId: from,
+      senderId: from._id,
     });
     this.server.to(to).emit('message', { from, message });
   }

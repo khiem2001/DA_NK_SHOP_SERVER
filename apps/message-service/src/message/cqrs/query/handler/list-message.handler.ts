@@ -23,6 +23,7 @@ export class ListMessageHandler implements IQueryHandler<ListMessageQuery> {
       limit,
       offset,
       where,
+      orderBy: 'createdAt_ASC',
     });
 
     const [data, totalCount] = await this._MessageRepository.findAndCount({
