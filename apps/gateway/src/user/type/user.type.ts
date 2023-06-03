@@ -58,3 +58,9 @@ export class ChangePassWhenLoginType {
   @Field(() => Boolean)
   changed: boolean;
 }
+
+@ObjectType()
+export class GetIdAdminResponse {
+  @Field(() => String)
+  id: string;
+}

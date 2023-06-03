@@ -176,6 +176,12 @@ export interface GetUserByEmailRequest {
   email: string;
 }
 
+export interface GetIdAdminResponse {
+  id: string;
+}
+
+export interface GetIdAdminRequest {}
+
 export const USERS_PACKAGE_NAME = 'users';
 
 export interface UsersServiceClient {
@@ -247,6 +253,11 @@ export interface UsersServiceClient {
     request: GetAdminByUserNameRequest,
     metadata?: Metadata,
   ): Observable<GetAdminByUserNameResponse>;
+
+  getIdAdmin(
+    request: GetIdAdminRequest,
+    metadata?: Metadata,
+  ): Observable<GetIdAdminResponse>;
 }
 
 export interface UsersServiceController {
@@ -357,6 +368,14 @@ export interface UsersServiceController {
     | Promise<GetAdminByUserNameResponse>
     | Observable<GetAdminByUserNameResponse>
     | GetAdminByUserNameResponse;
+
+  getIdAdmin(
+    request: GetIdAdminRequest,
+    metadata?: Metadata,
+  ):
+    | Promise<GetIdAdminResponse>
+    | Observable<GetIdAdminResponse>
+    | GetIdAdminResponse;
 }
 
 export function UsersServiceControllerMethods() {
@@ -375,6 +394,7 @@ export function UsersServiceControllerMethods() {
       'getUserByEmail',
       'createAdmin',
       'getAdminByUserName',
+      'getIdAdmin',
     ];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(

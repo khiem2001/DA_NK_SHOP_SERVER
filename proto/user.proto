@@ -20,7 +20,7 @@ service UsersService{
     //Admin
     rpc CreateAdmin (CreateAdminRequest) returns (CreateAdminResponse) {}
     rpc GetAdminByUserName (GetAdminByUserNameRequest) returns (GetAdminByUserNameResponse) {}
-
+    rpc getIdAdmin (GetIdAdminRequest) returns (GetIdAdminResponse) {}
 }
 
 //User
@@ -192,4 +192,9 @@ message GetAdminByUserNameResponse {
 
 message GetUserByEmailRequest {
   string email = 1;
+}
+message  GetIdAdminResponse {
+  string id = 1;
+}
+message GetIdAdminRequest {
 }

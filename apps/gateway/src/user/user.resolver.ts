@@ -10,12 +10,14 @@ import {
   Context,
   Mutation,
   Parent,
+  Query,
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
 import { ClientGrpc, RpcException } from '@nestjs/microservices';
 import {
   ChangePassWhenLoginType,
+  GetIdAdminResponse,
   UpdateProfileResponse,
   UserDtoType,
 } from './type';
@@ -39,6 +41,11 @@ export class UserResolver {
   onModuleInit() {
     this.userService =
       this.userClient.getService<UsersServiceClient>(USERS_SERVICE_NAME);
+  }
+
+  @Query(() => GetIdAdminResponse)
+  async getIdAmin() {
+    return await this.userService.getIdAdmin({});
   }
 
   @UseGuards(AuthenticationGuard)

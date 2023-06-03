@@ -14,6 +14,7 @@ import {
   UpdateAvatarUserRequest,
   ChangePasswordWhenLoginRequest,
   GetAdminByUserNameRequest,
+  GetIdAdminRequest,
 } from '@app/proto-schema/proto/user.pb';
 import { Controller } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
@@ -30,6 +31,7 @@ import {
 } from './cqrs/command';
 import {
   GetAdminByUserNameQuery,
+  GetIdAdminQuery,
   GetListUserByIdsQuery,
   GetUserByEmailQuery,
   ReadUserQuery,
@@ -115,5 +117,10 @@ export class UsersController {
   @GrpcMethod(USERS_SERVICE_NAME, 'getAdminByUserName')
   async getAdminByUserName(input: GetAdminByUserNameRequest) {
     return await this.queryBus.execute(new GetAdminByUserNameQuery(input));
+  }
+
+  @GrpcMethod(USERS_SERVICE_NAME, 'getIdAdmin')
+  async getIdAdmin(input: GetIdAdminRequest) {
+    return await this.queryBus.execute(new GetIdAdminQuery(input));
   }
 }

@@ -1,4 +1,5 @@
 import { GetAdminByUserNameHandler } from './get-admin-by-username.handler';
+import { GetIdAdminHandler } from './get-id-admin.handler';
 import { GetListUserByIdsHandler } from './list-user-by-ids.handler';
 import { ReadUserHandler } from './read-user.handler';
 import { GetUserByEmailHandler } from './user-by-email.handler';
@@ -10,4 +11,5 @@ export const UsersQueryHandlers = [
   GetListUserByIdsHandler,
   GetUserByEmailHandler,
   GetAdminByUserNameHandler,
+  GetIdAdminHandler,
 ];
