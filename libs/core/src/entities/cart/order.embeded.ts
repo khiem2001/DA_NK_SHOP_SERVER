@@ -33,6 +33,7 @@ export class OrderItem {
 
   @Column()
   @Expose()
+  @Field(() => Number)
   price: number;
 }
 

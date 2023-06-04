@@ -21,6 +21,9 @@ service ProductService{
     //Type
     rpc CreateType(ProductType) returns (CreateProductResponse) {}
     rpc ListType(ListTypeRequest) returns (ListTypeResponse) {}
+    rpc listOrderUser(ListOrderUserRequest) returns (ListOrderResponse) {}
+    rpc listOrderAdmin(ListOrderAdminRequest) returns (ListOrderResponse) {}
+
 }
 
 message CreateProductRequest{
@@ -210,8 +213,48 @@ message ListCommentRequest{
     string id = 1;
 }
 
+message OrderTransaction {
+    string gateway = 1;
+    string id = 2;
+    double time = 3;
+}
+
+message OrderDto {
+    string _id = 14;
+    string code = 1;
+    OrderStatus status = 2;
+    int32 amount = 3;
+    string description = 4;
+    string couponCode = 5;
+    int32 discountAmount = 6;
+    int32 subTotal = 7;
+    string userId = 8;
+    PaymentMethod paymentMethod = 9;
+    OrderTransaction transaction = 10;
+    repeated OrderItem items = 11;
+    ShippingStatus shippingStatus = 12;
+    string shippingAddress = 13;
+
+     //base
+   double createdAt = 20;
+   double  createdBy = 21;
+   double updatedAt = 22;
+   double  updatedBy = 23;
+   string deletedBy = 24;
+   double  deletedAt = 25;
+}
+
 message ListCommentResponse{
     repeated CreateCommentResponse data = 1;
+}
+
+message ListOrderUserRequest {
+}
+message ListOrderAdminRequest {
+}
+
+message ListOrderResponse {
+    repeated OrderDto orders = 1;
 }
 
 enum PaymentMethod{
@@ -227,4 +270,16 @@ enum PaymentType{
 enum PaymentProvider {
     ZALOPAY=0;
     VNPAY=1;
+}
+
+enum OrderStatus{
+    PENDING = 0;
+    FAILED = 1;
+    COMPLETED = 2;
+}
+
+enum ShippingStatus{
+    SHIPPED = 0;
+    SHIPPING = 1;
+    NOT_SHIPPED = 2;
 }

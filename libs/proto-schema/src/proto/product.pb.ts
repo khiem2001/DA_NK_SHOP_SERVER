@@ -23,6 +23,18 @@ export enum PaymentProvider {
   VNPAY = 'VNPAY',
 }
 
+export enum OrderStatus {
+  PENDING = 'PENDING',
+  FAILED = 'FAILED',
+  COMPLETED = 'COMPLETED',
+}
+
+export enum ShippingStatus {
+  SHIPPED = 'SHIPPED',
+  SHIPPING = 'SHIPPING',
+  NOT_SHIPPED = 'NOT_SHIPPED',
+}
+
 export interface CreateProductRequest {
   name: string;
   description: string;
@@ -201,8 +213,46 @@ export interface ListCommentRequest {
   id: string;
 }
 
+export interface OrderTransaction {
+  gateway: string;
+  id: string;
+  time: number;
+}
+
+export interface OrderDto {
+  _id: string;
+  code: string;
+  status: OrderStatus;
+  amount: number;
+  description: string;
+  couponCode: string;
+  discountAmount: number;
+  subTotal: number;
+  userId: string;
+  paymentMethod: PaymentMethod;
+  transaction: OrderTransaction | undefined;
+  items: OrderItem[];
+  shippingStatus: ShippingStatus;
+  shippingAddress: string;
+  /** base */
+  createdAt: number;
+  createdBy: number;
+  updatedAt: number;
+  updatedBy: number;
+  deletedBy: string;
+  deletedAt: number;
+}
+
 export interface ListCommentResponse {
   data: CreateCommentResponse[];
+}
+
+export interface ListOrderUserRequest {}
+
+export interface ListOrderAdminRequest {}
+
+export interface ListOrderResponse {
+  orders: OrderDto[];
 }
 
 export const PRODUCT_PACKAGE_NAME = 'product';
@@ -265,6 +315,16 @@ export interface ProductServiceClient {
     request: ListTypeRequest,
     metadata?: Metadata,
   ): Observable<ListTypeResponse>;
+
+  listOrderUser(
+    request: ListOrderUserRequest,
+    metadata?: Metadata,
+  ): Observable<ListOrderResponse>;
+
+  listOrderAdmin(
+    request: ListOrderAdminRequest,
+    metadata?: Metadata,
+  ): Observable<ListOrderResponse>;
 }
 
 export interface ProductServiceController {
@@ -355,6 +415,22 @@ export interface ProductServiceController {
     | Promise<ListTypeResponse>
     | Observable<ListTypeResponse>
     | ListTypeResponse;
+
+  listOrderUser(
+    request: ListOrderUserRequest,
+    metadata?: Metadata,
+  ):
+    | Promise<ListOrderResponse>
+    | Observable<ListOrderResponse>
+    | ListOrderResponse;
+
+  listOrderAdmin(
+    request: ListOrderAdminRequest,
+    metadata?: Metadata,
+  ):
+    | Promise<ListOrderResponse>
+    | Observable<ListOrderResponse>
+    | ListOrderResponse;
 }
 
 export function ProductServiceControllerMethods() {
@@ -370,6 +446,8 @@ export function ProductServiceControllerMethods() {
       'listComment',
       'createType',
       'listType',
+      'listOrderUser',
+      'listOrderAdmin',
     ];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(

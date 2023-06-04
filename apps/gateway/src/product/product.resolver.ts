@@ -13,6 +13,7 @@ import {
   CreatePaymentResponse,
   GetListProductResponse,
   GetProductResponse,
+  ListOrderResponse,
   Media,
   ProductPayload,
 } from './type';
@@ -24,7 +25,7 @@ import {
   UpdateProductInputDto,
 } from './input';
 import { BooleanPayload } from '@app/core';
-import { AuthenticationGuard } from '../auth/guards';
+import { AdminGuard, AuthenticationGuard } from '../auth/guards';
 import { IGraphQLContext } from '@app/core/interfaces';
 
 export class ProductResolver {
@@ -66,6 +67,20 @@ export class ProductResolver {
     const { _id } = context.req.user;
 
     return await this._productService.createPayment(input, _id);
+  }
+
+  @Query(() => ListOrderResponse)
+  @UseGuards(AuthenticationGuard)
+  async listOrderUser(@Context() context: any) {
+    const { _id } = context.req.user;
+
+    return await this._productService.listOrderUser(_id);
+  }
+
+  @Query(() => ListOrderResponse)
+  @UseGuards(AdminGuard)
+  async listOrderAdmin() {
+    return await this._productService.listOrderAdmin();
   }
 }
 

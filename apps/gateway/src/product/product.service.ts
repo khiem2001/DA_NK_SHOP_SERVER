@@ -8,6 +8,7 @@ import {
   GetListProductResponse,
   GetProductRequest,
   GetProductResponse,
+  ListOrderResponse,
   PRODUCT_SERVICE_NAME,
   ProductServiceClient,
   UpdateProductRequest,
@@ -104,5 +105,14 @@ export class ProductService {
         this.metadata.setUserId(userId),
       ),
     );
+  }
+
+  async listOrderUser(_id: string): Promise<ListOrderResponse> {
+    return await firstValueFrom(
+      this.productService.listOrderUser({}, this.metadata.setUserId(_id)),
+    );
+  }
+  async listOrderAdmin(): Promise<ListOrderResponse> {
+    return await firstValueFrom(this.productService.listOrderAdmin({}));
   }
 }

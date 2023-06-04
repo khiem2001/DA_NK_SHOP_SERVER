@@ -8,6 +8,7 @@ import { ProductRepository } from '../product/product.repository';
 import { AppMetadata, ProductEntity } from '@app/core';
 import { ZaloPayService } from './zalopay.service';
 import { VNPayService } from './vnpay.service';
+import { PaymentQueryHandlers } from './cqrs/query';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { VNPayService } from './vnpay.service';
   controllers: [PaymentController],
   providers: [
     ...PaymentCommandHandlers,
+    ...PaymentQueryHandlers,
     ZaloPayService,
     VNPayService,
     AppMetadata,

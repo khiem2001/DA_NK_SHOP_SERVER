@@ -2,10 +2,13 @@ import { AppMetadata } from '@app/core';
 import {
   CreatePaymentRequest,
   CreatePaymentResponse,
+  ListOrderAdminRequest,
+  ListOrderResponse,
+  ListOrderUserRequest,
   PRODUCT_SERVICE_NAME,
 } from '@app/proto-schema/proto/product.pb';
 import { Metadata } from '@grpc/grpc-js';
-import { CommandBus } from '@nestjs/cqrs';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { GrpcMethod } from '@nestjs/microservices';
 import { CreatePaymentCommand } from './cqrs/command/iml';
 import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
@@ -13,11 +16,14 @@ import { ZaloPayService } from './zalopay.service';
 import { Request, Response } from 'express';
 import * as requestIp from 'request-ip';
 import { VNPayService } from './vnpay.service';
+import { ListOrderAdminQuery, ListOrderUserQuery } from './cqrs/query';
 
 @Controller('payment')
 export class PaymentController {
   constructor(
     private readonly commandBus: CommandBus,
+    private readonly queryBus: QueryBus,
+
     private readonly appMetadata: AppMetadata,
     private readonly _zaloPayService: ZaloPayService,
     private readonly _vnpayService: VNPayService,
@@ -32,6 +38,23 @@ export class PaymentController {
       new CreatePaymentCommand(request, this.appMetadata.getUserId(metadata)),
     );
   }
+
+  @GrpcMethod(PRODUCT_SERVICE_NAME, 'listOrderUser')
+  async listOrderUser(
+    request: ListOrderUserRequest,
+    metadata: Metadata,
+  ): Promise<ListOrderResponse> {
+    return await this.queryBus.execute(
+      new ListOrderUserQuery(request, this.appMetadata.getUserId(metadata)),
+    );
+  }
+  @GrpcMethod(PRODUCT_SERVICE_NAME, 'listOrderAdmin')
+  async listOrderAdmin(
+    request: ListOrderAdminRequest,
+  ): Promise<ListOrderResponse> {
+    return await this.queryBus.execute(new ListOrderAdminQuery(request));
+  }
+
   @Post('hook/zalo_url_ipn')
   async zaloUrlIpn(@Body() input: any, @Res() res: Response) {
     const { data, mac, type } = input;

@@ -1,4 +1,11 @@
-import { MediaStatus, PaginationResponse } from '@app/core';
+import {
+  MediaStatus,
+  OrderStatus,
+  PaginationResponse,
+  PaymentMethod,
+  ShippingStatus,
+} from '@app/core';
+import { OrderTransaction } from '@app/core/entities/cart';
 import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
@@ -121,4 +128,87 @@ export class Media {
 
   @Field(() => String, { nullable: true })
   _id: string;
+}
+@ObjectType()
+export class OrderItemResponse {
+  @Field(() => String)
+  id: string;
+
+  @Field(() => String, { nullable: true })
+  name: string;
+
+  @Field(() => String, { nullable: true })
+  image: string;
+
+  @Field(() => Number)
+  quantity: number;
+
+  @Field(() => Number)
+  price: number;
+}
+
+@ObjectType()
+export class OrderTransactionType {
+  @Field(() => String, { nullable: true })
+  gateway: string;
+
+  @Field(() => String, { nullable: true })
+  id: string;
+
+  @Field(() => Number, { nullable: true })
+  time: Date;
+}
+
+@ObjectType()
+export class OrderDto {
+  @Field(() => String, { nullable: true })
+  _id: string;
+
+  @Field(() => String, { nullable: true })
+  code: string;
+
+  @Field(() => OrderStatus, { nullable: true })
+  status: OrderStatus;
+
+  @Field(() => Number, { nullable: true })
+  amount: number;
+
+  @Field(() => String, { nullable: true })
+  description: string;
+
+  @Field(() => String, { nullable: true })
+  couponCode: string;
+
+  @Field(() => Number, { nullable: true })
+  discountAmount: number;
+
+  @Field(() => Number, { nullable: true })
+  subTotal: number;
+
+  @Field(() => String, { nullable: true })
+  userId: string;
+
+  @Field(() => PaymentMethod, { nullable: true })
+  paymentMethod: PaymentMethod;
+
+  @Field(() => OrderTransactionType, { nullable: true })
+  transaction: OrderTransactionType;
+
+  @Field(() => [OrderItemResponse], { nullable: true })
+  items: OrderItemResponse[];
+
+  @Field(() => ShippingStatus, { nullable: true })
+  shippingStatus: ShippingStatus;
+
+  @Field(() => String, { nullable: true })
+  shippingAddress: string;
+
+  @Field(() => Number, { nullable: true })
+  createdAt: number;
+}
+
+@ObjectType()
+export class ListOrderResponse {
+  @Field(() => [OrderDto], { nullable: true })
+  orders: OrderDto[];
 }
