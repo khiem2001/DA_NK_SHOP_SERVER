@@ -44,7 +44,7 @@ export class UserResolver {
   }
 
   @Query(() => GetIdAdminResponse)
-  async getIdAmin() {
+  async getIdAdmin() {
     return await this.userService.getIdAdmin({});
   }
 

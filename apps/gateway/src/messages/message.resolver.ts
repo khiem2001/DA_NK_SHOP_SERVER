@@ -58,7 +58,8 @@ export class MessageResolver {
 
   @Query(() => ListMessageResponse)
   async listMessage(@Args('input') input: ListMessageInput) {
-    return await this._messageService.listMessage(input);
+    const { data } = await this._messageService.listMessage(input);
+    return { data: data || [] };
   }
 }
 
