@@ -4,6 +4,7 @@ import {
   DeleteProductRequest,
   GetListProductRequest,
   GetProductRequest,
+  ListProductByIdsRequest,
   PRODUCT_SERVICE_NAME,
   UpdateProductRequest,
 } from '@app/proto-schema/proto/product.pb';
@@ -15,7 +16,11 @@ import {
   DeleteProductCommand,
   UpdateProductCommand,
 } from './cqrs/command';
-import { GetListProductQuery, GetProductQuery } from './cqrs/query';
+import {
+  GetListProductQuery,
+  GetProductQuery,
+  ListProductByIdsQuery,
+} from './cqrs/query';
 
 @Controller()
 export class ProductController {
@@ -44,5 +49,9 @@ export class ProductController {
   @GrpcMethod(PRODUCT_SERVICE_NAME, 'GetListProduct')
   async getListProduct(input: GetListProductRequest) {
     return await this.queryBus.execute(new GetListProductQuery(input));
+  }
+  @GrpcMethod(PRODUCT_SERVICE_NAME, 'ListProductByIds')
+  async listProductByIds(input: ListProductByIdsRequest) {
+    return await this.queryBus.execute(new ListProductByIdsQuery(input));
   }
 }

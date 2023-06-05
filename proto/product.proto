@@ -9,6 +9,8 @@ service ProductService{
     rpc GetListProduct(GetListProductRequest) returns (GetListProductResponse) {}
     rpc UpdateProduct(UpdateProductRequest) returns (UpdateProductResponse) {}
     rpc DeleteProduct(DeleteProductRequest) returns (DeleteProductResponse) {}
+    rpc ListProductByIds(ListProductByIdsRequest) returns (ListProductByIdsResponse){}
+
 
     //payment
     rpc CreatePayment(CreatePaymentRequest) returns (CreatePaymentResponse) {}
@@ -255,6 +257,13 @@ message ListOrderAdminRequest {
 
 message ListOrderResponse {
     repeated OrderDto orders = 1;
+}
+message ListProductByIdsRequest{
+    repeated string ids = 1;
+}
+
+message ListProductByIdsResponse{
+    repeated Product data = 1;
 }
 
 enum PaymentMethod{

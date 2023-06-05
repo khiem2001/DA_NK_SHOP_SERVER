@@ -129,16 +129,14 @@ export class Media {
   @Field(() => String, { nullable: true })
   _id: string;
 }
+
 @ObjectType()
 export class OrderItemResponse {
-  @Field(() => String)
+  @Field(() => ProductPayload)
   id: string;
 
   @Field(() => String, { nullable: true })
   name: string;
-
-  @Field(() => String, { nullable: true })
-  image: string;
 
   @Field(() => Number)
   quantity: number;

@@ -49,10 +49,7 @@ export class GqlConfigService implements GqlOptionsFactory {
               if (!uid) {
                 throw new UnauthorizedException();
               }
-              // const data = await lastValueFrom(
-              //   this.accountService.read({ id: uid as string }).pipe(),
-              // );
-              // user = data.user ;
+
               user = null;
             }
             const loaders = this.dataLoaderService.createLoaders();

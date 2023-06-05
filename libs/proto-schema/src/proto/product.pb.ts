@@ -255,6 +255,14 @@ export interface ListOrderResponse {
   orders: OrderDto[];
 }
 
+export interface ListProductByIdsRequest {
+  ids: string[];
+}
+
+export interface ListProductByIdsResponse {
+  data: Product[];
+}
+
 export const PRODUCT_PACKAGE_NAME = 'product';
 
 export interface ProductServiceClient {
@@ -284,6 +292,11 @@ export interface ProductServiceClient {
     request: DeleteProductRequest,
     metadata?: Metadata,
   ): Observable<DeleteProductResponse>;
+
+  listProductByIds(
+    request: ListProductByIdsRequest,
+    metadata?: Metadata,
+  ): Observable<ListProductByIdsResponse>;
 
   /** payment */
 
@@ -370,6 +383,14 @@ export interface ProductServiceController {
     | Observable<DeleteProductResponse>
     | DeleteProductResponse;
 
+  listProductByIds(
+    request: ListProductByIdsRequest,
+    metadata?: Metadata,
+  ):
+    | Promise<ListProductByIdsResponse>
+    | Observable<ListProductByIdsResponse>
+    | ListProductByIdsResponse;
+
   /** payment */
 
   createPayment(
@@ -441,6 +462,7 @@ export function ProductServiceControllerMethods() {
       'getListProduct',
       'updateProduct',
       'deleteProduct',
+      'listProductByIds',
       'createPayment',
       'createComment',
       'listComment',

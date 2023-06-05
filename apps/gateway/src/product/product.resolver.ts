@@ -15,6 +15,8 @@ import {
   GetProductResponse,
   ListOrderResponse,
   Media,
+  OrderDto,
+  OrderItemResponse,
   ProductPayload,
 } from './type';
 import {
@@ -27,6 +29,7 @@ import {
 import { BooleanPayload } from '@app/core';
 import { AdminGuard, AuthenticationGuard } from '../auth/guards';
 import { IGraphQLContext } from '@app/core/interfaces';
+import { UserDtoType } from '../user/type';
 
 export class ProductResolver {
   constructor(
@@ -93,6 +96,32 @@ export class ListProductResolver {
   ) {
     if (product?.image) {
       return loaders.mediaLoader.load(product.image);
+    }
+    return null;
+  }
+}
+@Resolver(() => OrderItemResponse)
+export class ListProductByIdsResolver {
+  @ResolveField('id', () => ProductPayload, { nullable: true })
+  async product(
+    @Parent() product: OrderItemResponse,
+    @Context() { loaders }: IGraphQLContext,
+  ) {
+    if (product?.id) {
+      return loaders.productLoader.load(product.id);
+    }
+    return null;
+  }
+}
+@Resolver(() => OrderDto)
+export class OrderDtoResolver {
+  @ResolveField('userId', () => UserDtoType, { nullable: true })
+  async product(
+    @Parent() order: OrderDto,
+    @Context() { loaders }: IGraphQLContext,
+  ) {
+    if (order?.userId) {
+      return loaders.userLoader.load(order.userId);
     }
     return null;
   }
