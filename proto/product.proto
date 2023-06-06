@@ -10,7 +10,9 @@ service ProductService{
     rpc UpdateProduct(UpdateProductRequest) returns (UpdateProductResponse) {}
     rpc DeleteProduct(DeleteProductRequest) returns (DeleteProductResponse) {}
     rpc ListProductByIds(ListProductByIdsRequest) returns (ListProductByIdsResponse){}
-
+    rpc IsFavoriteProduct(IsFavoriteProductRequest) returns (base.BooleanPayload) {}
+    rpc FavoriteProduct(FavoriteProductRequest) returns (base.BooleanPayload) {}
+ 
 
     //payment
     rpc CreatePayment(CreatePaymentRequest) returns (CreatePaymentResponse) {}
@@ -300,6 +302,13 @@ message CallBackPaymentVNRequest{
 message CallBackPaymentVNResponse{
     string RspCode = 1;
     string Message = 2;
+}
+
+message FavoriteProductRequest {
+  string productId = 1;
+}
+message IsFavoriteProductRequest {
+  string productId = 1;
 }
 
 enum PaymentMethod{

@@ -2,7 +2,12 @@
 import { GrpcMethod, GrpcStreamMethod } from '@nestjs/microservices';
 import Long from 'long';
 import * as _m0 from 'protobufjs/minimal';
-import { SortDirection, PaginationInput, PaginationResponse } from './base.pb';
+import {
+  SortDirection,
+  PaginationInput,
+  PaginationResponse,
+  BooleanPayload,
+} from './base.pb';
 import { Observable } from 'rxjs';
 import { Metadata } from '@grpc/grpc-js';
 
@@ -294,6 +299,14 @@ export interface CallBackPaymentVNResponse {
   Message: string;
 }
 
+export interface FavoriteProductRequest {
+  productId: string;
+}
+
+export interface IsFavoriteProductRequest {
+  productId: string;
+}
+
 export const PRODUCT_PACKAGE_NAME = 'product';
 
 export interface ProductServiceClient {
@@ -328,6 +341,16 @@ export interface ProductServiceClient {
     request: ListProductByIdsRequest,
     metadata?: Metadata,
   ): Observable<ListProductByIdsResponse>;
+
+  isFavoriteProduct(
+    request: IsFavoriteProductRequest,
+    metadata?: Metadata,
+  ): Observable<BooleanPayload>;
+
+  favoriteProduct(
+    request: FavoriteProductRequest,
+    metadata?: Metadata,
+  ): Observable<BooleanPayload>;
 
   /** payment */
 
@@ -432,6 +455,16 @@ export interface ProductServiceController {
     | Observable<ListProductByIdsResponse>
     | ListProductByIdsResponse;
 
+  isFavoriteProduct(
+    request: IsFavoriteProductRequest,
+    metadata?: Metadata,
+  ): Promise<BooleanPayload> | Observable<BooleanPayload> | BooleanPayload;
+
+  favoriteProduct(
+    request: FavoriteProductRequest,
+    metadata?: Metadata,
+  ): Promise<BooleanPayload> | Observable<BooleanPayload> | BooleanPayload;
+
   /** payment */
 
   createPayment(
@@ -520,6 +553,8 @@ export function ProductServiceControllerMethods() {
       'updateProduct',
       'deleteProduct',
       'listProductByIds',
+      'isFavoriteProduct',
+      'favoriteProduct',
       'createPayment',
       'callBackPaymentZaloProcess',
       'callBackPaymentVNProcess',

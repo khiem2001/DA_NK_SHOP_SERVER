@@ -5,9 +5,16 @@ import { ProductRepository } from './product.repository';
 import { ProductController } from './product.controller';
 import { ProductCommandHandlers } from './cqrs/command';
 import { ProductQueryHandlers } from './cqrs/query';
+import { ProductFavoriteRepository } from './product-favorite.repository';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ProductEntity, ProductRepository])],
+  imports: [
+    TypeOrmModule.forFeature([
+      ProductEntity,
+      ProductRepository,
+      ProductFavoriteRepository,
+    ]),
+  ],
   controllers: [ProductController],
   providers: [
     FindNoSQL,

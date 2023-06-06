@@ -24,7 +24,7 @@ import {
   UpdateProductInputDto,
 } from './input';
 import { firstValueFrom } from 'rxjs';
-import { AppMetadata } from '@app/core';
+import { AppMetadata, BooleanPayload } from '@app/core';
 
 @Injectable()
 export class ProductService {
@@ -114,5 +114,17 @@ export class ProductService {
   }
   async listOrderAdmin(): Promise<ListOrderResponse> {
     return await firstValueFrom(this.productService.listOrderAdmin({}));
+  }
+
+  async favoriteProduct(input, userId): Promise<BooleanPayload> {
+    return await firstValueFrom(
+      this.productService.favoriteProduct(input, userId),
+    );
+  }
+
+  async isFavoriteEvent(input, userId): Promise<BooleanPayload> {
+    return await firstValueFrom(
+      this.productService.isFavoriteProduct(input, userId),
+    );
   }
 }

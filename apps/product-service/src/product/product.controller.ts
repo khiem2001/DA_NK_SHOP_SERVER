@@ -2,8 +2,10 @@ import { AppMetadata } from '@app/core';
 import {
   CreateProductRequest,
   DeleteProductRequest,
+  FavoriteProductRequest,
   GetListProductRequest,
   GetProductRequest,
+  IsFavoriteProductRequest,
   ListProductByIdsRequest,
   PRODUCT_SERVICE_NAME,
   UpdateProductRequest,
@@ -14,13 +16,17 @@ import { GrpcMethod } from '@nestjs/microservices';
 import {
   CreateProductCommand,
   DeleteProductCommand,
+  FavoriteProductCommand,
   UpdateProductCommand,
 } from './cqrs/command';
 import {
   GetListProductQuery,
   GetProductQuery,
+  IsFavoriteProductQuery,
   ListProductByIdsQuery,
 } from './cqrs/query';
+import { Metadata } from '@grpc/grpc-js';
+import { BooleanPayload } from '@app/proto-schema/proto/base.pb';
 
 @Controller()
 export class ProductController {
@@ -53,5 +59,25 @@ export class ProductController {
   @GrpcMethod(PRODUCT_SERVICE_NAME, 'ListProductByIds')
   async listProductByIds(input: ListProductByIdsRequest) {
     return await this.queryBus.execute(new ListProductByIdsQuery(input));
+  }
+
+  @GrpcMethod(PRODUCT_SERVICE_NAME, 'favoriteProduct')
+  async favoriteProduct(
+    request: FavoriteProductRequest,
+    metadata: Metadata,
+  ): Promise<BooleanPayload> {
+    return await this.commandBus.execute(
+      new FavoriteProductCommand(request, this.appMetadata.getUserId(metadata)),
+    );
+  }
+
+  @GrpcMethod(PRODUCT_SERVICE_NAME, 'isFavoriteProduct')
+  async isFavoriteProduct(
+    request: IsFavoriteProductRequest,
+    metadata: Metadata,
+  ): Promise<BooleanPayload> {
+    return await this.queryBus.execute(
+      new IsFavoriteProductQuery(request, this.appMetadata.getUserId(metadata)),
+    );
   }
 }

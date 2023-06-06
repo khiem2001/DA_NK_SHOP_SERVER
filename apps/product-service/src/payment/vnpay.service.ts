@@ -7,12 +7,14 @@ import { convertToObjectId, currencyFormatter, sortObject } from '@app/utils';
 import * as moment from 'moment';
 import * as querystring from 'qs';
 import * as crypto from 'crypto';
+import { ProductRepository } from '../product/product.repository';
 
 @Injectable()
 export class VNPayService {
   constructor(
     private readonly configService: ConfigService,
     private readonly _orderRepository: OrderRepository,
+    private readonly _productRepository: ProductRepository,
   ) {}
 
   async createPaymentURL(order: OrderEntity) {
@@ -89,14 +91,24 @@ export class VNPayService {
         // check response from VNPay
         switch (query['vnp_ResponseCode']) {
           case '00':
-            await this._orderRepository.updateOne(
+            const { value } = await this._orderRepository.findOneAndUpdate(
               { _id: convertToObjectId(orderId) },
               {
                 $set: {
                   status: OrderStatus.COMPLETED,
                 },
               },
+              { returnOriginal: false },
             );
+
+            value.items.map(
+              async (obj) =>
+                await this._productRepository.findOneAndUpdate(
+                  { _id: convertToObjectId(obj.id) },
+                  { $inc: { totalSold: obj.quantity } },
+                ),
+            );
+
             return { RspCode: '00', Message: 'Confirm Success' };
           default:
             await this._orderRepository.updateOne(

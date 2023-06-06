@@ -9,6 +9,7 @@ import {
   MessageEntity,
   OtpEntity,
   ProductEntity,
+  ProductFavoriteEntity,
   TypeEntity,
   UserEntity,
 } from '../entities';
@@ -35,6 +36,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         OrderEntity,
         CommentEntity,
         TypeEntity,
+        ProductFavoriteEntity,
       ],
       useNewUrlParser: true,
       useUnifiedTopology: true,

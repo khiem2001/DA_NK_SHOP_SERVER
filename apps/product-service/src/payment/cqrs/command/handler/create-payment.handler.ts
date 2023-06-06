@@ -111,6 +111,16 @@ export class CreatePaymentHandler
         ...order,
       }),
     );
+    //update totalSold product
+    await Promise.all(
+      items.map(async (item: any) => {
+        const { id, quantity, name, image, price } = item;
+        const product = await this._productRepository.findOneAndUpdate(
+          { _id: convertToObjectId(id) },
+          { $inc: { totalSold: quantity } },
+        );
+      }),
+    );
 
     return { success: true };
   }

@@ -22,7 +22,9 @@ import {
 import {
   CreatePaymentInputDto,
   CreateProductInputDto,
+  FavoriteProductInput,
   GetListProductInput,
+  IsFavoriteProductInput,
   ReadProductInputDto,
   UpdateProductInputDto,
 } from './input';
@@ -84,6 +86,26 @@ export class ProductResolver {
   @UseGuards(AdminGuard)
   async listOrderAdmin() {
     return await this._productService.listOrderAdmin();
+  }
+
+  @Mutation(() => BooleanPayload)
+  @UseGuards(AuthenticationGuard)
+  favoriteProduct(
+    @Args('input') input: FavoriteProductInput,
+    @Context() context: any,
+  ) {
+    const { _id: userId } = context.req.user;
+    return this._productService.favoriteProduct(input, userId);
+  }
+
+  @Query(() => BooleanPayload)
+  @UseGuards(AuthenticationGuard)
+  async isFavoriteProduct(
+    @Args('input') input: IsFavoriteProductInput,
+    @Context() context: any,
+  ) {
+    const { _id: userId } = context.req.user;
+    return await this._productService.isFavoriteEvent(input, userId);
   }
 }
 

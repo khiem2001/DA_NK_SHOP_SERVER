@@ -2,8 +2,8 @@ import { ChangeStatusReadResponse } from '@app/proto-schema/proto/notification.p
 import { convertToObjectId } from '@app/utils';
 import { Logger } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { NotificationRepository } from 'apps/notification-service/src/notification.repository';
 import { ChangeStatusReadCommand } from '../impl';
+import { NotificationRepository } from '../../../notification.repository';
 
 @CommandHandler(ChangeStatusReadCommand)
 export class ChangeStatusReadHandler

@@ -247,3 +247,15 @@ export class CreatePaymentInputDto {
   @IsOptional()
   shippingAddress: string;
 }
+
+@InputType()
+export class FavoriteProductInput {
+  @Field(() => String)
+  productId: string;
+}
+
+@InputType()
+export class IsFavoriteProductInput {
+  @Field(() => String)
+  productId: string;
+}

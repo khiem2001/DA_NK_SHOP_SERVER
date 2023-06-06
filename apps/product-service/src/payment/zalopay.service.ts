@@ -8,6 +8,7 @@ import * as crypto from 'crypto';
 import axios from 'axios';
 import { RpcException } from '@nestjs/microservices';
 import { OrderStatus } from '@app/core';
+import { ProductRepository } from '../product/product.repository';
 
 @Injectable()
 export class ZaloPayService {
@@ -22,6 +23,7 @@ export class ZaloPayService {
   constructor(
     private readonly configService: ConfigService,
     private readonly _orderRepository: OrderRepository,
+    private readonly _productRepository: ProductRepository,
   ) {
     this.zalo_pay_end_point = this.configService.get('ZALO_PAY_API_END_POINT');
     this.app_id = parseFloat(this.configService.get('ZALO_PAY_APP_ID'));
@@ -163,13 +165,22 @@ export class ZaloPayService {
         };
       }
 
-      await this._orderRepository.updateOne(
+      const { value } = await this._orderRepository.findOneAndUpdate(
         { _id: convertToObjectId(orderId) },
         {
           $set: {
             status: OrderStatus.COMPLETED,
           },
         },
+        { returnOriginal: false },
+      );
+
+      value.items.map(
+        async (obj) =>
+          await this._productRepository.findOneAndUpdate(
+            { _id: convertToObjectId(obj.id) },
+            { $inc: { totalSold: obj.quantity } },
+          ),
       );
       return { return_code: 1, return_message: 'Xử lý đơn hàng thành công !' };
     }
