@@ -24,8 +24,10 @@ export class ListOrderAdminHandler
           },
         ],
       },
+      order: {
+        createdAt: 'DESC',
+      },
     });
-    console.log(orders);
     return { orders } as unknown as ListOrderResponse;
   }
 }

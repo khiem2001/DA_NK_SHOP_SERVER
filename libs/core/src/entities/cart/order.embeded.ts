@@ -30,11 +30,6 @@ export class OrderItem {
     message: 'Vui lòng nhập số lượng sản phẩm',
   })
   quantity: number;
-
-  @Column()
-  @Expose()
-  @Field(() => Number)
-  price: number;
 }
 
 export class OrderTransaction {

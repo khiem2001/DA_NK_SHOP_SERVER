@@ -16,6 +16,7 @@ export class ListOrderUserHandler implements IQueryHandler<ListOrderUserQuery> {
       where: {
         userId,
         deletedAt: null,
+
         $or: [
           {
             paymentMethod: PaymentMethod.OFFLINE,
@@ -25,6 +26,9 @@ export class ListOrderUserHandler implements IQueryHandler<ListOrderUserQuery> {
             status: OrderStatus.COMPLETED,
           },
         ],
+      },
+      order: {
+        createdAt: 'DESC',
       },
     });
     return { orders } as unknown as ListOrderResponse;

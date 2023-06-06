@@ -29,6 +29,7 @@ import { UserModule } from './user/user.module';
 import { DataloaderModule } from './dataloaders/dataloader.module';
 import { DataloaderService } from './dataloaders/dataloader.service';
 import { MEDIA_SERVICE_NAME } from '@app/proto-schema/proto/media.pb';
+import { AppController } from './app.controller';
 
 @Global()
 @Module({
@@ -82,6 +83,7 @@ import { MEDIA_SERVICE_NAME } from '@app/proto-schema/proto/media.pb';
     ProductModule,
     UserModule,
   ],
+  controllers: [AppController],
   providers: [AppMetadata],
   exports: [JwtModule, ClientsModule, AppMetadata],
 })

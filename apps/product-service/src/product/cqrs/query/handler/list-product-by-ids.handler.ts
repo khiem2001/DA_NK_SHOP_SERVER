@@ -23,7 +23,6 @@ export class ListProductByIdsHandler
         _id: { $in: idArr },
       },
     });
-    console.log(data);
     return { data } as unknown as ListProductByIdsResponse;
   }
 }

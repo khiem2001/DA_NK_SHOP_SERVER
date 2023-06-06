@@ -123,7 +123,7 @@ export class ZaloPayService {
           description: 'Đơn hàng không tồn tại !',
         });
         return {
-          return_code: '05',
+          return_code: 5,
           return_message: 'Đơn hàng không tồn tại !',
         };
       }
@@ -145,7 +145,7 @@ export class ZaloPayService {
             },
           },
         );
-        return { return_code: '06', return_message: 'Số tiền không hợp lệ !' };
+        return { return_code: 6, return_message: 'Số tiền không hợp lệ !' };
       }
 
       // Mô tả Test case: Giao dịch đã được confirm
@@ -158,7 +158,7 @@ export class ZaloPayService {
           description: 'Đơn hàng đã được xử lý trước đó !',
         });
         return {
-          return_code: '07',
+          return_code: 7,
           return_message: 'Đơn hàng đã được xử lý trước đó !',
         };
       }
@@ -171,12 +171,11 @@ export class ZaloPayService {
           },
         },
       );
-      console.log('ssssssssss');
       return { return_code: 1, return_message: 'Xử lý đơn hàng thành công !' };
     }
 
     return {
-      return_code: '97',
+      return_code: 97,
       return_message: 'Failed checksum',
     };
   }

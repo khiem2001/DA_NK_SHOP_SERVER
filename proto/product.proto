@@ -14,6 +14,9 @@ service ProductService{
 
     //payment
     rpc CreatePayment(CreatePaymentRequest) returns (CreatePaymentResponse) {}
+    rpc CallBackPaymentZaloProcess(CallBackPaymentZaloRequest) returns (CallBackPaymentZaloResponse) {}
+    rpc callBackPaymentVNProcess(CallBackPaymentVNRequest) returns (CallBackPaymentVNResponse) {}
+
 
     //Comment
     rpc createComment(CreateCommentRequest) returns (CreateCommentResponse) {}
@@ -25,6 +28,8 @@ service ProductService{
     rpc ListType(ListTypeRequest) returns (ListTypeResponse) {}
     rpc listOrderUser(ListOrderUserRequest) returns (ListOrderResponse) {}
     rpc listOrderAdmin(ListOrderAdminRequest) returns (ListOrderResponse) {}
+
+
 
 }
 
@@ -264,6 +269,37 @@ message ListProductByIdsRequest{
 
 message ListProductByIdsResponse{
     repeated Product data = 1;
+}
+
+message CallBackPaymentZaloRequest{
+    string data = 1;
+    string mac = 2;
+    int32 type = 3;
+}
+
+message CallBackPaymentZaloResponse{
+    int32 return_code = 1;
+    string return_message = 2;
+}
+
+message CallBackPaymentVNRequest{
+    string vnp_Amount = 13;
+    string vnp_BankCode = 12;
+    string vnp_BankTranNo = 11;
+    string vnp_CardType = 10;
+    string vnp_OrderInfo = 9;
+    string vnp_PayDate = 8;
+    string vnp_ResponseCode = 2;
+    string vnp_TmnCode = 3;
+    string vnp_TransactionNo = 4;
+    string vnp_TransactionStatus = 5;
+    string vnp_TxnRef = 6;
+    string vnp_SecureHash = 7;
+}
+
+message CallBackPaymentVNResponse{
+    string RspCode = 1;
+    string Message = 2;
 }
 
 enum PaymentMethod{

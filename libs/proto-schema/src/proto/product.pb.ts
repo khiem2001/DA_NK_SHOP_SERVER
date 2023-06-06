@@ -263,6 +263,37 @@ export interface ListProductByIdsResponse {
   data: Product[];
 }
 
+export interface CallBackPaymentZaloRequest {
+  data: string;
+  mac: string;
+  type: number;
+}
+
+export interface CallBackPaymentZaloResponse {
+  return_code: number;
+  return_message: string;
+}
+
+export interface CallBackPaymentVNRequest {
+  vnp_Amount: string;
+  vnp_BankCode: string;
+  vnp_BankTranNo: string;
+  vnp_CardType: string;
+  vnp_OrderInfo: string;
+  vnp_PayDate: string;
+  vnp_ResponseCode: string;
+  vnp_TmnCode: string;
+  vnp_TransactionNo: string;
+  vnp_TransactionStatus: string;
+  vnp_TxnRef: string;
+  vnp_SecureHash: string;
+}
+
+export interface CallBackPaymentVNResponse {
+  RspCode: string;
+  Message: string;
+}
+
 export const PRODUCT_PACKAGE_NAME = 'product';
 
 export interface ProductServiceClient {
@@ -304,6 +335,16 @@ export interface ProductServiceClient {
     request: CreatePaymentRequest,
     metadata?: Metadata,
   ): Observable<CreatePaymentResponse>;
+
+  callBackPaymentZaloProcess(
+    request: CallBackPaymentZaloRequest,
+    metadata?: Metadata,
+  ): Observable<CallBackPaymentZaloResponse>;
+
+  callBackPaymentVNProcess(
+    request: CallBackPaymentVNRequest,
+    metadata?: Metadata,
+  ): Observable<CallBackPaymentVNResponse>;
 
   /** Comment */
 
@@ -401,6 +442,22 @@ export interface ProductServiceController {
     | Observable<CreatePaymentResponse>
     | CreatePaymentResponse;
 
+  callBackPaymentZaloProcess(
+    request: CallBackPaymentZaloRequest,
+    metadata?: Metadata,
+  ):
+    | Promise<CallBackPaymentZaloResponse>
+    | Observable<CallBackPaymentZaloResponse>
+    | CallBackPaymentZaloResponse;
+
+  callBackPaymentVNProcess(
+    request: CallBackPaymentVNRequest,
+    metadata?: Metadata,
+  ):
+    | Promise<CallBackPaymentVNResponse>
+    | Observable<CallBackPaymentVNResponse>
+    | CallBackPaymentVNResponse;
+
   /** Comment */
 
   createComment(
@@ -464,6 +521,8 @@ export function ProductServiceControllerMethods() {
       'deleteProduct',
       'listProductByIds',
       'createPayment',
+      'callBackPaymentZaloProcess',
+      'callBackPaymentVNProcess',
       'createComment',
       'listComment',
       'createType',

@@ -1,5 +1,9 @@
 import { AppMetadata } from '@app/core';
 import {
+  CallBackPaymentVNRequest,
+  CallBackPaymentVNResponse,
+  CallBackPaymentZaloRequest,
+  CallBackPaymentZaloResponse,
   CreatePaymentRequest,
   CreatePaymentResponse,
   ListOrderAdminRequest,
@@ -55,19 +59,41 @@ export class PaymentController {
     return await this.queryBus.execute(new ListOrderAdminQuery(request));
   }
 
-  @Post('hook/zalo_url_ipn')
-  async zaloUrlIpn(@Body() input: any, @Res() res: Response) {
+  @GrpcMethod(PRODUCT_SERVICE_NAME, 'callBackPaymentZaloProcess')
+  async callBackPaymentZaloProcess(
+    input: CallBackPaymentZaloRequest,
+  ): Promise<CallBackPaymentZaloResponse> {
     const { data, mac, type } = input;
-    const { return_code, return_message } =
-      await this._zaloPayService.callBackPaymentProcess({ data, mac, type });
-    return res.status(200).json({ return_code, return_message });
+
+    return await this._zaloPayService.callBackPaymentProcess({
+      data,
+      mac,
+      type,
+    });
   }
 
-  @Get('hook/url_ipn')
-  async urlIPN(@Req() req: Request, @Res() res: Response) {
-    const ip = requestIp.getClientIp(req);
-    const { RspCode, Message } =
-      await this._vnpayService.callBackPaymentProcess(req.query);
-    return res.status(200).json({ RspCode, Message });
+  @GrpcMethod(PRODUCT_SERVICE_NAME, 'callBackPaymentVNProcess')
+  async callBackPaymentVNProcess(
+    input: CallBackPaymentVNRequest,
+  ): Promise<CallBackPaymentVNResponse> {
+    return await this._vnpayService.callBackPaymentProcess({
+      ...input,
+    });
   }
+
+  // @Post('hook/zalo_url_ipn')
+  // async zaloUrlIpn(@Body() input: any, @Res() res: Response) {
+  //   const { data, mac, type } = input;
+  //   const { return_code, return_message } =
+  //     await this._zaloPayService.callBackPaymentProcess({ data, mac, type });
+  //   return res.status(200).json({ return_code, return_message });
+  // }
+
+  // @Get('hook/url_ipn')
+  // async urlIPN(@Req() req: Request, @Res() res: Response) {
+  //   const ip = requestIp.getClientIp(req);
+  //   const { RspCode, Message } =
+  //     await this._vnpayService.callBackPaymentProcess(req.query);
+  //   return res.status(200).json({ RspCode, Message });
+  // }
 }
