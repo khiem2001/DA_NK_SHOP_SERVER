@@ -47,7 +47,7 @@ export class CreateConversationType {
 
 @ObjectType()
 export class ListConversationResponse {
-  @Field(() => [ConversationDtoType])
+  @Field(() => [ConversationDtoType], { nullable: true })
   data: ConversationDtoType[];
 }
 

@@ -4,6 +4,8 @@ import {
   CallBackPaymentVNResponse,
   CallBackPaymentZaloRequest,
   CallBackPaymentZaloResponse,
+  ConfirmOrderResponse,
+  ConfirmOrderResquest,
   CreatePaymentRequest,
   CreatePaymentResponse,
   ListOrderAdminRequest,
@@ -14,7 +16,7 @@ import {
 import { Metadata } from '@grpc/grpc-js';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { GrpcMethod } from '@nestjs/microservices';
-import { CreatePaymentCommand } from './cqrs/command/iml';
+import { ConfirmOrderCommand, CreatePaymentCommand } from './cqrs/command/iml';
 import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
 import { ZaloPayService } from './zalopay.service';
 import { Request, Response } from 'express';
@@ -57,6 +59,13 @@ export class PaymentController {
     request: ListOrderAdminRequest,
   ): Promise<ListOrderResponse> {
     return await this.queryBus.execute(new ListOrderAdminQuery(request));
+  }
+
+  @GrpcMethod(PRODUCT_SERVICE_NAME, 'ConfirmOrder')
+  async confirmOrder(
+    request: ConfirmOrderResquest,
+  ): Promise<ConfirmOrderResponse> {
+    return await this.commandBus.execute(new ConfirmOrderCommand(request));
   }
 
   @GrpcMethod(PRODUCT_SERVICE_NAME, 'callBackPaymentZaloProcess')

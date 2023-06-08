@@ -127,4 +127,8 @@ export class ProductService {
       this.productService.isFavoriteProduct(input, userId),
     );
   }
+
+  async confirmOrder(input): Promise<BooleanPayload> {
+    return await firstValueFrom(this.productService.confirmOrder(input));
+  }
 }

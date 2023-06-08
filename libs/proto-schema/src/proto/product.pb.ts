@@ -307,6 +307,14 @@ export interface IsFavoriteProductRequest {
   productId: string;
 }
 
+export interface ConfirmOrderResquest {
+  orderId: string;
+}
+
+export interface ConfirmOrderResponse {
+  success: boolean;
+}
+
 export const PRODUCT_PACKAGE_NAME = 'product';
 
 export interface ProductServiceClient {
@@ -402,6 +410,11 @@ export interface ProductServiceClient {
     request: ListOrderAdminRequest,
     metadata?: Metadata,
   ): Observable<ListOrderResponse>;
+
+  confirmOrder(
+    request: ConfirmOrderResquest,
+    metadata?: Metadata,
+  ): Observable<ConfirmOrderResponse>;
 }
 
 export interface ProductServiceController {
@@ -542,6 +555,14 @@ export interface ProductServiceController {
     | Promise<ListOrderResponse>
     | Observable<ListOrderResponse>
     | ListOrderResponse;
+
+  confirmOrder(
+    request: ConfirmOrderResquest,
+    metadata?: Metadata,
+  ):
+    | Promise<ConfirmOrderResponse>
+    | Observable<ConfirmOrderResponse>
+    | ConfirmOrderResponse;
 }
 
 export function ProductServiceControllerMethods() {
@@ -564,6 +585,7 @@ export function ProductServiceControllerMethods() {
       'listType',
       'listOrderUser',
       'listOrderAdmin',
+      'confirmOrder',
     ];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(

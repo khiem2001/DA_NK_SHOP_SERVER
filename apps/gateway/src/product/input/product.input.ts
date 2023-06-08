@@ -259,3 +259,9 @@ export class IsFavoriteProductInput {
   @Field(() => String)
   productId: string;
 }
+
+@InputType()
+export class ConfirmOrderInput {
+  @Field(() => String)
+  orderId: string;
+}

@@ -20,6 +20,7 @@ import {
   ProductPayload,
 } from './type';
 import {
+  ConfirmOrderInput,
   CreatePaymentInputDto,
   CreateProductInputDto,
   FavoriteProductInput,
@@ -86,6 +87,12 @@ export class ProductResolver {
   @UseGuards(AdminGuard)
   async listOrderAdmin() {
     return await this._productService.listOrderAdmin();
+  }
+
+  @Mutation(() => BooleanPayload)
+  @UseGuards(AdminGuard)
+  async confirmOrder(@Args('input') input: ConfirmOrderInput) {
+    return await this._productService.confirmOrder(input);
   }
 
   @Mutation(() => BooleanPayload)

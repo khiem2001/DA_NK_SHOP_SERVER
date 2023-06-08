@@ -28,11 +28,11 @@ service ProductService{
     //Type
     rpc CreateType(ProductType) returns (CreateProductResponse) {}
     rpc ListType(ListTypeRequest) returns (ListTypeResponse) {}
+
     rpc listOrderUser(ListOrderUserRequest) returns (ListOrderResponse) {}
     rpc listOrderAdmin(ListOrderAdminRequest) returns (ListOrderResponse) {}
-
-
-
+    rpc ConfirmOrder(ConfirmOrderResquest) returns (ConfirmOrderResponse) {}
+    
 }
 
 message CreateProductRequest{
@@ -305,10 +305,19 @@ message CallBackPaymentVNResponse{
 }
 
 message FavoriteProductRequest {
-  string productId = 1;
+    string productId = 1;
 }
+
 message IsFavoriteProductRequest {
-  string productId = 1;
+    string productId = 1;
+}
+
+message ConfirmOrderResquest {
+    string orderId = 1;
+}
+
+message  ConfirmOrderResponse {
+    bool success = 1;
 }
 
 enum PaymentMethod{

@@ -51,7 +51,7 @@ export class MessageResolver {
     return await this._messageService.createConversation(input, userId);
   }
 
-  @Query(() => ListConversationResponse)
+  @Query(() => ListConversationResponse, { nullable: true })
   async listConversation(@Args('input') input: ListConversationInput) {
     return await this._messageService.listConversation(input);
   }
