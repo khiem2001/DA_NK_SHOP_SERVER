@@ -25,6 +25,8 @@ import {
 } from './input';
 import { firstValueFrom } from 'rxjs';
 import { AppMetadata, BooleanPayload } from '@app/core';
+import * as fs from 'fs';
+import * as PdfPrinter from 'pdfmake';
 
 @Injectable()
 export class ProductService {
@@ -130,5 +132,33 @@ export class ProductService {
 
   async confirmOrder(input): Promise<BooleanPayload> {
     return await firstValueFrom(this.productService.confirmOrder(input));
+  }
+
+  async downloadOrder() {
+    const fonts = {
+      Helvetica: {
+        normal: 'Helvetica',
+        bold: 'Helvetica-Bold',
+        italics: 'Helvetica-Oblique',
+        bolditalics: 'Helvetica-BoldOblique',
+      },
+    };
+
+    const pdfDefinition = {
+      content: ['Hello, World               xddddddd!'],
+      defaultStyle: {
+        font: 'Helvetica',
+      },
+    };
+    const file_name = `PDF.${new Date().getTime()}.pdf`;
+
+    const printer = new PdfPrinter(fonts);
+
+    const pdfDoc = printer.createPdfKitDocument(pdfDefinition);
+    const pdfPath = 'D:/Downloads' + file_name;
+    pdfDoc.pipe(fs.createWriteStream(pdfPath));
+    pdfDoc.end();
+
+    return { success: true };
   }
 }

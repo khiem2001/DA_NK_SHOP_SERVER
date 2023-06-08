@@ -114,6 +114,13 @@ export class ProductResolver {
     const { _id: userId } = context.req.user;
     return await this._productService.isFavoriteEvent(input, userId);
   }
+
+  @Query(() => BooleanPayload)
+  async downloadOrder() // @Args('input') input: IsFavoriteProductInput,
+
+  {
+    return await this._productService.downloadOrder();
+  }
 }
 
 @Resolver(() => ProductPayload)
