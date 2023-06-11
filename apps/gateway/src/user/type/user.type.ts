@@ -64,3 +64,9 @@ export class GetIdAdminResponse {
   @Field(() => String)
   id: string;
 }
+
+@ObjectType()
+export class ListUserResponse {
+  @Field(() => [UserDtoType])
+  user: UserDtoType;
+}

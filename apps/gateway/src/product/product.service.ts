@@ -24,9 +24,10 @@ import {
   UpdateProductInputDto,
 } from './input';
 import { firstValueFrom } from 'rxjs';
-import { AppMetadata, BooleanPayload } from '@app/core';
+import { AppMetadata, BooleanPayload, PaymentMethod } from '@app/core';
 import * as fs from 'fs';
 import * as PdfPrinter from 'pdfmake';
+import { currencyFormatter, removeVietnameseDiacritics } from '@app/utils';
 
 @Injectable()
 export class ProductService {
@@ -134,7 +135,9 @@ export class ProductService {
     return await firstValueFrom(this.productService.confirmOrder(input));
   }
 
-  async downloadOrder() {
+  async printOrder(input) {
+    const order = await firstValueFrom(this.productService.detailOrder(input));
+
     const fonts = {
       Helvetica: {
         normal: 'Helvetica',
@@ -143,22 +146,105 @@ export class ProductService {
         bolditalics: 'Helvetica-BoldOblique',
       },
     };
-
     const pdfDefinition = {
-      content: ['Hello, World               xddddddd!'],
+      content: [
+        {
+          text: 'NK-SHOP',
+          style: 'header',
+        },
+        {
+          text: 'THONG TIN DON HANG',
+          style: 'subheader',
+        },
+        {
+          text: `Nguoi Gui: NK-SHOP`,
+          style: 'info',
+        },
+        {
+          text: `Dia chi gui hang: 175, Tay Son, Dong Da, Ha Noi`,
+          style: 'info',
+          margin: [0, 0, 0, 10],
+        },
+        {
+          text: `Nguoi Nhan: ${order.userId}`,
+          style: 'info',
+        },
+        {
+          text: `Dia Chi Giao Hang: ${removeVietnameseDiacritics(
+            order.shippingAddress,
+          )}`,
+          style: 'info',
+          margin: [0, 0, 0, 10],
+        },
+        {
+          text: `Ma Don Hang: ${order.code}`,
+          style: 'info',
+        },
+        {
+          text: `Mo Ta: ${removeVietnameseDiacritics(order.description)}`,
+          style: 'info',
+          margin: [0, 0, 0, 10],
+        },
+
+        {
+          text: 'Danh Sach San Pham:',
+          margin: [0, 0, 0, 5],
+        },
+        {
+          table: {
+            widths: ['auto', 'auto', 'auto'],
+            body: [
+              ['Ten San Pham', 'So Luong', 'Gia'],
+              ...order.items.map((item) => [
+                removeVietnameseDiacritics(item.name),
+                item.quantity,
+                currencyFormatter(item.price),
+              ]),
+            ],
+          },
+        },
+        {
+          text: `So Tien Thanh Toán: ${
+            order.paymentMethod == PaymentMethod.ONLINE
+              ? 0
+              : currencyFormatter(order.amount)
+          }`,
+          style: 'info',
+          bold: true,
+          margin: [100, 10, 10, 10],
+        },
+      ],
+      styles: {
+        header: {
+          fontSize: 18,
+          bold: true,
+          margin: [0, 0, 0, 10],
+        },
+        subheader: {
+          fontSize: 14,
+          bold: true,
+          margin: [15, 15, 15, 15],
+          alignment: 'center',
+        },
+        info: {
+          fontSize: 12,
+          margin: [0, 0, 0, 5],
+        },
+      },
       defaultStyle: {
         font: 'Helvetica',
       },
     };
-    const file_name = `PDF.${new Date().getTime()}.pdf`;
+
+    const file_name = `order.${new Date().getTime()}.pdf`;
 
     const printer = new PdfPrinter(fonts);
 
     const pdfDoc = printer.createPdfKitDocument(pdfDefinition);
-    const pdfPath = 'D:/Downloads' + file_name;
+    const pdfPath = 'D:/Đồ Án Tốt Nghiệp/OrderPdf/' + file_name;
     pdfDoc.pipe(fs.createWriteStream(pdfPath));
     pdfDoc.end();
 
-    return { success: true };
+    return { pdfPath: pdfPath };
   }
 }

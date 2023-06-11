@@ -58,7 +58,7 @@ export class CreateProductInputDto {
   })
   countInStock: number;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   image: string;
 
   @Field(() => String, { nullable: true })
@@ -142,7 +142,7 @@ export class ProductInputDto {
   })
   countInStock: number;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   image: string;
 
   // @Field(() => String)
@@ -171,6 +171,8 @@ export class ProductInputDto {
 
   @Field(() => String, { nullable: true })
   warranty: string;
+  @Field(() => String)
+  type: string;
 }
 
 @InputType()

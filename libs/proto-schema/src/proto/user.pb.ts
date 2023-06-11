@@ -182,6 +182,20 @@ export interface GetIdAdminResponse {
 
 export interface GetIdAdminRequest {}
 
+export interface ListUserRequest {}
+
+export interface ListUserResponse {
+  user: User[];
+}
+
+export interface DeleteUserRequest {
+  id: string;
+}
+
+export interface DeleteUserResponse {
+  success: boolean;
+}
+
 export const USERS_PACKAGE_NAME = 'users';
 
 export interface UsersServiceClient {
@@ -241,6 +255,16 @@ export interface UsersServiceClient {
     request: GetUserByEmailRequest,
     metadata?: Metadata,
   ): Observable<ReadUserResponse>;
+
+  listUser(
+    request: ListUserRequest,
+    metadata?: Metadata,
+  ): Observable<ListUserResponse>;
+
+  deleteUser(
+    request: DeleteUserRequest,
+    metadata?: Metadata,
+  ): Observable<DeleteUserResponse>;
 
   /** Admin */
 
@@ -351,6 +375,22 @@ export interface UsersServiceController {
     | Observable<ReadUserResponse>
     | ReadUserResponse;
 
+  listUser(
+    request: ListUserRequest,
+    metadata?: Metadata,
+  ):
+    | Promise<ListUserResponse>
+    | Observable<ListUserResponse>
+    | ListUserResponse;
+
+  deleteUser(
+    request: DeleteUserRequest,
+    metadata?: Metadata,
+  ):
+    | Promise<DeleteUserResponse>
+    | Observable<DeleteUserResponse>
+    | DeleteUserResponse;
+
   /** Admin */
 
   createAdmin(
@@ -392,6 +432,8 @@ export function UsersServiceControllerMethods() {
       'updateAvatarUser',
       'changePasswordWhenLogin',
       'getUserByEmail',
+      'listUser',
+      'deleteUser',
       'createAdmin',
       'getAdminByUserName',
       'getIdAdmin',

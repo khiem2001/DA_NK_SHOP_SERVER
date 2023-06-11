@@ -211,3 +211,9 @@ export class ListOrderResponse {
   @Field(() => [OrderDto], { nullable: true })
   orders: OrderDto[];
 }
+
+@ObjectType()
+export class PrintOrderType {
+  @Field(() => String, { nullable: true })
+  pdfPath: string;
+}

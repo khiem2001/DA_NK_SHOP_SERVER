@@ -17,6 +17,7 @@ import {
   Media,
   OrderDto,
   OrderItemResponse,
+  PrintOrderType,
   ProductPayload,
 } from './type';
 import {
@@ -115,11 +116,9 @@ export class ProductResolver {
     return await this._productService.isFavoriteEvent(input, userId);
   }
 
-  @Query(() => BooleanPayload)
-  async downloadOrder() // @Args('input') input: IsFavoriteProductInput,
-
-  {
-    return await this._productService.downloadOrder();
+  @Query(() => PrintOrderType)
+  async printOrder(@Args('input') input: ConfirmOrderInput) {
+    return await this._productService.printOrder(input);
   }
 }
 

@@ -315,6 +315,18 @@ export interface ConfirmOrderResponse {
   success: boolean;
 }
 
+export interface DetailOrderRequest {
+  orderId: string;
+}
+
+export interface DeleteTypeRequest {
+  typeId: string;
+}
+
+export interface DeleteTypeResponse {
+  success: boolean;
+}
+
 export const PRODUCT_PACKAGE_NAME = 'product';
 
 export interface ProductServiceClient {
@@ -401,6 +413,11 @@ export interface ProductServiceClient {
     metadata?: Metadata,
   ): Observable<ListTypeResponse>;
 
+  deleteType(
+    request: DeleteTypeRequest,
+    metadata?: Metadata,
+  ): Observable<DeleteTypeResponse>;
+
   listOrderUser(
     request: ListOrderUserRequest,
     metadata?: Metadata,
@@ -410,6 +427,11 @@ export interface ProductServiceClient {
     request: ListOrderAdminRequest,
     metadata?: Metadata,
   ): Observable<ListOrderResponse>;
+
+  detailOrder(
+    request: DetailOrderRequest,
+    metadata?: Metadata,
+  ): Observable<OrderDto>;
 
   confirmOrder(
     request: ConfirmOrderResquest,
@@ -540,6 +562,14 @@ export interface ProductServiceController {
     | Observable<ListTypeResponse>
     | ListTypeResponse;
 
+  deleteType(
+    request: DeleteTypeRequest,
+    metadata?: Metadata,
+  ):
+    | Promise<DeleteTypeResponse>
+    | Observable<DeleteTypeResponse>
+    | DeleteTypeResponse;
+
   listOrderUser(
     request: ListOrderUserRequest,
     metadata?: Metadata,
@@ -555,6 +585,11 @@ export interface ProductServiceController {
     | Promise<ListOrderResponse>
     | Observable<ListOrderResponse>
     | ListOrderResponse;
+
+  detailOrder(
+    request: DetailOrderRequest,
+    metadata?: Metadata,
+  ): Promise<OrderDto> | Observable<OrderDto> | OrderDto;
 
   confirmOrder(
     request: ConfirmOrderResquest,
@@ -583,8 +618,10 @@ export function ProductServiceControllerMethods() {
       'listComment',
       'createType',
       'listType',
+      'deleteType',
       'listOrderUser',
       'listOrderAdmin',
+      'detailOrder',
       'confirmOrder',
     ];
     for (const method of grpcMethods) {

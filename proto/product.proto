@@ -28,9 +28,11 @@ service ProductService{
     //Type
     rpc CreateType(ProductType) returns (CreateProductResponse) {}
     rpc ListType(ListTypeRequest) returns (ListTypeResponse) {}
+    rpc DeleteType(DeleteTypeRequest) returns (DeleteTypeResponse){}
 
     rpc listOrderUser(ListOrderUserRequest) returns (ListOrderResponse) {}
     rpc listOrderAdmin(ListOrderAdminRequest) returns (ListOrderResponse) {}
+    rpc DetailOrder(DetailOrderRequest) returns (OrderDto) {}
     rpc ConfirmOrder(ConfirmOrderResquest) returns (ConfirmOrderResponse) {}
     
 }
@@ -124,8 +126,6 @@ message ProductRequest{
     string compatibility = 13;
     string warranty = 14;
     string type = 15;
-
-    
 }
 
 message Product{
@@ -318,6 +318,17 @@ message ConfirmOrderResquest {
 
 message  ConfirmOrderResponse {
     bool success = 1;
+}
+
+message DetailOrderRequest {
+    string orderId = 1;
+}
+
+message DeleteTypeRequest {
+    string typeId = 1;
+}
+message DeleteTypeResponse {
+   bool success = 2;
 }
 
 enum PaymentMethod{

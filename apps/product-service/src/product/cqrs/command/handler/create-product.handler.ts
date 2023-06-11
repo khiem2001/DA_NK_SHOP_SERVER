@@ -16,6 +16,12 @@ export class CreateProductHandler
     const productExist = await this._productRepository.findOne({
       where: {
         name: cmd.name,
+        $or: [
+          { deletedAt: null },
+          {
+            deletedAt: { $gt: new Date() },
+          },
+        ],
       },
     });
     if (productExist) {

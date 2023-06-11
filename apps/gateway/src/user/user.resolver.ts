@@ -18,12 +18,13 @@ import { ClientGrpc, RpcException } from '@nestjs/microservices';
 import {
   ChangePassWhenLoginType,
   GetIdAdminResponse,
+  ListUserResponse,
   UpdateProfileResponse,
   UserDtoType,
 } from './type';
 import { Media } from '../product/type';
 import { IGraphQLContext } from '@app/core/interfaces';
-import { AuthenticationGuard } from '../auth/guards';
+import { AdminGuard, AuthenticationGuard } from '../auth/guards';
 import { catchError, firstValueFrom, timeout } from 'rxjs';
 import {
   ChangePassWhenLoginInput,
@@ -46,6 +47,11 @@ export class UserResolver {
   @Query(() => GetIdAdminResponse)
   async getIdAdmin() {
     return await this.userService.getIdAdmin({});
+  }
+  @Query(() => ListUserResponse)
+  // @UseGuards(AdminGuard)
+  async listUser() {
+    return await firstValueFrom(this.userService.listUser({}));
   }
 
   @UseGuards(AuthenticationGuard)

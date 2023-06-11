@@ -15,6 +15,8 @@ import {
   ChangePasswordWhenLoginRequest,
   GetAdminByUserNameRequest,
   GetIdAdminRequest,
+  ListUserRequest,
+  DeleteUserRequest,
 } from '@app/proto-schema/proto/user.pb';
 import { Controller } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
@@ -23,6 +25,7 @@ import {
   ChangePasswordCommand,
   ChangePasswordWhenLoginCommand,
   CreateAdminCommand,
+  DeleteUserCommand,
   LoginOrCreateCommand,
   RegisterUserCommand,
   UpdateAvatarUserCommand,
@@ -34,6 +37,7 @@ import {
   GetIdAdminQuery,
   GetListUserByIdsQuery,
   GetUserByEmailQuery,
+  ListUserQuery,
   ReadUserQuery,
   UserByPhoneQuery,
 } from './cqrs/query';
@@ -122,5 +126,13 @@ export class UsersController {
   @GrpcMethod(USERS_SERVICE_NAME, 'getIdAdmin')
   async getIdAdmin(input: GetIdAdminRequest) {
     return await this.queryBus.execute(new GetIdAdminQuery(input));
+  }
+  @GrpcMethod(USERS_SERVICE_NAME, 'ListUser')
+  async listUser(input: ListUserRequest) {
+    return await this.queryBus.execute(new ListUserQuery(input));
+  }
+  @GrpcMethod(USERS_SERVICE_NAME, 'DeleteUser')
+  async deleteUser(input: DeleteUserRequest) {
+    return await this.commandBus.execute(new DeleteUserCommand(input));
   }
 }

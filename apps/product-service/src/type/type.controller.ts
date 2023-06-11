@@ -1,5 +1,6 @@
 import { AppMetadata } from '@app/core';
 import {
+  DeleteTypeRequest,
   ListTypeRequest,
   PRODUCT_SERVICE_NAME,
   ProductType,
@@ -7,7 +8,7 @@ import {
 import { Controller } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { GrpcMethod } from '@nestjs/microservices';
-import { CreateTypeCommand } from './command';
+import { CreateTypeCommand, DeleteTypeCommand } from './command';
 import { ListTypeQuery } from './query/iml';
 
 @Controller()
@@ -25,5 +26,9 @@ export class TypeController {
   @GrpcMethod(PRODUCT_SERVICE_NAME, 'ListType')
   async listType(input: ListTypeRequest) {
     return await this.queryBus.execute(new ListTypeQuery(input));
+  }
+  @GrpcMethod(PRODUCT_SERVICE_NAME, 'DeleteType')
+  async deleteType(input: DeleteTypeRequest) {
+    return await this.commandBus.execute(new DeleteTypeCommand(input));
   }
 }

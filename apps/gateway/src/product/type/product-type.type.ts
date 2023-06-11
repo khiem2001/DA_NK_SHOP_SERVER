@@ -23,3 +23,9 @@ export class ProductTypeInput {
   @Field(() => String)
   name: string;
 }
+
+@InputType()
+export class DeleteTypeInput {
+  @Field(() => String)
+  typeId: string;
+}

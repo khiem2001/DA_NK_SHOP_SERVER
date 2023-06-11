@@ -11,6 +11,7 @@ import { Args, Mutation, Query } from '@nestjs/graphql';
 import { ClientGrpc } from '@nestjs/microservices';
 import { catchError, firstValueFrom, timeout } from 'rxjs';
 import {
+  DeleteTypeInput,
   GetListTypeResponse,
   ListTypeInput,
   ProductTypeInput,
@@ -29,6 +30,10 @@ export class TypeResolver {
   @Mutation(() => BooleanPayload)
   async createType(@Args('input') input: ProductTypeInput) {
     return await this.productService.createType(input as ProductType);
+  }
+  @Mutation(() => BooleanPayload)
+  async deleteType(@Args('input') input: DeleteTypeInput) {
+    return await this.productService.deleteType(input);
   }
   @Query(() => GetListTypeResponse)
   async listType() {

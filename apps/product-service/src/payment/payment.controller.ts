@@ -8,9 +8,11 @@ import {
   ConfirmOrderResquest,
   CreatePaymentRequest,
   CreatePaymentResponse,
+  DetailOrderRequest,
   ListOrderAdminRequest,
   ListOrderResponse,
   ListOrderUserRequest,
+  OrderDto,
   PRODUCT_SERVICE_NAME,
 } from '@app/proto-schema/proto/product.pb';
 import { Metadata } from '@grpc/grpc-js';
@@ -23,6 +25,7 @@ import { Request, Response } from 'express';
 import * as requestIp from 'request-ip';
 import { VNPayService } from './vnpay.service';
 import { ListOrderAdminQuery, ListOrderUserQuery } from './cqrs/query';
+import { DetailOrderQuery } from './cqrs/query/iml/detail-order.query';
 
 @Controller('payment')
 export class PaymentController {
@@ -66,6 +69,11 @@ export class PaymentController {
     request: ConfirmOrderResquest,
   ): Promise<ConfirmOrderResponse> {
     return await this.commandBus.execute(new ConfirmOrderCommand(request));
+  }
+
+  @GrpcMethod(PRODUCT_SERVICE_NAME, 'DetailOrder')
+  async detailOrder(request: DetailOrderRequest): Promise<OrderDto> {
+    return await this.queryBus.execute(new DetailOrderQuery(request));
   }
 
   @GrpcMethod(PRODUCT_SERVICE_NAME, 'callBackPaymentZaloProcess')

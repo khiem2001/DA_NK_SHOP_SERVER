@@ -33,12 +33,15 @@ export class GetListProductHandler
     let orderBy;
     if (sort) {
       orderBy = deriveObjectSortQueryToMongoDBSort(sort as any);
+    } else {
+      orderBy = 'createdAt_DESC';
     }
 
     const option = this.find.getOption({
       limit,
       offset,
       where,
+      orderBy,
     });
 
     const result = await this._productRepository.findAndCount({

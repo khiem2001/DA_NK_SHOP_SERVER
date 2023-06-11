@@ -15,7 +15,8 @@ service UsersService{
     rpc UpdateAvatarUser (UpdateAvatarUserRequest) returns (UpdateAvatarUserResponse) {}
     rpc ChangePasswordWhenLogin(ChangePasswordWhenLoginRequest) returns (ChangePasswordWhenLoginResponse) {}
     rpc GetUserByEmail(GetUserByEmailRequest) returns (ReadUserResponse) {}
-    
+    rpc ListUser(ListUserRequest) returns (ListUserResponse) {}
+    rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse){}
    
     //Admin
     rpc CreateAdmin (CreateAdminRequest) returns (CreateAdminResponse) {}
@@ -197,4 +198,16 @@ message  GetIdAdminResponse {
   string id = 1;
 }
 message GetIdAdminRequest {
+}
+
+message ListUserRequest {
+}
+message ListUserResponse {
+  repeated User user = 1;
+}
+message DeleteUserRequest {
+  string id = 1;
+}
+message DeleteUserResponse {
+  bool success = 1;
 }

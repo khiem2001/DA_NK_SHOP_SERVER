@@ -1,6 +1,7 @@
 import { ChangePasswordWhenLoginHandler } from './change-password-when-login.handler';
 import { ChangePasswordHandler } from './change-password.handler';
 import { CreateAdminHandler } from './create-admin.handler';
+import { DeleteUserHandler } from './delete-user.handler';
 import { LoginOrCreateHandler } from './login-or-create.handler';
 import { RegisterUserHandler } from './register-user.handler';
 import { UpdateAvatarUserHandler } from './update-avatar-user.handler';
@@ -15,4 +16,5 @@ export const UsersCommandHandlers = [
   UpdateProfileHandler,
   UpdateAvatarUserHandler,
   ChangePasswordWhenLoginHandler,
+  DeleteUserHandler,
 ];
