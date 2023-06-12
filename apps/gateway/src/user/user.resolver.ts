@@ -61,18 +61,6 @@ export class UserResolver {
     @Context() context: any,
   ) {
     const { _id } = context.req.user;
-    const { email } = input;
-
-    if (email) {
-      const { user } = await firstValueFrom(
-        this.userService.getUserByEmail({ email }),
-      );
-      if (user) {
-        throw new RpcException(
-          'Email đã được sử dụng. Vui lòng sử dụng email khác.',
-        );
-      }
-    }
 
     return this.userService
       .updateProfile({

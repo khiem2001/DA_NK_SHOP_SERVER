@@ -7,37 +7,58 @@ import { Metadata } from '@grpc/grpc-js';
 
 export const protobufPackage = 'mailer';
 
-export interface SendEmailVerifyRequest {
+export interface SendEmailRequest {
   email: string;
-  pinCode: string;
 }
 
-export interface SendEmailVerifyResponse {
+export interface SendEmailResponse {
+  sessionId: string;
+}
+
+export interface VerifyEmailRequest {
+  otp: string;
+  sessionId: string;
+}
+
+export interface VerifyEmailResponse {
   success: boolean;
 }
 
 export const MAILER_PACKAGE_NAME = 'mailer';
 
 export interface MailerServiceClient {
-  sendEmailVerify(
-    request: SendEmailVerifyRequest,
+  sendEmail(
+    request: SendEmailRequest,
     metadata?: Metadata,
-  ): Observable<SendEmailVerifyResponse>;
+  ): Observable<SendEmailResponse>;
+
+  verifyEmail(
+    request: VerifyEmailRequest,
+    metadata?: Metadata,
+  ): Observable<VerifyEmailResponse>;
 }
 
 export interface MailerServiceController {
-  sendEmailVerify(
-    request: SendEmailVerifyRequest,
+  sendEmail(
+    request: SendEmailRequest,
     metadata?: Metadata,
   ):
-    | Promise<SendEmailVerifyResponse>
-    | Observable<SendEmailVerifyResponse>
-    | SendEmailVerifyResponse;
+    | Promise<SendEmailResponse>
+    | Observable<SendEmailResponse>
+    | SendEmailResponse;
+
+  verifyEmail(
+    request: VerifyEmailRequest,
+    metadata?: Metadata,
+  ):
+    | Promise<VerifyEmailResponse>
+    | Observable<VerifyEmailResponse>
+    | VerifyEmailResponse;
 }
 
 export function MailerServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ['sendEmailVerify'];
+    const grpcMethods: string[] = ['sendEmail', 'verifyEmail'];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(
         constructor.prototype,

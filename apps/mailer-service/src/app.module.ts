@@ -1,4 +1,4 @@
-import { ServiceRegistryModule } from '@app/core';
+import { ServiceRegistryModule, TypeOrmConfigService } from '@app/core';
 import { Module } from '@nestjs/common';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { ConfigService } from '@nestjs/config';
@@ -6,10 +6,14 @@ import { TransportType } from '@nestjs-modules/mailer/dist/interfaces/mailer-opt
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { BullModule } from '@nestjs/bull';
 import { MailModule } from './mailer/mailer.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [
     ServiceRegistryModule,
+    TypeOrmModule.forRootAsync({
+      useClass: TypeOrmConfigService,
+    }),
     MailerModule.forRootAsync({
       useFactory: async (configService: ConfigService) => ({
         transport: {

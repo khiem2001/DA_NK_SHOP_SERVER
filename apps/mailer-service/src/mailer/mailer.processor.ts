@@ -34,7 +34,7 @@ export class MailProcessor {
   }
 
   @Process(VERIFY_EMAIL)
-  async sendEmailVerify(job: Job<ISendMailOptions>) {
+  async sendEmail(job: Job<ISendMailOptions>) {
     return this._mailerService.sendMail({
       ...job.data,
     });

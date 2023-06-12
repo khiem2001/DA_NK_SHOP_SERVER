@@ -10,10 +10,13 @@ export class SendPinCodeInput {
     message: 'Email không đúng định dạng',
   })
   email: string;
+}
+
+@InputType()
+export class VerifyEmailInput {
+  @Field(() => String)
+  otp: string;
 
   @Field(() => String)
-  @IsNotEmpty({
-    message: 'Vùng lòng nhập code',
-  })
-  pinCode: string;
+  sessionId: string;
 }

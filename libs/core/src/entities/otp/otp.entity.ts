@@ -20,6 +20,10 @@ export class OtpEntity {
   @Expose()
   phoneNumber?: string;
 
+  @Column()
+  @Expose()
+  email?: string;
+
   @Column({ type: 'timestamp' })
   @Expose()
   otpExpiredTime: Date;

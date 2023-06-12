@@ -2,14 +2,21 @@ syntax = "proto3";
 package mailer;
 
 service MailerService{
-    rpc SendEmailVerify (SendEmailVerifyRequest) returns (SendEmailVerifyResponse){}
+    rpc SendEmail (SendEmailRequest) returns (SendEmailResponse){}
+    rpc VerifyEmail(VerifyEmailRequest) returns (VerifyEmailResponse){}
 }
 
-message SendEmailVerifyRequest{
+message SendEmailRequest{
     string email = 1;
-    string pinCode = 2;
 }
 
-message SendEmailVerifyResponse{
+message SendEmailResponse{
+    string sessionId = 1;
+}
+message VerifyEmailRequest {
+    string otp = 1;
+    string sessionId = 2;
+}
+message VerifyEmailResponse {
     bool success = 1;
 }
