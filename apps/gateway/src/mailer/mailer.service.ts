@@ -1,3 +1,4 @@
+import { AppMetadata } from '@app/core';
 import {
   MAILER_SERVICE_NAME,
   MailerServiceClient,
@@ -22,6 +23,7 @@ export class MailerService {
   constructor(
     @Inject(MAILER_SERVICE_NAME) private readonly mailerClient: ClientGrpc,
     @Inject(USERS_SERVICE_NAME) private readonly userClient: ClientGrpc,
+    private readonly metadata: AppMetadata,
   ) {}
 
   onModuleInit() {
@@ -42,9 +44,12 @@ export class MailerService {
     }
     return await firstValueFrom(this.mailerService.sendEmail({ email }));
   }
-  async verifyEmail({ otp, sessionId }): Promise<VerifyEmailResponse> {
+  async verifyEmail({ otp, sessionId }, _id): Promise<VerifyEmailResponse> {
     return await firstValueFrom(
-      this.mailerService.verifyEmail({ otp, sessionId }),
+      this.mailerService.verifyEmail(
+        { otp, sessionId },
+        this.metadata.setUserId(_id),
+      ),
     );
   }
 }

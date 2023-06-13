@@ -6,7 +6,7 @@ import { MailerService } from './mailer.service';
 import { MailProcessor } from './mailer.processor';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { OtpRepository } from './otp.repository';
-import { OtpEntity, UserEntity } from '@app/core';
+import { AppMetadata, OtpEntity, UserEntity } from '@app/core';
 import { UserRepository } from './users.repository';
 
 @Module({
@@ -22,6 +22,6 @@ import { UserRepository } from './users.repository';
     }),
   ],
   controllers: [MailerController],
-  providers: [MailerService, MailProcessor],
+  providers: [MailerService, MailProcessor, AppMetadata],
 })
 export class MailModule {}

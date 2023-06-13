@@ -13,14 +13,6 @@ export class UpdateProfileInputDto {
   @IsOptional()
   fullName: string;
 
-  // @Field(() => String, { nullable: true })
-  // @Matches(regexEmail, {
-  //   message:
-  //     'Email có độ dài 5-255, định dạng local part 5-65 ki tự không chưa kí tu đac biêt ngoài @ và dấu "."',
-  // })
-  // @IsOptional()
-  // email: string;
-
   @Field(() => String, { nullable: true })
   address?: string;
 
@@ -33,6 +25,9 @@ export class UpdateProfileInputDto {
   @Field(() => String, { nullable: true })
   country?: string;
 
+  @Field(() => String, { nullable: true })
+  @IsObjectId({ message: 'Id must be a ObjectId' })
+  avatarId: string;
   //   @Field(() => Boolean, { nullable: true })
   //   twoFactorAuthenticationSecret: boolean;
 }

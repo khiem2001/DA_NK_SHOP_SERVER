@@ -69,6 +69,7 @@ export class UserResolver {
       } as unknown as UpdateProfileRequest)
       .pipe(timeout(5000), catchError(PipeThrowError));
   }
+
   @UseGuards(AuthenticationGuard)
   @Mutation(() => BooleanPayload)
   async updateAvatarUser(

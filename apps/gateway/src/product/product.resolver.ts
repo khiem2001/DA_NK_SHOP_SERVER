@@ -80,7 +80,7 @@ export class ProductResolver {
   @UseGuards(AuthenticationGuard)
   async listOrderUser(@Context() context: any) {
     const { _id } = context.req.user;
-
+    console.log(_id);
     return await this._productService.listOrderUser(_id);
   }
 

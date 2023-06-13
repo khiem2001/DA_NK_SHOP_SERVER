@@ -12,7 +12,16 @@ export class UpdateProfileHandler
 
   async execute({ cmd }: UpdateProfileCommand): Promise<UpdateProfileResponse> {
     const { userId, ...input } = cmd;
-
+    if (input.birthday) {
+      const birthday = new Date(input.birthday);
+      const { ok } = await this._userRepository.findOneAndUpdate(
+        { _id: convertToObjectId(userId) },
+        { $set: { ...input, birthday } },
+      );
+      return {
+        updated: !!ok,
+      };
+    }
     const { ok } = await this._userRepository.findOneAndUpdate(
       { _id: convertToObjectId(userId) },
       { $set: { ...input } },

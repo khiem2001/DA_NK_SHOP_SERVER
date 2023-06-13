@@ -9,7 +9,7 @@ import {
   VerifyEmailRequest,
   VerifyEmailResponse,
 } from '@app/proto-schema/proto/mailer.pb';
-import { generateOTP } from '@app/utils';
+import { convertToObjectId, generateOTP } from '@app/utils';
 import { OtpRepository } from './otp.repository';
 import { OtpEntity } from '@app/core';
 import * as moment from 'moment';
@@ -37,7 +37,7 @@ export class MailerService {
         otp: pinCode,
         email: email,
         otpExpiredTime: moment()
-          .add(ms('2m') / 1000, 's')
+          .add(ms('9m') / 1000, 's')
           .toDate(),
         sessionId: mongoose.Types.ObjectId().toString(),
       }),
@@ -57,10 +57,10 @@ export class MailerService {
     } as SendEmailResponse;
   }
 
-  public async verifyEmail({
-    otp: inputOTP,
-    sessionId,
-  }: VerifyEmailRequest): Promise<VerifyEmailResponse> {
+  public async verifyEmail(
+    { otp: inputOTP, sessionId }: VerifyEmailRequest,
+    _id,
+  ): Promise<VerifyEmailResponse> {
     const session = await this._otpRepository.findOne({
       where: {
         sessionId: sessionId,
@@ -83,9 +83,12 @@ export class MailerService {
     );
 
     await this._userRepository.updateOne(
-      { email: session.email },
+      { _id: convertToObjectId(_id) },
       {
-        $set: { verifyEmail: true },
+        $set: {
+          email: session.email,
+          verifyEmail: true,
+        },
       },
     );
 

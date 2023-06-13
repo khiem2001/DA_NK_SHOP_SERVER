@@ -1,9 +1,10 @@
-import { Inject } from '@nestjs/common';
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { Inject, UseGuards } from '@nestjs/common';
+import { Args, Context, Mutation, Resolver } from '@nestjs/graphql';
 import { MailerService } from './mailer.service';
 import { BooleanPayload } from '@app/core';
 import { SendPinCodeInput, VerifyEmailInput } from './input';
 import { SendEmailResponse } from './type';
+import { AuthenticationGuard } from '../auth/guards';
 
 @Resolver()
 export class MailerResolver {
@@ -16,8 +17,14 @@ export class MailerResolver {
   }
 
   @Mutation(() => BooleanPayload)
-  async verifyEmail(@Args('input') input: VerifyEmailInput) {
-    const result = await this.mailerService.verifyEmail(input);
+  @UseGuards(AuthenticationGuard)
+  async verifyEmail(
+    @Args('input') input: VerifyEmailInput,
+    @Context() context: any,
+  ) {
+    const { _id } = context.req.user;
+
+    const result = await this.mailerService.verifyEmail(input, _id);
     return result;
   }
 }
