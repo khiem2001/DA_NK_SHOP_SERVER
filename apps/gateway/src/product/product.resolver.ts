@@ -10,9 +10,11 @@ import {
   Parent,
 } from '@nestjs/graphql';
 import {
+  CartType,
   CreatePaymentResponse,
   GetListProductResponse,
   GetProductResponse,
+  ListCartType,
   ListOrderResponse,
   Media,
   OrderDto,
@@ -21,6 +23,7 @@ import {
   ProductPayload,
 } from './type';
 import {
+  AddToCartInput,
   ConfirmOrderInput,
   CreatePaymentInputDto,
   CreateProductInputDto,
@@ -28,6 +31,7 @@ import {
   GetListProductInput,
   IsFavoriteProductInput,
   ReadProductInputDto,
+  RemoveFromCartInput,
   UpdateProductInputDto,
 } from './input';
 import { BooleanPayload } from '@app/core';
@@ -65,6 +69,33 @@ export class ProductResolver {
     return await this._productService.deleteProduct(input);
   }
 
+  @Mutation(() => BooleanPayload)
+  @UseGuards(AuthenticationGuard)
+  async addToCart(
+    @Args('input') input: AddToCartInput,
+    @Context() context: any,
+  ) {
+    const { _id } = context.req.user;
+    return await this._productService.addToCart(input, _id);
+  }
+
+  @Mutation(() => BooleanPayload)
+  @UseGuards(AuthenticationGuard)
+  async removeFromCart(
+    @Args('input') input: RemoveFromCartInput,
+    @Context() context: any,
+  ) {
+    const { _id } = context.req.user;
+    return await this._productService.removeFromCart(input, _id);
+  }
+
+  @Query(() => ListCartType)
+  @UseGuards(AuthenticationGuard)
+  async listCart(@Context() context: any) {
+    const { _id } = context.req.user;
+    return await this._productService.listCart(_id);
+  }
+
   @Mutation(() => CreatePaymentResponse)
   @UseGuards(AuthenticationGuard)
   async createPayment(
@@ -80,7 +111,6 @@ export class ProductResolver {
   @UseGuards(AuthenticationGuard)
   async listOrderUser(@Context() context: any) {
     const { _id } = context.req.user;
-    console.log(_id);
     return await this._productService.listOrderUser(_id);
   }
 
@@ -157,6 +187,20 @@ export class OrderDtoResolver {
   ) {
     if (order?.userId) {
       return loaders.userLoader.load(order.userId);
+    }
+    return null;
+  }
+}
+
+@Resolver(() => CartType)
+export class CartTypeResolver {
+  @ResolveField('productId', () => ProductPayload, { nullable: true })
+  async product(
+    @Parent() cart: CartType,
+    @Context() { loaders }: IGraphQLContext,
+  ) {
+    if (cart?.productId) {
+      return loaders.productLoader.load(cart.productId);
     }
     return null;
   }

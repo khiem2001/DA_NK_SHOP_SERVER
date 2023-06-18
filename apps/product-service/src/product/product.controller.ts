@@ -1,28 +1,34 @@
 import { AppMetadata } from '@app/core';
 import {
+  AddToCartRequest,
   CreateProductRequest,
   DeleteProductRequest,
   FavoriteProductRequest,
   GetListProductRequest,
   GetProductRequest,
   IsFavoriteProductRequest,
+  ListCartRequest,
   ListProductByIdsRequest,
   PRODUCT_SERVICE_NAME,
+  RemoveFromCartRequest,
   UpdateProductRequest,
 } from '@app/proto-schema/proto/product.pb';
 import { Controller } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { GrpcMethod } from '@nestjs/microservices';
 import {
+  AddToCartCommand,
   CreateProductCommand,
   DeleteProductCommand,
   FavoriteProductCommand,
+  RemoveFromCartCommand,
   UpdateProductCommand,
 } from './cqrs/command';
 import {
   GetListProductQuery,
   GetProductQuery,
   IsFavoriteProductQuery,
+  ListCartQuery,
   ListProductByIdsQuery,
 } from './cqrs/query';
 import { Metadata } from '@grpc/grpc-js';
@@ -78,6 +84,24 @@ export class ProductController {
   ): Promise<BooleanPayload> {
     return await this.queryBus.execute(
       new IsFavoriteProductQuery(request, this.appMetadata.getUserId(metadata)),
+    );
+  }
+  @GrpcMethod(PRODUCT_SERVICE_NAME, 'AddToCart')
+  async AddToCart(input: AddToCartRequest, metadata: Metadata) {
+    return await this.commandBus.execute(
+      new AddToCartCommand(input, this.appMetadata.getUserId(metadata)),
+    );
+  }
+  @GrpcMethod(PRODUCT_SERVICE_NAME, 'RemoveFromCart')
+  async RemoveFromCart(input: RemoveFromCartRequest, metadata: Metadata) {
+    return await this.commandBus.execute(
+      new RemoveFromCartCommand(input, this.appMetadata.getUserId(metadata)),
+    );
+  }
+  @GrpcMethod(PRODUCT_SERVICE_NAME, 'ListCart')
+  async ListCart(input: ListCartRequest, metadata: Metadata) {
+    return await this.queryBus.execute(
+      new ListCartQuery(input, this.appMetadata.getUserId(metadata)),
     );
   }
 }

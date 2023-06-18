@@ -30,11 +30,15 @@ service ProductService{
     rpc ListType(ListTypeRequest) returns (ListTypeResponse) {}
     rpc DeleteType(DeleteTypeRequest) returns (DeleteTypeResponse){}
 
+    //cart
     rpc listOrderUser(ListOrderUserRequest) returns (ListOrderResponse) {}
     rpc listOrderAdmin(ListOrderAdminRequest) returns (ListOrderResponse) {}
     rpc DetailOrder(DetailOrderRequest) returns (OrderDto) {}
     rpc ConfirmOrder(ConfirmOrderResquest) returns (ConfirmOrderResponse) {}
-    
+
+    rpc AddToCart(AddToCartRequest) returns (AddToCartResponse) {}
+    rpc RemoveFromCart(RemoveFromCartRequest) returns (RemoveFromCartResponse) {}
+    rpc ListCart(ListCartRequest) returns (ListCartResponse) {}
 }
 
 message CreateProductRequest{
@@ -356,4 +360,44 @@ enum ShippingStatus{
     SHIPPED = 0;
     SHIPPING = 1;
     NOT_SHIPPED = 2;
+}
+
+message CartResponse {
+    string _id = 1;
+    int32 quantity = 5;
+    string userId = 6;
+    string productId = 7;
+
+
+    
+     //base
+   double createdAt = 20;
+   double  createdBy = 21;
+   double updatedAt = 22;
+   double  updatedBy = 23;
+   string deletedBy = 24;
+   double  deletedAt = 25;
+}
+message AddToCartRequest {
+    int32 quantity = 1;
+    string productId = 3;
+   
+}
+message AddToCartResponse {
+   bool success = 1;
+}
+
+message RemoveFromCartRequest {
+    string _id = 1;
+}
+
+message RemoveFromCartResponse {
+   bool success = 1;
+}
+
+message ListCartRequest {
+}
+
+message ListCartResponse {
+    repeated CartResponse cart= 1;
 }

@@ -267,3 +267,17 @@ export class ConfirmOrderInput {
   @Field(() => String)
   orderId: string;
 }
+
+@InputType()
+export class AddToCartInput {
+  @Field(() => Number)
+  quantity: number;
+
+  @Field(() => String)
+  productId: string;
+}
+@InputType()
+export class RemoveFromCartInput {
+  @Field(() => String)
+  _id: string;
+}

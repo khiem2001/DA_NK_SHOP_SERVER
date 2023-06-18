@@ -14,7 +14,7 @@ import {
   UserEntity,
 } from '../entities';
 import { Injectable } from '@nestjs/common';
-import { OrderEntity } from '../entities/cart';
+import { CartEntity, OrderEntity } from '../entities/cart';
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
@@ -37,6 +37,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         CommentEntity,
         TypeEntity,
         ProductFavoriteEntity,
+        CartEntity,
       ],
       useNewUrlParser: true,
       useUnifiedTopology: true,

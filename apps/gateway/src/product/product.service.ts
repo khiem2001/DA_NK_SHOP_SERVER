@@ -8,6 +8,7 @@ import {
   GetListProductResponse,
   GetProductRequest,
   GetProductResponse,
+  ListCartResponse,
   ListOrderResponse,
   PRODUCT_SERVICE_NAME,
   ProductServiceClient,
@@ -121,18 +122,43 @@ export class ProductService {
 
   async favoriteProduct(input, userId): Promise<BooleanPayload> {
     return await firstValueFrom(
-      this.productService.favoriteProduct(input, userId),
+      this.productService.favoriteProduct(
+        input,
+        this.metadata.setUserId(userId),
+      ),
     );
   }
 
   async isFavoriteEvent(input, userId): Promise<BooleanPayload> {
     return await firstValueFrom(
-      this.productService.isFavoriteProduct(input, userId),
+      this.productService.isFavoriteProduct(
+        input,
+        this.metadata.setUserId(userId),
+      ),
     );
   }
 
   async confirmOrder(input): Promise<BooleanPayload> {
     return await firstValueFrom(this.productService.confirmOrder(input));
+  }
+
+  async addToCart(input, userId): Promise<BooleanPayload> {
+    return await firstValueFrom(
+      this.productService.addToCart(input, this.metadata.setUserId(userId)),
+    );
+  }
+  async removeFromCart(input, userId): Promise<BooleanPayload> {
+    return await firstValueFrom(
+      this.productService.removeFromCart(
+        input,
+        this.metadata.setUserId(userId),
+      ),
+    );
+  }
+  async listCart(userId): Promise<ListCartResponse> {
+    return await firstValueFrom(
+      this.productService.listCart({}, this.metadata.setUserId(userId)),
+    );
   }
 
   async printOrder(input) {

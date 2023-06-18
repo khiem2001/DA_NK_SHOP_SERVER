@@ -217,3 +217,23 @@ export class PrintOrderType {
   @Field(() => String, { nullable: true })
   pdfPath: string;
 }
+
+@ObjectType()
+export class CartType {
+  @Field(() => String, { nullable: true })
+  _id: string;
+
+  @Field(() => Number, { nullable: true })
+  quantity: number;
+
+  @Field(() => String, { nullable: true })
+  userId: string;
+
+  @Field(() => String, { nullable: true })
+  productId: string;
+}
+@ObjectType()
+export class ListCartType {
+  @Field(() => [CartType], { nullable: true })
+  cart: CartType[];
+}

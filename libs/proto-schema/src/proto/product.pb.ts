@@ -327,6 +327,43 @@ export interface DeleteTypeResponse {
   success: boolean;
 }
 
+export interface CartResponse {
+  _id: string;
+  quantity: number;
+  userId: string;
+  productId: string;
+  /** base */
+  createdAt: number;
+  createdBy: number;
+  updatedAt: number;
+  updatedBy: number;
+  deletedBy: string;
+  deletedAt: number;
+}
+
+export interface AddToCartRequest {
+  quantity: number;
+  productId: string;
+}
+
+export interface AddToCartResponse {
+  success: boolean;
+}
+
+export interface RemoveFromCartRequest {
+  _id: string;
+}
+
+export interface RemoveFromCartResponse {
+  success: boolean;
+}
+
+export interface ListCartRequest {}
+
+export interface ListCartResponse {
+  cart: CartResponse[];
+}
+
 export const PRODUCT_PACKAGE_NAME = 'product';
 
 export interface ProductServiceClient {
@@ -418,6 +455,8 @@ export interface ProductServiceClient {
     metadata?: Metadata,
   ): Observable<DeleteTypeResponse>;
 
+  /** cart */
+
   listOrderUser(
     request: ListOrderUserRequest,
     metadata?: Metadata,
@@ -437,6 +476,21 @@ export interface ProductServiceClient {
     request: ConfirmOrderResquest,
     metadata?: Metadata,
   ): Observable<ConfirmOrderResponse>;
+
+  addToCart(
+    request: AddToCartRequest,
+    metadata?: Metadata,
+  ): Observable<AddToCartResponse>;
+
+  removeFromCart(
+    request: RemoveFromCartRequest,
+    metadata?: Metadata,
+  ): Observable<RemoveFromCartResponse>;
+
+  listCart(
+    request: ListCartRequest,
+    metadata?: Metadata,
+  ): Observable<ListCartResponse>;
 }
 
 export interface ProductServiceController {
@@ -570,6 +624,8 @@ export interface ProductServiceController {
     | Observable<DeleteTypeResponse>
     | DeleteTypeResponse;
 
+  /** cart */
+
   listOrderUser(
     request: ListOrderUserRequest,
     metadata?: Metadata,
@@ -598,6 +654,30 @@ export interface ProductServiceController {
     | Promise<ConfirmOrderResponse>
     | Observable<ConfirmOrderResponse>
     | ConfirmOrderResponse;
+
+  addToCart(
+    request: AddToCartRequest,
+    metadata?: Metadata,
+  ):
+    | Promise<AddToCartResponse>
+    | Observable<AddToCartResponse>
+    | AddToCartResponse;
+
+  removeFromCart(
+    request: RemoveFromCartRequest,
+    metadata?: Metadata,
+  ):
+    | Promise<RemoveFromCartResponse>
+    | Observable<RemoveFromCartResponse>
+    | RemoveFromCartResponse;
+
+  listCart(
+    request: ListCartRequest,
+    metadata?: Metadata,
+  ):
+    | Promise<ListCartResponse>
+    | Observable<ListCartResponse>
+    | ListCartResponse;
 }
 
 export function ProductServiceControllerMethods() {
@@ -623,6 +703,9 @@ export function ProductServiceControllerMethods() {
       'listOrderAdmin',
       'detailOrder',
       'confirmOrder',
+      'addToCart',
+      'removeFromCart',
+      'listCart',
     ];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(

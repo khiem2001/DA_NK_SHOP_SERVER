@@ -5,3 +5,4 @@ export * from './media';
 export * from './message';
 export * from './product';
 export * from './notification';
+export * from './cart';
