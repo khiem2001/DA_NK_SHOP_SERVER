@@ -6,4 +6,4 @@ export * from './change-password.command';
 export * from './update-profile.command';
 export * from './update-avatar-user.command';
 export * from './change-password-when-login.command';
-export * from './delete-use-command';
+export * from './lock-or-unlock-use-command';

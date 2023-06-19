@@ -13,6 +13,9 @@ export class GetUserByPhoneHandler implements IQueryHandler<UserByPhoneQuery> {
         phoneNumber: query.phoneNumber,
       },
     });
+    if (!user.active) {
+      throw new RpcException('Tài khoản của bạn đã bị khoá!');
+    }
     if (!user) {
       throw new RpcException('Tài khoản không tồn tại');
     }

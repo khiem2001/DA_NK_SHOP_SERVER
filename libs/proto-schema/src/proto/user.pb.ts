@@ -188,11 +188,11 @@ export interface ListUserResponse {
   user: User[];
 }
 
-export interface DeleteUserRequest {
+export interface LockOrUnLockUserRequest {
   id: string;
 }
 
-export interface DeleteUserResponse {
+export interface LockOrUnLockUserResponse {
   success: boolean;
 }
 
@@ -261,10 +261,10 @@ export interface UsersServiceClient {
     metadata?: Metadata,
   ): Observable<ListUserResponse>;
 
-  deleteUser(
-    request: DeleteUserRequest,
+  lockOrUnLockUser(
+    request: LockOrUnLockUserRequest,
     metadata?: Metadata,
-  ): Observable<DeleteUserResponse>;
+  ): Observable<LockOrUnLockUserResponse>;
 
   /** Admin */
 
@@ -383,13 +383,13 @@ export interface UsersServiceController {
     | Observable<ListUserResponse>
     | ListUserResponse;
 
-  deleteUser(
-    request: DeleteUserRequest,
+  lockOrUnLockUser(
+    request: LockOrUnLockUserRequest,
     metadata?: Metadata,
   ):
-    | Promise<DeleteUserResponse>
-    | Observable<DeleteUserResponse>
-    | DeleteUserResponse;
+    | Promise<LockOrUnLockUserResponse>
+    | Observable<LockOrUnLockUserResponse>
+    | LockOrUnLockUserResponse;
 
   /** Admin */
 
@@ -433,7 +433,7 @@ export function UsersServiceControllerMethods() {
       'changePasswordWhenLogin',
       'getUserByEmail',
       'listUser',
-      'deleteUser',
+      'lockOrUnLockUser',
       'createAdmin',
       'getAdminByUserName',
       'getIdAdmin',

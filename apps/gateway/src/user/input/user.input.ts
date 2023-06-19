@@ -51,3 +51,8 @@ export class ChangePassWhenLoginInput {
   @IsOptional()
   newPassword: string;
 }
+@InputType()
+export class LockOrUnLockUserInput {
+  @Field(() => String, { nullable: true })
+  id: string;
+}

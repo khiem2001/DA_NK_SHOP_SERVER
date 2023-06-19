@@ -16,7 +16,7 @@ service UsersService{
     rpc ChangePasswordWhenLogin(ChangePasswordWhenLoginRequest) returns (ChangePasswordWhenLoginResponse) {}
     rpc GetUserByEmail(GetUserByEmailRequest) returns (ReadUserResponse) {}
     rpc ListUser(ListUserRequest) returns (ListUserResponse) {}
-    rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse){}
+    rpc LockOrUnLockUser(LockOrUnLockUserRequest) returns (LockOrUnLockUserResponse){}
    
     //Admin
     rpc CreateAdmin (CreateAdminRequest) returns (CreateAdminResponse) {}
@@ -205,9 +205,9 @@ message ListUserRequest {
 message ListUserResponse {
   repeated User user = 1;
 }
-message DeleteUserRequest {
+message LockOrUnLockUserRequest {
   string id = 1;
 }
-message DeleteUserResponse {
+message LockOrUnLockUserResponse {
   bool success = 1;
 }

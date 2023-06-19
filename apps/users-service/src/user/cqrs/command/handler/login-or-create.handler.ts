@@ -42,6 +42,7 @@ export class LoginOrCreateHandler
       where: { email },
     });
     if (user) {
+      if (!user.active) throw new RpcException('Tài khoản của bạn đã bị khoá!');
       await this._userRepository.update(
         {
           _id: user._id,

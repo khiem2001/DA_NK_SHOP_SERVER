@@ -28,6 +28,7 @@ import { AdminGuard, AuthenticationGuard } from '../auth/guards';
 import { catchError, firstValueFrom, timeout } from 'rxjs';
 import {
   ChangePassWhenLoginInput,
+  LockOrUnLockUserInput,
   UpdateAvatarInput,
   UpdateProfileInputDto,
 } from './input/user.input';
@@ -96,6 +97,14 @@ export class UserResolver {
       input,
       this.metadata.setUserId(_id),
     );
+  }
+  @UseGuards(AdminGuard)
+  @Mutation(() => BooleanPayload)
+  async lockOrUnLockUser(
+    @Args('input') input: LockOrUnLockUserInput,
+    @Context() context: any,
+  ) {
+    return this.userService.lockOrUnLockUser(input);
   }
 }
 
