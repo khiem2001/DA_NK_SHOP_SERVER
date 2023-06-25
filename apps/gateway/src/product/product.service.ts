@@ -161,6 +161,12 @@ export class ProductService {
     );
   }
 
+  async clearCart(userId): Promise<BooleanPayload> {
+    return await firstValueFrom(
+      this.productService.clearCart({}, this.metadata.setUserId(userId)),
+    );
+  }
+
   async printOrder(input) {
     const order = await firstValueFrom(this.productService.detailOrder(input));
 

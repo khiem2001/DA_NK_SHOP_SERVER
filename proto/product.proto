@@ -39,6 +39,7 @@ service ProductService{
     rpc AddToCart(AddToCartRequest) returns (AddToCartResponse) {}
     rpc RemoveFromCart(RemoveFromCartRequest) returns (RemoveFromCartResponse) {}
     rpc ListCart(ListCartRequest) returns (ListCartResponse) {}
+    rpc clearCart(ClearCartRequest) returns (RemoveFromCartResponse) {}
 }
 
 message CreateProductRequest{
@@ -367,6 +368,9 @@ message CartResponse {
     int32 quantity = 5;
     string userId = 6;
     string productId = 7;
+    bool status = 8;
+    int32 price = 9;
+
 
 
     
@@ -400,4 +404,6 @@ message ListCartRequest {
 
 message ListCartResponse {
     repeated CartResponse cart= 1;
+}
+message ClearCartRequest {
 }

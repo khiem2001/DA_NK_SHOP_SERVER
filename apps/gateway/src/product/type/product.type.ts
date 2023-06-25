@@ -226,11 +226,17 @@ export class CartType {
   @Field(() => Number, { nullable: true })
   quantity: number;
 
+  @Field(() => Number, { nullable: true })
+  price: number;
+
   @Field(() => String, { nullable: true })
   userId: string;
 
   @Field(() => String, { nullable: true })
   productId: string;
+
+  @Field(() => Boolean, { nullable: true })
+  status: boolean;
 }
 @ObjectType()
 export class ListCartType {

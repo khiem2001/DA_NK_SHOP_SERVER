@@ -10,11 +10,19 @@ export class CartEntity extends BaseNoSQLEntity {
 
   @Column()
   @Expose()
+  price: number;
+
+  @Column()
+  @Expose()
   userId: string;
 
   @Column()
   @Expose()
   productId: string;
+
+  @Column({ default: true })
+  @Expose()
+  status?: boolean = true;
 
   constructor(order: Partial<CartEntity>) {
     super();

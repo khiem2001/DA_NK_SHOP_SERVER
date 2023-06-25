@@ -1,6 +1,7 @@
 import { AppMetadata } from '@app/core';
 import {
   AddToCartRequest,
+  ClearCartRequest,
   CreateProductRequest,
   DeleteProductRequest,
   FavoriteProductRequest,
@@ -18,6 +19,7 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { GrpcMethod } from '@nestjs/microservices';
 import {
   AddToCartCommand,
+  ClearCartCommand,
   CreateProductCommand,
   DeleteProductCommand,
   FavoriteProductCommand,
@@ -102,6 +104,12 @@ export class ProductController {
   async ListCart(input: ListCartRequest, metadata: Metadata) {
     return await this.queryBus.execute(
       new ListCartQuery(input, this.appMetadata.getUserId(metadata)),
+    );
+  }
+  @GrpcMethod(PRODUCT_SERVICE_NAME, 'clearCart')
+  async clearCart(input: ClearCartRequest, metadata: Metadata) {
+    return await this.commandBus.execute(
+      new ClearCartCommand(input, this.appMetadata.getUserId(metadata)),
     );
   }
 }

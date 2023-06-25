@@ -89,6 +89,13 @@ export class ProductResolver {
     return await this._productService.removeFromCart(input, _id);
   }
 
+  @Mutation(() => BooleanPayload)
+  @UseGuards(AuthenticationGuard)
+  async clearCart(@Context() context: any) {
+    const { _id } = context.req.user;
+    return await this._productService.clearCart(_id);
+  }
+
   @Query(() => ListCartType)
   @UseGuards(AuthenticationGuard)
   async listCart(@Context() context: any) {
@@ -192,16 +199,16 @@ export class OrderDtoResolver {
   }
 }
 
-@Resolver(() => CartType)
-export class CartTypeResolver {
-  @ResolveField('productId', () => ProductPayload, { nullable: true })
-  async product(
-    @Parent() cart: CartType,
-    @Context() { loaders }: IGraphQLContext,
-  ) {
-    if (cart?.productId) {
-      return loaders.productLoader.load(cart.productId);
-    }
-    return null;
-  }
-}
+// @Resolver(() => CartType)
+// export class CartTypeResolver {
+//   @ResolveField('productId', () => ProductPayload, { nullable: true })
+//   async product(
+//     @Parent() cart: CartType,
+//     @Context() { loaders }: IGraphQLContext,
+//   ) {
+//     if (cart?.productId) {
+//       return loaders.productLoader.load(cart.productId);
+//     }
+//     return null;
+//   }
+// }

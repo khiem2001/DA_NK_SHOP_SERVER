@@ -1,4 +1,5 @@
 import { AddToCartHandler } from './add-to-cart.handler';
+import { ClearCartHandler } from './clear-cart.handler';
 import { CreateProductHandler } from './create-product.handler';
 import { DeleteProductHandler } from './delete-product.handler';
 import { FavoriteProductHandler } from './favorite-product.handler';
@@ -12,4 +13,5 @@ export const ProductCommandHandlers = [
   FavoriteProductHandler,
   AddToCartHandler,
   RemoveFromCartHandler,
+  ClearCartHandler,
 ];

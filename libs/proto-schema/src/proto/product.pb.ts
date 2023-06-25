@@ -332,6 +332,8 @@ export interface CartResponse {
   quantity: number;
   userId: string;
   productId: string;
+  status: boolean;
+  price: number;
   /** base */
   createdAt: number;
   createdBy: number;
@@ -363,6 +365,8 @@ export interface ListCartRequest {}
 export interface ListCartResponse {
   cart: CartResponse[];
 }
+
+export interface ClearCartRequest {}
 
 export const PRODUCT_PACKAGE_NAME = 'product';
 
@@ -491,6 +495,11 @@ export interface ProductServiceClient {
     request: ListCartRequest,
     metadata?: Metadata,
   ): Observable<ListCartResponse>;
+
+  clearCart(
+    request: ClearCartRequest,
+    metadata?: Metadata,
+  ): Observable<RemoveFromCartResponse>;
 }
 
 export interface ProductServiceController {
@@ -678,6 +687,14 @@ export interface ProductServiceController {
     | Promise<ListCartResponse>
     | Observable<ListCartResponse>
     | ListCartResponse;
+
+  clearCart(
+    request: ClearCartRequest,
+    metadata?: Metadata,
+  ):
+    | Promise<RemoveFromCartResponse>
+    | Observable<RemoveFromCartResponse>
+    | RemoveFromCartResponse;
 }
 
 export function ProductServiceControllerMethods() {
@@ -706,6 +723,7 @@ export function ProductServiceControllerMethods() {
       'addToCart',
       'removeFromCart',
       'listCart',
+      'clearCart',
     ];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(

@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import {
-  CartTypeResolver,
+  // CartTypeResolver,
   ListProductByIdsResolver,
   ListProductResolver,
   OrderDtoResolver,
@@ -25,7 +25,7 @@ import { TypeResolver } from './type.resolver';
     TypeResolver,
     ListProductByIdsResolver,
     OrderDtoResolver,
-    CartTypeResolver,
+    // CartTypeResolver,
   ],
 })
 export class ProductModule {}
