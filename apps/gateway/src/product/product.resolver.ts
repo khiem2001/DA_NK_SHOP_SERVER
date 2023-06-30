@@ -122,9 +122,14 @@ export class ProductResolver {
   }
 
   @Query(() => ListOrderResponse)
-  @UseGuards(AdminGuard)
+  // @UseGuards(AdminGuard)
   async listOrderAdmin() {
     return await this._productService.listOrderAdmin();
+  }
+
+  @Query(() => OrderDto)
+  async detailOrder(@Args('input') input: ConfirmOrderInput) {
+    return await this._productService.detailOrder(input);
   }
 
   @Mutation(() => BooleanPayload)
@@ -153,7 +158,7 @@ export class ProductResolver {
     return await this._productService.isFavoriteEvent(input, userId);
   }
 
-  @Query(() => PrintOrderType)
+  @Mutation(() => PrintOrderType)
   async printOrder(@Args('input') input: ConfirmOrderInput) {
     return await this._productService.printOrder(input);
   }

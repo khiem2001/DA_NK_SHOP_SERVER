@@ -28,17 +28,27 @@ import { firstValueFrom } from 'rxjs';
 import { AppMetadata, BooleanPayload, PaymentMethod } from '@app/core';
 import * as fs from 'fs';
 import * as PdfPrinter from 'pdfmake';
-import { currencyFormatter, removeVietnameseDiacritics } from '@app/utils';
+import { currencyFormatter } from '@app/utils';
+import {
+  USERS_SERVICE_NAME,
+  UsersServiceClient,
+} from '@app/proto-schema/proto/user.pb';
 
 @Injectable()
 export class ProductService {
   private productService: ProductServiceClient;
+  private usersService: UsersServiceClient;
+
   constructor(
     @Inject(PRODUCT_SERVICE_NAME) private readonly productClient: ClientGrpc,
+    @Inject(USERS_SERVICE_NAME) private readonly userClient: ClientGrpc,
+
     private readonly metadata: AppMetadata,
   ) {
     this.productService =
       productClient.getService<ProductServiceClient>(PRODUCT_SERVICE_NAME);
+    this.usersService =
+      userClient.getService<UsersServiceClient>(USERS_SERVICE_NAME);
   }
 
   /**
@@ -166,16 +176,22 @@ export class ProductService {
       this.productService.clearCart({}, this.metadata.setUserId(userId)),
     );
   }
+  async detailOrder(input) {
+    return await firstValueFrom(this.productService.detailOrder(input));
+  }
 
   async printOrder(input) {
     const order = await firstValueFrom(this.productService.detailOrder(input));
+    const { user } = await firstValueFrom(
+      this.usersService.readUser({ _id: order.userId }),
+    );
 
     const fonts = {
-      Helvetica: {
-        normal: 'Helvetica',
-        bold: 'Helvetica-Bold',
-        italics: 'Helvetica-Oblique',
-        bolditalics: 'Helvetica-BoldOblique',
+      Roboto: {
+        normal: 'roboto/Roboto-Black.ttf',
+        bold: 'roboto/Roboto-Bold.ttf',
+        italics: 'roboto/Roboto-Italic.ttf',
+        bolditalics: 'roboto/Roboto-BoldItalic.ttf',
       },
     };
     const pdfDefinition = {
@@ -185,50 +201,56 @@ export class ProductService {
           style: 'header',
         },
         {
-          text: 'THONG TIN DON HANG',
+          text: 'THÔNG TIN ĐƠN HÀNG',
           style: 'subheader',
         },
         {
-          text: `Nguoi Gui: NK-SHOP`,
+          text: `Người Gửi: NK-SHOP`,
           style: 'info',
         },
         {
-          text: `Dia chi gui hang: 175, Tay Son, Dong Da, Ha Noi`,
-          style: 'info',
-          margin: [0, 0, 0, 10],
-        },
-        {
-          text: `Nguoi Nhan: ${order.userId}`,
+          text: `Số Điện Thoại: 0389342495`,
           style: 'info',
         },
         {
-          text: `Dia Chi Giao Hang: ${removeVietnameseDiacritics(
-            order.shippingAddress,
-          )}`,
+          text: `Địa chỉ gửi hàng: 175, Tây Sơn, Đống Đa, Hà Nội`,
           style: 'info',
-          margin: [0, 0, 0, 10],
+          margin: [0, 0, 0, 20],
         },
         {
-          text: `Ma Don Hang: ${order.code}`,
+          text: `Người nhận: ${user.fullName}`,
           style: 'info',
         },
         {
-          text: `Mo Ta: ${removeVietnameseDiacritics(order.description)}`,
+          text: `Số Điện Thoại: ${user?.phoneNumber || ''}`,
+          style: 'info',
+        },
+        {
+          text: `Địa Chỉ Đon Hàng: ${order.shippingAddress}`,
+          style: 'info',
+          margin: [0, 0, 0, 20],
+        },
+        {
+          text: `Mã Đơn Hàng: ${order.code}`,
+          style: 'info',
+        },
+        {
+          text: `Mô Tả: ${order.description}`,
           style: 'info',
           margin: [0, 0, 0, 10],
         },
 
         {
-          text: 'Danh Sach San Pham:',
+          text: 'Danh Sách Sản Phẩm:',
           margin: [0, 0, 0, 5],
         },
         {
           table: {
             widths: ['auto', 'auto', 'auto'],
             body: [
-              ['Ten San Pham', 'So Luong', 'Gia'],
+              ['Tên Sản Phẩm', 'Số Lượng', 'Giá'],
               ...order.items.map((item) => [
-                removeVietnameseDiacritics(item.name),
+                item.name,
                 item.quantity,
                 currencyFormatter(item.price),
               ]),
@@ -236,7 +258,7 @@ export class ProductService {
           },
         },
         {
-          text: `So Tien Thanh Toán: ${
+          text: `Số Tiền Thanh Toán: ${
             order.paymentMethod == PaymentMethod.ONLINE
               ? 0
               : currencyFormatter(order.amount)
@@ -264,19 +286,20 @@ export class ProductService {
         },
       },
       defaultStyle: {
-        font: 'Helvetica',
+        font: 'Roboto',
       },
     };
 
     const file_name = `order.${new Date().getTime()}.pdf`;
 
     const printer = new PdfPrinter(fonts);
+    const pdfDoc = printer.createPdfKitDocument(pdfDefinition, {}, fonts);
 
-    const pdfDoc = printer.createPdfKitDocument(pdfDefinition);
-    const pdfPath = 'D:/Đồ Án Tốt Nghiệp/OrderPdf/' + file_name;
-    pdfDoc.pipe(fs.createWriteStream(pdfPath));
+    const path = `pdf/${file_name}`;
+    const writeStream = fs.createWriteStream(path);
+    pdfDoc.pipe(writeStream);
     pdfDoc.end();
 
-    return { pdfPath: pdfPath };
+    return { pdfPath: path };
   }
 }

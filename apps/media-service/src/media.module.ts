@@ -34,6 +34,15 @@ import { usersClientOptions } from '@app/proto-schema';
           serveRoot: `/${configService.get<string>('FILE_STORAGE_PATH')}`,
           exclude: ['/api*'],
         },
+        {
+          rootPath: join(
+            __dirname,
+            '../../../',
+            configService.get<string>('FILE_PDF_PATH'),
+          ),
+          serveRoot: `/${configService.get<string>('FILE_PDF_PATH')}`,
+          exclude: ['/api*'],
+        },
       ],
       inject: [ConfigService],
     }),
