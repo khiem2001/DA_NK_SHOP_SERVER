@@ -12,6 +12,7 @@ export class ListCommentHandler implements IQueryHandler<ListCommentQuery> {
         {
           $match: {
             productId: query.id,
+            parentId: null,
           },
         },
         {
@@ -19,9 +20,34 @@ export class ListCommentHandler implements IQueryHandler<ListCommentQuery> {
             createdAt: -1,
           },
         },
+        {
+          $addFields: {
+            commentId: { $toString: '$_id' },
+          },
+        },
+        {
+          $lookup: {
+            from: 'db_comment',
+            localField: 'commentId',
+            foreignField: 'parentId',
+            as: 'feebacks',
+          },
+        },
+        {
+          $addFields: {
+            countFeedback: { $size: '$feebacks' },
+          },
+        },
+        {
+          $project: {
+            feebacks: 0,
+            commentId: 0,
+          },
+        },
       ])
       .toArray();
-
-    return { data } as unknown as ListCommentResponse;
+    return {
+      data,
+    } as unknown as ListCommentResponse;
   }
 }

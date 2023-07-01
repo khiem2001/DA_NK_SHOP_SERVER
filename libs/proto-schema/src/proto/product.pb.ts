@@ -194,6 +194,7 @@ export interface CreateCommentResponse {
   parentId: string;
   _id: string;
   userId: string;
+  countFeedback: number;
   /** base */
   createdAt: number;
   createdBy: number;
@@ -368,6 +369,10 @@ export interface ListCartResponse {
 
 export interface ClearCartRequest {}
 
+export interface ListFeedbackRequest {
+  parentId: string;
+}
+
 export const PRODUCT_PACKAGE_NAME = 'product';
 
 export interface ProductServiceClient {
@@ -439,6 +444,11 @@ export interface ProductServiceClient {
 
   listComment(
     request: ListCommentRequest,
+    metadata?: Metadata,
+  ): Observable<ListCommentResponse>;
+
+  listFeedback(
+    request: ListFeedbackRequest,
     metadata?: Metadata,
   ): Observable<ListCommentResponse>;
 
@@ -607,6 +617,14 @@ export interface ProductServiceController {
     | Observable<ListCommentResponse>
     | ListCommentResponse;
 
+  listFeedback(
+    request: ListFeedbackRequest,
+    metadata?: Metadata,
+  ):
+    | Promise<ListCommentResponse>
+    | Observable<ListCommentResponse>
+    | ListCommentResponse;
+
   /** Type */
 
   createType(
@@ -713,6 +731,7 @@ export function ProductServiceControllerMethods() {
       'callBackPaymentVNProcess',
       'createComment',
       'listComment',
+      'listFeedback',
       'createType',
       'listType',
       'deleteType',

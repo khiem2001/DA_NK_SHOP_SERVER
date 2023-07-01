@@ -23,6 +23,8 @@ service ProductService{
     //Comment
     rpc createComment(CreateCommentRequest) returns (CreateCommentResponse) {}
     rpc ListComment(ListCommentRequest) returns (ListCommentResponse) {}
+    rpc ListFeedback(ListFeedbackRequest) returns (ListCommentResponse) {}
+
 
 
     //Type
@@ -200,6 +202,7 @@ message CreateCommentResponse {
     string parentId = 3;
     string _id = 4;
     string userId = 5;
+    int32 countFeedback = 6;
     
     //base
    double createdAt = 20;
@@ -406,4 +409,9 @@ message ListCartResponse {
     repeated CartResponse cart= 1;
 }
 message ClearCartRequest {
+}
+
+message ListFeedbackRequest {
+    string parentId = 1;
+
 }

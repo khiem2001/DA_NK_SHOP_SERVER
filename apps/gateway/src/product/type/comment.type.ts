@@ -23,6 +23,9 @@ export class CommentResponse {
 
   @Field(() => Number, { nullable: true })
   updatedAt: number;
+
+  @Field(() => Number, { nullable: true })
+  countFeedback: number;
 }
 
 @ObjectType()

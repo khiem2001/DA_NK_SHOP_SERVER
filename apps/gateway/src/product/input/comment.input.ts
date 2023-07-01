@@ -31,3 +31,8 @@ export class ListCommentInput {
   })
   id: string;
 }
+@InputType()
+export class ListFeedbackInput {
+  @Field(() => String)
+  parentId: string;
+}

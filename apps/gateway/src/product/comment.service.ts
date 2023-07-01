@@ -3,10 +3,15 @@ import { AppMetadata } from '@app/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
-import { CreateCommentInput, ListCommentInput } from './input';
+import {
+  CreateCommentInput,
+  ListCommentInput,
+  ListFeedbackInput,
+} from './input';
 import {
   ListCommentRequest,
   ListCommentResponse,
+  ListFeedbackRequest,
   PRODUCT_SERVICE_NAME,
   ProductServiceClient,
 } from '@app/proto-schema/proto/product.pb';
@@ -40,6 +45,12 @@ export class CommentService {
   async listComment(input: ListCommentInput): Promise<ListCommentResponse> {
     return await firstValueFrom(
       this._productService.listComment(input as ListCommentRequest),
+    );
+  }
+
+  async listFeedback(input: ListFeedbackInput): Promise<ListCommentResponse> {
+    return await firstValueFrom(
+      this._productService.listFeedback(input as ListFeedbackRequest),
     );
   }
 }
