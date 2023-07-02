@@ -60,6 +60,7 @@ export class LoginOrCreateHandler
           providerId: id,
           fullName: name,
           verified: true,
+          verifyEmail: true,
         }),
       );
     }
