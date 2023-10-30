@@ -8,7 +8,7 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
-    "build:all": "npm run prebuild && nest build gateway && nest build users-service && nest build sms-service && nest build events-service && nest build media-service",
+    "build:all": "npm run prebuild && nest build gateway && nest build mailer-service && nest build sms-service && nest build product-service && nest build media-service && nest build message-service && nest build notification-service && nest build users-service",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
